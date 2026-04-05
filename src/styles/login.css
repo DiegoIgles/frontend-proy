@@ -1,0 +1,117 @@
+/* Contenedor principal */
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* Lado izquierdo (visual) */
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animación suave */
+.login-left::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10%);
+  background-size: 50px 50px;
+  animation: moveBackground 20s linear infinite;
+}
+
+@keyframes moveBackground {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-50px, -50px);
+  }
+}
+
+/* Texto encima */
+.overlay-text {
+  position: relative;
+  text-align: center;
+}
+
+.overlay-text h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.overlay-text p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Lado derecho (formulario) */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f6f9;
+}
+
+/* Formulario */
+.login-form {
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 320px;
+  text-align: center;
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.login-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Botón */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-button:hover {
+  background: #2980b9;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .login-left {
+    display: none;
+  }
+
+  .login-right {
+    flex: 1;
+  }
+}
