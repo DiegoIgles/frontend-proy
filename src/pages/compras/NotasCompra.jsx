@@ -52,70 +52,72 @@ function NotasCompra() {
       </div>
 
       <div className="card">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Proveedor</th>
-              <th>Glosa</th>
-              <th>Usuario</th>
-              <th>Monto Total</th>
-              <th>Crédito</th>
-              <th>Saldo Pendiente</th>
-              <th>Estado Deuda</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notas.map((nota) => (
-              <tr key={nota.notaCompraId}>
-                <td>{new Date(nota.fecha).toLocaleDateString("es-BO")}</td>
-                <td>
-                  <strong>{nota.proveedor.nombre}</strong>
-                  <br />
-                  <small style={{ color: "#6b7280" }}>{nota.proveedor.ciudad}, {nota.proveedor.pais}</small>
-                </td>
-                <td>{nota.glosa}</td>
-                <td>{nota.usuario.name} {nota.usuario.lastName}</td>
-                <td><strong>Bs. {Number(nota.montoTotal).toFixed(2)}</strong></td>
-                <td>
-                  {nota.esCredito ? (
-                    <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
-                  ) : (
-                    <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>
-                  )}
-                </td>
-                <td>
-                  {nota.saldoPendiente > 0
-                    ? <span style={{ color: "#dc2626" }}>Bs. {Number(nota.saldoPendiente).toFixed(2)}</span>
-                    : <span style={{ color: "#059669" }}>Bs. 0.00</span>
-                  }
-                </td>
-                <td><EstadoBadge estado={nota.estadoDeuda} /></td>
-                <td>
-                  <div style={{ display: "flex", gap: 6 }}>
-                    <Link to={`/compras/notas/${nota.notaCompraId}`} className="btn-secondary" title="Ver detalle">
-                      <FaEye />
-                    </Link>
-                    {nota.puedeRegistrarPago && (
-                      <Link to={`/compras/notas/${nota.notaCompraId}/pago`} className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                        <FaMoneyBillWave /> Pagar
-                      </Link>
-                    )}
-                    <button
-                      className="btn-danger"
-                      onClick={() => handleDelete(nota.notaCompraId)}
-                      disabled={deletingId === nota.notaCompraId}
-                      title="Eliminar"
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
-                </td>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Proveedor</th>
+                <th className="col-hide-mobile">Glosa</th>
+                <th className="col-hide-mobile">Usuario</th>
+                <th>Monto Total</th>
+                <th className="col-hide-mobile">Crédito</th>
+                <th className="col-hide-mobile">Saldo Pendiente</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {notas.map((nota) => (
+                <tr key={nota.notaCompraId}>
+                  <td>{new Date(nota.fecha).toLocaleDateString("es-BO")}</td>
+                  <td>
+                    <strong>{nota.proveedor.nombre}</strong>
+                    <br />
+                    <small style={{ color: "#6b7280" }}>{nota.proveedor.ciudad}, {nota.proveedor.pais}</small>
+                  </td>
+                  <td className="col-hide-mobile">{nota.glosa}</td>
+                  <td className="col-hide-mobile">{nota.usuario.name} {nota.usuario.lastName}</td>
+                  <td><strong>Bs. {Number(nota.montoTotal).toFixed(2)}</strong></td>
+                  <td className="col-hide-mobile">
+                    {nota.esCredito ? (
+                      <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
+                    ) : (
+                      <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>
+                    )}
+                  </td>
+                  <td className="col-hide-mobile">
+                    {nota.saldoPendiente > 0
+                      ? <span style={{ color: "#dc2626" }}>Bs. {Number(nota.saldoPendiente).toFixed(2)}</span>
+                      : <span style={{ color: "#059669" }}>Bs. 0.00</span>
+                    }
+                  </td>
+                  <td><EstadoBadge estado={nota.estadoDeuda} /></td>
+                  <td>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <Link to={`/compras/notas/${nota.notaCompraId}`} className="btn-secondary" title="Ver detalle">
+                        <FaEye />
+                      </Link>
+                      {nota.puedeRegistrarPago && (
+                        <Link to={`/compras/notas/${nota.notaCompraId}/pago`} className="btn-primary" title="Registrar pago">
+                          <FaMoneyBillWave />
+                        </Link>
+                      )}
+                      <button
+                        className="btn-danger"
+                        onClick={() => handleDelete(nota.notaCompraId)}
+                        disabled={deletingId === nota.notaCompraId}
+                        title="Eliminar"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );
