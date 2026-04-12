@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
 
 function Header({ toggleSidebar }) {
   const navigate = useNavigate();
@@ -18,8 +19,8 @@ function Header({ toggleSidebar }) {
         <h3>Panel de Administración</h3>
       </div>
 
-      <button className="logout-btn" onClick={handleLogout}>
-        Cerrar sesión
+      <button className="logout-btn" onClick={handleLogout} title="Cerrar sesión">
+        <FaSignOutAlt />
       </button>
     </div>
   );

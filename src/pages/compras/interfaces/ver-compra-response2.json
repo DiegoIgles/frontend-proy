@@ -1,0 +1,110 @@
+{
+    "notaCompraId": "50b462e7-0930-4b5a-b27a-a84d0b8a7c9a",
+    "fecha": "2025-03-10",
+    "glosa": "Compra inicial de equipos solares",
+    "montoTotal": "7500.00",
+    "deletedAt": null,
+    "proveedor": {
+        "proveedorId": "aa1b2dd0-ee6e-4509-835d-898ce1974136",
+        "nombre": "Distribuidora Solar Bolivia",
+        "contacto": "Pedro Ruiz",
+        "email": "ventas@solbol.com",
+        "telefono": "22441122",
+        "direccion": "Av. Montes 234",
+        "ciudad": "La Paz",
+        "pais": "Bolivia"
+    },
+    "usuario": {
+        "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+        "email": "admin@biovida.com",
+        "name": "Juan Pablo",
+        "lastName": "Rodriguez",
+        "isActive": true,
+        "roles": [
+            "admin",
+            "user"
+        ]
+    },
+    "detallesCompra": [
+        {
+            "detalleCompraId": "c2abf42b-62a4-4f34-b6a8-3a1d0828df78",
+            "cantidad": 1,
+            "precioCompra": "1050.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "d7154e16-bf89-4f90-91eb-a49a9628ce0a",
+                "stock": 8,
+                "producto": {
+                    "productoId": "b566025c-54e5-4aec-82a8-1fc81b2826c2",
+                    "codigo": "INV-5000",
+                    "nombre": "Inversor Cargador 5000W 48V",
+                    "descripcion": "Inversor solar onda pura 5000W con cargador MPPT 80A",
+                    "imagen": null,
+                    "sku": "SKU-INV5000",
+                    "porcentajeGanancia": "28.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "detalleCompraId": "335e0a6b-324c-4e30-93fe-e1e9bf2dd6e6",
+            "cantidad": 2,
+            "precioCompra": "1000.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "1fdefb0f-ae79-437a-9479-5b0bca51547f",
+                "stock": 25,
+                "producto": {
+                    "productoId": "09a64bc8-df15-414f-a5a9-0a380a929e62",
+                    "codigo": "BAT-LI-100",
+                    "nombre": "Batería Litio LiFePO4 100Ah 48V",
+                    "descripcion": "Batería de litio ciclo profundo 4.8kWh",
+                    "imagen": null,
+                    "sku": "SKU-BATLI100",
+                    "porcentajeGanancia": "30.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "detalleCompraId": "1793cdaa-621a-4de4-ad50-525b0dd1ff79",
+            "cantidad": 5,
+            "precioCompra": "650.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "a9aa755a-3a24-4f42-9fbe-e57cd9f06473",
+                "stock": 30,
+                "producto": {
+                    "productoId": "840397a1-846f-4f41-a711-0d13337efbf5",
+                    "codigo": "PS-400M",
+                    "nombre": "Panel Solar 400W Monocristalino",
+                    "descripcion": "Panel monocristalino de alta eficiencia 22%",
+                    "imagen": null,
+                    "sku": "SKU-PS400M",
+                    "porcentajeGanancia": "25.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        }
+    ],
+    "cuentaPorPagar": null,
+    "movimientoCaja": {
+        "movimientoCajaId": "6cc7a918-0178-461c-ad6d-85c9821b831d",
+        "fecha": "2026-04-03",
+        "glosa": "Compra contado - Distribuidora Solar Bolivia",
+        "monto": "7500.00",
+        "tipoMovimiento": "EGRESO"
+    },
+    "esCredito": false,
+    "saldoPendiente": 0,
+    "puedeRegistrarPago": false
+}

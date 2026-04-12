@@ -1,0 +1,19 @@
+{
+    "productoId": "9546c8c4-0c48-4030-8a40-d9d67e431958",
+    "nombre": "Batería AGM 200Ah 12V",
+    "stockTotal": 54,
+    "porAlmacen": [
+        {
+            "productoAlmacenId": "573db2e9-1d8a-4f4f-aac6-fb56f90b55ab",
+            "almacen": "Almacén Central",
+            "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+            "stock": 18
+        },
+        {
+            "productoAlmacenId": "13363a3a-3e9e-4a95-8e69-efe2a68247e7",
+            "almacen": "Almacén Norte",
+            "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+            "stock": 36
+        }
+    ]
+}

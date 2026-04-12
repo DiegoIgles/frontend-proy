@@ -1,0 +1,37 @@
+{
+    "data": [
+        {
+            "proveedorId": "aa1b2dd0-ee6e-4509-835d-898ce1974136",
+            "nombre": "Distribuidora Solar Bolivia",
+            "contacto": "Pedro Ruiz",
+            "email": "ventas@solbol.com",
+            "telefono": "22441122",
+            "direccion": "Av. Montes 234",
+            "ciudad": "La Paz",
+            "pais": "Bolivia"
+        },
+        {
+            "proveedorId": "21480ef5-9ec8-4887-ad53-77a9cc368d94",
+            "nombre": "TechEnergy Import",
+            "contacto": "Ana Vargas",
+            "email": "import@techenergy.com",
+            "telefono": "44221133",
+            "direccion": "Calle Mercado 89",
+            "ciudad": "Cochabamba",
+            "pais": "Bolivia"
+        },
+        {
+            "proveedorId": "61dca621-f4a4-40a3-87f8-1d0affa23426",
+            "nombre": "Victron Energy Latam",
+            "contacto": "John Smith",
+            "email": "latam@victron.com",
+            "telefono": "+5491199887766",
+            "direccion": "Florida 451",
+            "ciudad": "Buenos Aires",
+            "pais": "Argentina"
+        }
+    ],
+    "total": 3,
+    "limit": 10,
+    "offset": 0
+}

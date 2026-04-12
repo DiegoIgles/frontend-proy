@@ -1,76 +1,37 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { getCategoriasAction } from "./actions/get-categorias.action";
+import { createCategoriaAction } from "./actions/create-categoria.action";
+import { FaSave, FaTimes } from "react-icons/fa";
 
 function CreateCategoria() {
   const [nombre, setNombre] = useState("");
   const [categoriaPadreId, setCategoriaPadreId] = useState("");
   const [categorias, setCategorias] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCategorias();
+    getCategoriasAction().then(setCategorias).catch(console.error);
   }, []);
-
-  const fetchCategorias = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(
-        "http://localhost:3000/api/inventario/categorias",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-      setCategorias(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(
-        "http://localhost:3000/api/inventario/categorias",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            nombre,
-            categoriaPadreId: categoriaPadreId || null,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        alert("Categoría creada correctamente");
-        navigate("/categorias");
-      } else {
-        const errorData = await response.json();
-        alert(errorData.message || "Error al crear");
-      }
+      await createCategoriaAction({
+        nombre,
+        categoriaPadreId: categoriaPadreId || null,
+      });
+      alert("Categoría creada correctamente");
+      navigate("/categorias");
     } catch (error) {
-      console.error(error);
-      alert("Error de conexión");
+      alert(error.response?.data?.message || "Error al crear");
     }
   };
 
   return (
     <Layout>
       <h1>Crear Categoría</h1>
-
       <div className="card">
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
@@ -98,9 +59,14 @@ function CreateCategoria() {
             </select>
           </div>
 
-          <button type="submit" className="btn-primary">
-            Guardar
-          </button>
+          <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+            <Link to="/inventario/categorias" className="btn-secondary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <FaTimes /> Cancelar
+            </Link>
+            <button type="submit" className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <FaSave /> Guardar
+            </button>
+          </div>
         </form>
       </div>
     </Layout>

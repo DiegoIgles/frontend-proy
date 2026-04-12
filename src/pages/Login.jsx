@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
+import { loginAction } from "./auth/actions/login.action";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,33 +10,18 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        navigate("/dashboard");
-      } else {
-        alert(data.message || "Error en login");
-      }
+      const data = await loginAction({ email, password });
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
     } catch (error) {
-      console.error(error);
-      alert("Error de conexión");
+      alert(error.response?.data?.message || "Error de conexión");
     }
   };
 
   return (
     <div className="login-wrapper">
-      
+
       {/* Lado izquierdo */}
       <div className="login-left">
         <div className="overlay-text">

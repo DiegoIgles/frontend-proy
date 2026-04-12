@@ -1,0 +1,98 @@
+{
+    "notaCompraId": "9c2c850c-c2a3-40b7-923d-5e9c36f76331",
+    "fecha": "2025-06-01",
+    "glosa": "Compra adaptador v5 para panel B15",
+    "montoTotal": "950.00",
+    "deletedAt": null,
+    "proveedor": {
+        "proveedorId": "21480ef5-9ec8-4887-ad53-77a9cc368d94",
+        "nombre": "TechEnergy Import",
+        "contacto": "Ana Vargas",
+        "email": "import@techenergy.com",
+        "telefono": "44221133",
+        "direccion": "Calle Mercado 89",
+        "ciudad": "Cochabamba",
+        "pais": "Bolivia"
+    },
+    "usuario": {
+        "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+        "email": "admin@biovida.com",
+        "name": "Juan Pablo",
+        "lastName": "Rodriguez",
+        "isActive": true,
+        "roles": [
+            "admin",
+            "user"
+        ]
+    },
+    "detallesCompra": [
+        {
+            "detalleCompraId": "982ec256-b5cf-4ae7-8fc0-282aa1212d70",
+            "cantidad": 15,
+            "precioCompra": "30.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "13363a3a-3e9e-4a95-8e69-efe2a68247e7",
+                "stock": 36,
+                "producto": {
+                    "productoId": "9546c8c4-0c48-4030-8a40-d9d67e431958",
+                    "codigo": "BAT-AGM-200",
+                    "nombre": "Batería AGM 200Ah 12V",
+                    "descripcion": "Batería de plomo-ácido sellada libre mantenimiento",
+                    "imagen": null,
+                    "sku": "SKU-BATAGM200",
+                    "porcentajeGanancia": "22.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+                    "nombre": "Almacén Norte"
+                }
+            }
+        },
+        {
+            "detalleCompraId": "be2fb19a-5710-4a49-a323-618bc6dec340",
+            "cantidad": 10,
+            "precioCompra": "50.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "0a3f489c-0ef8-46e3-afb8-2c43f598f8b2",
+                "stock": 25,
+                "producto": {
+                    "productoId": "99206d91-f330-4bff-8285-98bdc50bc74d",
+                    "codigo": "REG-MPPT-60",
+                    "nombre": "Regulador MPPT 60A",
+                    "descripcion": "Controlador de carga solar MPPT 60A 12/24/48V",
+                    "imagen": null,
+                    "sku": "SKU-MPPT60",
+                    "porcentajeGanancia": "30.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+                    "nombre": "Almacén Norte"
+                }
+            }
+        }
+    ],
+    "cuentaPorPagar": {
+        "cuentaPorPagarId": "b0ee2510-6d94-4b0f-b00b-3a2ec589113c",
+        "estado": "PAGADO_PARCIAL",
+        "fechaVencimiento": null,
+        "montoTotal": "950.00",
+        "montoPagado": "50.00",
+        "saldo": "900.00",
+        "descripcion": "Deuda compra - TechEnergy Import",
+        "movimientosCaja": [
+            {
+                "movimientoCajaId": "a56497b5-ad5c-42da-b76f-e90d72594cea",
+                "fecha": "2026-04-12",
+                "glosa": "Pago inicial compra - TechEnergy Import",
+                "monto": "50.00",
+                "tipoMovimiento": "EGRESO"
+            }
+        ]
+    },
+    "movimientoCaja": null,
+    "esCredito": true,
+    "saldoPendiente": 900,
+    "puedeRegistrarPago": true
+}
