@@ -1,0 +1,173 @@
+{
+    "proyectoId": "d717093f-b0ce-408e-90ce-b733713ba5e9",
+    "nombre": "Planta Solar 50kW - SolarTech S.A.",
+    "descripcion": "Instalación planta solar industrial 50kW con monitoreo remoto y baterías de respaldo",
+    "estado": "PROYECTO",
+    "fechaInicio": "2025-05-01",
+    "fechaFinal": "2025-07-31",
+    "manoObra": "8000.00",
+    "costoExtra": "2500.00",
+    "montoFinal": "75000.00",
+    "deletedAt": null,
+    "usuario": {
+        "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+        "email": "admin@biovida.com",
+        "name": "Juan Pablo",
+        "lastName": "Rodriguez",
+        "isActive": true,
+        "roles": [
+            "admin",
+            "user"
+        ]
+    },
+    "proyectoProductoAlmacenes": [
+        {
+            "proyectoProductoAlmacenId": "31df98c6-aec3-4593-b69a-da4d13a7ce16",
+            "cantidad": 4,
+            "productoAlmacen": {
+                "productoAlmacenId": "d7154e16-bf89-4f90-91eb-a49a9628ce0a",
+                "stock": 8,
+                "producto": {
+                    "productoId": "b566025c-54e5-4aec-82a8-1fc81b2826c2",
+                    "codigo": "INV-5000",
+                    "nombre": "Inversor Cargador 5000W 48V",
+                    "descripcion": "Inversor solar onda pura 5000W con cargador MPPT 80A",
+                    "imagen": null,
+                    "sku": "SKU-INV5000",
+                    "porcentajeGanancia": "28.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "proyectoProductoAlmacenId": "b32da49b-3f70-470c-a9e7-19d38781007d",
+            "cantidad": 20,
+            "productoAlmacen": {
+                "productoAlmacenId": "1fdefb0f-ae79-437a-9479-5b0bca51547f",
+                "stock": 25,
+                "producto": {
+                    "productoId": "09a64bc8-df15-414f-a5a9-0a380a929e62",
+                    "codigo": "BAT-LI-100",
+                    "nombre": "Batería Litio LiFePO4 100Ah 48V",
+                    "descripcion": "Batería de litio ciclo profundo 4.8kWh",
+                    "imagen": null,
+                    "sku": "SKU-BATLI100",
+                    "porcentajeGanancia": "30.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "proyectoProductoAlmacenId": "1a38ce43-3777-4622-ad32-14422a4cc53e",
+            "cantidad": 100,
+            "productoAlmacen": {
+                "productoAlmacenId": "a9aa755a-3a24-4f42-9fbe-e57cd9f06473",
+                "stock": 30,
+                "producto": {
+                    "productoId": "840397a1-846f-4f41-a711-0d13337efbf5",
+                    "codigo": "PS-400M",
+                    "nombre": "Panel Solar 400W Monocristalino",
+                    "descripcion": "Panel monocristalino de alta eficiencia 22%",
+                    "imagen": null,
+                    "sku": "SKU-PS400M",
+                    "porcentajeGanancia": "25.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        }
+    ],
+    "seguimientos": [
+        {
+            "seguimientoId": "695bbf24-c631-406e-8bd9-ae950fe24b1a",
+            "descripcion": "Flete equipos desde almacén central",
+            "fechaGasto": "2025-05-05",
+            "fechaRegistro": "2026-04-03",
+            "monto": "350.00",
+            "tipo": "TRANSPORTE"
+        },
+        {
+            "seguimientoId": "e30a6d0c-f769-45d6-9be1-a521be2532d9",
+            "descripcion": "Compra paneles solares primera entrega",
+            "fechaGasto": "2025-05-05",
+            "fechaRegistro": "2026-04-03",
+            "monto": "3200.00",
+            "tipo": "MATERIAL"
+        },
+        {
+            "seguimientoId": "70112a49-10fe-44c2-9976-6b794b45e13c",
+            "descripcion": "Instalación soportes y estructura día 1",
+            "fechaGasto": "2025-05-05",
+            "fechaRegistro": "2026-04-03",
+            "monto": "800.00",
+            "tipo": "MANO_OBRA"
+        },
+        {
+            "seguimientoId": "6fbf0df3-b40e-450a-98d7-30938513351b",
+            "descripcion": "Instalación paneles segunda jornada",
+            "fechaGasto": "2025-05-12",
+            "fechaRegistro": "2026-04-03",
+            "monto": "600.00",
+            "tipo": "MANO_OBRA"
+        },
+        {
+            "seguimientoId": "f97a1da9-9f9a-47eb-8355-ff96b36d6ce1",
+            "descripcion": "Cableado y conectores",
+            "fechaGasto": "2025-05-12",
+            "fechaRegistro": "2026-04-03",
+            "monto": "1800.00",
+            "tipo": "MATERIAL"
+        },
+        {
+            "seguimientoId": "94c7c35f-120f-4f68-a336-89cdfe18a071",
+            "descripcion": "Baterías litio segunda entrega",
+            "fechaGasto": "2025-05-19",
+            "fechaRegistro": "2026-04-03",
+            "monto": "4500.00",
+            "tipo": "MATERIAL"
+        },
+        {
+            "seguimientoId": "258e8d6c-2c3f-461e-b876-b2ea7b49e9fd",
+            "descripcion": "Instalación baterías e inversores",
+            "fechaGasto": "2025-05-19",
+            "fechaRegistro": "2026-04-03",
+            "monto": "900.00",
+            "tipo": "MANO_OBRA"
+        },
+        {
+            "seguimientoId": "8a71c2c1-d5c9-4f7c-9c6c-bc782f2d2d7c",
+            "descripcion": "Permiso municipal instalación",
+            "fechaGasto": "2025-05-20",
+            "fechaRegistro": "2026-04-03",
+            "monto": "650.00",
+            "tipo": "GASTO_EXTRA"
+        },
+        {
+            "seguimientoId": "783b7465-4597-4975-b90c-52eeaabba889",
+            "descripcion": "Configuración sistema MPPT",
+            "fechaGasto": "2025-05-26",
+            "fechaRegistro": "2026-04-03",
+            "monto": "700.00",
+            "tipo": "MANO_OBRA"
+        },
+        {
+            "seguimientoId": "540d70a9-97d5-4bf4-979e-a0ea5ec5e6d1",
+            "descripcion": "Imprevisto: refuerzo estructura techo",
+            "fechaGasto": "2025-05-26",
+            "fechaRegistro": "2026-04-03",
+            "monto": "200.00",
+            "tipo": "GASTO_EXTRA"
+        }
+    ]
+}

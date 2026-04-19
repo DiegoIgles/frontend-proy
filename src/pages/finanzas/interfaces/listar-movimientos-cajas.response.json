@@ -1,0 +1,275 @@
+{
+    "data": [
+        {
+            "movimientoCajaId": "9377ba4d-5c55-4dd6-8aa8-fa3d07955bea",
+            "fecha": "2026-04-12",
+            "glosa": "Compra adaptador v1 para panel A8",
+            "monto": "950.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": null,
+            "notaVenta": null,
+            "notaCompra": {
+                "notaCompraId": "18f9c021-4a3b-4e7f-847d-e3b5bf19de97",
+                "fecha": "2025-06-01",
+                "glosa": "Compra adaptador v1 para panel A8",
+                "montoTotal": "950.00",
+                "deletedAt": null
+            }
+        },
+        {
+            "movimientoCajaId": "a56497b5-ad5c-42da-b76f-e90d72594cea",
+            "fecha": "2026-04-12",
+            "glosa": "Pago inicial compra - TechEnergy Import",
+            "monto": "50.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": {
+                "cuentaPorPagarId": "b0ee2510-6d94-4b0f-b00b-3a2ec589113c",
+                "estado": "PAGADO_PARCIAL",
+                "fechaVencimiento": null,
+                "montoTotal": "950.00",
+                "montoPagado": "50.00",
+                "saldo": "900.00",
+                "descripcion": "Deuda compra - TechEnergy Import"
+            },
+            "notaVenta": null,
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "859bc298-a6e8-4daa-93f6-87d88667eb6f",
+            "fecha": "2026-04-12",
+            "glosa": "Abono deuda compra - Distribuidora Solar Bolivia",
+            "monto": "1200.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": {
+                "cuentaPorPagarId": "5b487796-3995-493b-92a0-43b15cc93aec",
+                "estado": "PAGADO",
+                "fechaVencimiento": null,
+                "montoTotal": "2750.00",
+                "montoPagado": "2750.00",
+                "saldo": "0.00",
+                "descripcion": "Deuda compra - Distribuidora Solar Bolivia"
+            },
+            "notaVenta": null,
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "ee4dda5f-cbb8-43ce-9070-b65198b208ad",
+            "fecha": "2026-04-12",
+            "glosa": "Abono deuda compra - Distribuidora Solar Bolivia",
+            "monto": "800.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": {
+                "cuentaPorPagarId": "5b487796-3995-493b-92a0-43b15cc93aec",
+                "estado": "PAGADO",
+                "fechaVencimiento": null,
+                "montoTotal": "2750.00",
+                "montoPagado": "2750.00",
+                "saldo": "0.00",
+                "descripcion": "Deuda compra - Distribuidora Solar Bolivia"
+            },
+            "notaVenta": null,
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "4977499e-d99f-49bc-a545-967b017ee018",
+            "fecha": "2026-04-12",
+            "glosa": "Abono deuda compra - Distribuidora Solar Bolivia",
+            "monto": "750.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": {
+                "cuentaPorPagarId": "5b487796-3995-493b-92a0-43b15cc93aec",
+                "estado": "PAGADO",
+                "fechaVencimiento": null,
+                "montoTotal": "2750.00",
+                "montoPagado": "2750.00",
+                "saldo": "0.00",
+                "descripcion": "Deuda compra - Distribuidora Solar Bolivia"
+            },
+            "notaVenta": null,
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "7f0b6da4-a6be-427a-a031-c47c40f42a50",
+            "fecha": "2026-04-03",
+            "glosa": "Cobro inicial venta - Empresa SolarTech S.A.",
+            "monto": "1200.00",
+            "tipoMovimiento": "INGRESO",
+            "usuario": {
+                "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+                "email": "vendedor@biovida.com",
+                "name": "Maria",
+                "lastName": "Gonzalez",
+                "isActive": true,
+                "roles": [
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": {
+                "cuentaPorCobrarId": "1b4234f0-c456-4e96-942d-8f9f48720481",
+                "estado": "PAGADO_PARCIAL",
+                "fechaVencimiento": "2025-08-02",
+                "montoTotal": "4200.00",
+                "montoCobrado": "1200.00",
+                "saldo": "3000.00",
+                "descripcion": "Deuda venta - Empresa SolarTech S.A."
+            },
+            "cuentaPorPagar": null,
+            "notaVenta": null,
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "6cc7a918-0178-461c-ad6d-85c9821b831d",
+            "fecha": "2026-04-03",
+            "glosa": "Compra contado - Distribuidora Solar Bolivia",
+            "monto": "7500.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": null,
+            "notaVenta": null,
+            "notaCompra": {
+                "notaCompraId": "50b462e7-0930-4b5a-b27a-a84d0b8a7c9a",
+                "fecha": "2025-03-10",
+                "glosa": "Compra inicial de equipos solares",
+                "montoTotal": "7500.00",
+                "deletedAt": null
+            }
+        },
+        {
+            "movimientoCajaId": "2807db2e-0699-4323-be4e-b075814679f1",
+            "fecha": "2026-04-03",
+            "glosa": "Venta contado - Roberto Vargas",
+            "monto": "3120.00",
+            "tipoMovimiento": "INGRESO",
+            "usuario": {
+                "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+                "email": "vendedor@biovida.com",
+                "name": "Maria",
+                "lastName": "Gonzalez",
+                "isActive": true,
+                "roles": [
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": null,
+            "notaVenta": {
+                "notaVentaId": "87adb4dc-7e97-4aa2-983e-37e9dd213f7d",
+                "fecha": "2025-04-15",
+                "montoTotal": "3120.00",
+                "descuento": "5.00",
+                "glosa": "Venta sistema solar residencial",
+                "deletedAt": null
+            },
+            "notaCompra": null
+        },
+        {
+            "movimientoCajaId": "a941434f-78af-40b0-9704-519e3d502091",
+            "fecha": "2026-04-03",
+            "glosa": "Pago inicial compra - TechEnergy Import",
+            "monto": "800.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            },
+            "cuentaPorCobrar": null,
+            "cuentaPorPagar": {
+                "cuentaPorPagarId": "0913c652-e3aa-4d5c-9aa1-7d8b8d98e17c",
+                "estado": "PAGADO_PARCIAL",
+                "fechaVencimiento": "2025-06-05",
+                "montoTotal": "2800.00",
+                "montoPagado": "800.00",
+                "saldo": "2000.00",
+                "descripcion": "Deuda compra - TechEnergy Import"
+            },
+            "notaVenta": null,
+            "notaCompra": null
+        }
+    ],
+    "total": 9,
+    "limit": 10,
+    "offset": 0,
+    "resumen": {
+        "ingresos": 4320,
+        "egresos": 12050,
+        "saldo": -7730
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "notaVentaId": "0e72f4b3-f158-4d25-a774-14fcfa0d39cf",
+    "cliente": "Empresa SolarTech",
+    "montoTotalVenta": "4200.00",
+    "montoTotalDeuda": 4200,
+    "montoCobrado": 1200,
+    "saldoPendiente": 3000,
+    "estado": "PAGADO_PARCIAL",
+    "fechaVencimiento": "2025-08-02",
+    "puedeRegistrarCobro": true
+}

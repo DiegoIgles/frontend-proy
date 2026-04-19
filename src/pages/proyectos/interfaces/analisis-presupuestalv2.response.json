@@ -1,0 +1,185 @@
+{
+    "proyecto": {
+        "proyectoId": "d717093f-b0ce-408e-90ce-b733713ba5e9",
+        "nombre": "Planta Solar 50kW - SolarTech S.A.",
+        "estado": "PROYECTO",
+        "fechaInicio": "2025-05-01",
+        "fechaFinal": "2025-07-31"
+    },
+    "presupuesto": {
+        "montoFinal": 75000,
+        "limiteDiario": 824.18,
+        "diasTotales": 91,
+        "diasTranscurridos": 354,
+        "diasRestantes": 0
+    },
+    "ejecucion": {
+        "gastadoTotal": 13700,
+        "saldoDisponible": 61300,
+        "porcentajeEjecutado": 18.3,
+        "proyeccionAlFinal": 3521.75,
+        "alertaProyeccion": false,
+        "gastoPorTipo": {
+            "MATERIAL": 9500,
+            "MANO_OBRA": 3000,
+            "TRANSPORTE": 350,
+            "GASTO_EXTRA": 850
+        }
+    },
+    "gastosPorDia": [
+        {
+            "fecha": "2025-05-05",
+            "total": 4350,
+            "limiteDiario": 824.18,
+            "superaLimite": true,
+            "exceso": 3525.82,
+            "detalles": [
+                {
+                    "seguimientoId": "e30a6d0c-f769-45d6-9be1-a521be2532d9",
+                    "descripcion": "Compra paneles solares primera entrega",
+                    "fechaGasto": "2025-05-05",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "3200.00",
+                    "tipo": "MATERIAL"
+                },
+                {
+                    "seguimientoId": "70112a49-10fe-44c2-9976-6b794b45e13c",
+                    "descripcion": "Instalación soportes y estructura día 1",
+                    "fechaGasto": "2025-05-05",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "800.00",
+                    "tipo": "MANO_OBRA"
+                },
+                {
+                    "seguimientoId": "695bbf24-c631-406e-8bd9-ae950fe24b1a",
+                    "descripcion": "Flete equipos desde almacén central",
+                    "fechaGasto": "2025-05-05",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "350.00",
+                    "tipo": "TRANSPORTE"
+                }
+            ]
+        },
+        {
+            "fecha": "2025-05-12",
+            "total": 2400,
+            "limiteDiario": 824.18,
+            "superaLimite": true,
+            "exceso": 1575.82,
+            "detalles": [
+                {
+                    "seguimientoId": "f97a1da9-9f9a-47eb-8355-ff96b36d6ce1",
+                    "descripcion": "Cableado y conectores",
+                    "fechaGasto": "2025-05-12",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "1800.00",
+                    "tipo": "MATERIAL"
+                },
+                {
+                    "seguimientoId": "6fbf0df3-b40e-450a-98d7-30938513351b",
+                    "descripcion": "Instalación paneles segunda jornada",
+                    "fechaGasto": "2025-05-12",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "600.00",
+                    "tipo": "MANO_OBRA"
+                }
+            ]
+        },
+        {
+            "fecha": "2025-05-19",
+            "total": 5400,
+            "limiteDiario": 824.18,
+            "superaLimite": true,
+            "exceso": 4575.82,
+            "detalles": [
+                {
+                    "seguimientoId": "94c7c35f-120f-4f68-a336-89cdfe18a071",
+                    "descripcion": "Baterías litio segunda entrega",
+                    "fechaGasto": "2025-05-19",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "4500.00",
+                    "tipo": "MATERIAL"
+                },
+                {
+                    "seguimientoId": "258e8d6c-2c3f-461e-b876-b2ea7b49e9fd",
+                    "descripcion": "Instalación baterías e inversores",
+                    "fechaGasto": "2025-05-19",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "900.00",
+                    "tipo": "MANO_OBRA"
+                }
+            ]
+        },
+        {
+            "fecha": "2025-05-20",
+            "total": 650,
+            "limiteDiario": 824.18,
+            "superaLimite": false,
+            "exceso": 0,
+            "detalles": [
+                {
+                    "seguimientoId": "8a71c2c1-d5c9-4f7c-9c6c-bc782f2d2d7c",
+                    "descripcion": "Permiso municipal instalación",
+                    "fechaGasto": "2025-05-20",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "650.00",
+                    "tipo": "GASTO_EXTRA"
+                }
+            ]
+        },
+        {
+            "fecha": "2025-05-26",
+            "total": 900,
+            "limiteDiario": 824.18,
+            "superaLimite": true,
+            "exceso": 75.82,
+            "detalles": [
+                {
+                    "seguimientoId": "783b7465-4597-4975-b90c-52eeaabba889",
+                    "descripcion": "Configuración sistema MPPT",
+                    "fechaGasto": "2025-05-26",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "700.00",
+                    "tipo": "MANO_OBRA"
+                },
+                {
+                    "seguimientoId": "540d70a9-97d5-4bf4-979e-a0ea5ec5e6d1",
+                    "descripcion": "Imprevisto: refuerzo estructura techo",
+                    "fechaGasto": "2025-05-26",
+                    "fechaRegistro": "2026-04-03",
+                    "monto": "200.00",
+                    "tipo": "GASTO_EXTRA"
+                }
+            ]
+        }
+    ],
+    "alertas": {
+        "totalDiasConAlerta": 4,
+        "dias": [
+            {
+                "fecha": "2025-05-05",
+                "gastado": 4350,
+                "limite": 824.18,
+                "exceso": 3525.82
+            },
+            {
+                "fecha": "2025-05-12",
+                "gastado": 2400,
+                "limite": 824.18,
+                "exceso": 1575.82
+            },
+            {
+                "fecha": "2025-05-19",
+                "gastado": 5400,
+                "limite": 824.18,
+                "exceso": 4575.82
+            },
+            {
+                "fecha": "2025-05-26",
+                "gastado": 900,
+                "limite": 824.18,
+                "exceso": 75.82
+            }
+        ]
+    }
+}

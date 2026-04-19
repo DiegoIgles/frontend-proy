@@ -1,0 +1,41 @@
+{
+    "ajusteId": "0ee8613c-61ab-4938-a74e-54cf609000e4",
+    "fecha": "2026-04-03",
+    "glosa": "Ingreso por donación de conectores MC4",
+    "tipo": "ENTRADA",
+    "deletedAt": null,
+    "usuario": {
+        "id": "3a939cf6-cb1a-4601-be22-b6afed64a86a",
+        "email": "bodega@biovida.com",
+        "name": "Carlos",
+        "lastName": "Mendoza",
+        "isActive": true,
+        "roles": [
+            "user"
+        ]
+    },
+    "detallesAjuste": [
+        {
+            "detalleAjusteId": "eba56d59-225d-455a-bb97-f5576adc76c3",
+            "cantidad": 50,
+            "productoAlmacen": {
+                "productoAlmacenId": "4bf9514d-c04f-4f7d-9168-2161d06ea885",
+                "stock": 150,
+                "producto": {
+                    "productoId": "c98f8c16-a995-488e-b506-123145503517",
+                    "codigo": "CON-MC4",
+                    "nombre": "Conector MC4 par",
+                    "descripcion": "Par de conectores MC4 macho/hembra IP67",
+                    "imagen": null,
+                    "sku": "SKU-MC4PAR",
+                    "porcentajeGanancia": "50.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+                    "nombre": "Almacén Norte"
+                }
+            }
+        }
+    ]
+}

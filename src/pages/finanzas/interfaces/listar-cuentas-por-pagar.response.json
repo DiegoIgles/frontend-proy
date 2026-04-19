@@ -1,0 +1,56 @@
+{
+    "data": [
+        {
+            "cuentaPorPagarId": "0913c652-e3aa-4d5c-9aa1-7d8b8d98e17c",
+            "estado": "PAGADO_PARCIAL",
+            "fechaVencimiento": "2025-06-05",
+            "montoTotal": "2800.00",
+            "montoPagado": "800.00",
+            "saldo": "2000.00",
+            "descripcion": "Deuda compra - TechEnergy Import",
+            "notaCompra": {
+                "notaCompraId": "0b58511f-2cef-4351-8ff4-6b0502ff6f63",
+                "fecha": "2025-04-05",
+                "glosa": "Reposición accesorios - crédito 60 días",
+                "montoTotal": "2800.00",
+                "deletedAt": null
+            }
+        },
+        {
+            "cuentaPorPagarId": "b0ee2510-6d94-4b0f-b00b-3a2ec589113c",
+            "estado": "PAGADO_PARCIAL",
+            "fechaVencimiento": null,
+            "montoTotal": "950.00",
+            "montoPagado": "50.00",
+            "saldo": "900.00",
+            "descripcion": "Deuda compra - TechEnergy Import",
+            "notaCompra": {
+                "notaCompraId": "9c2c850c-c2a3-40b7-923d-5e9c36f76331",
+                "fecha": "2025-06-01",
+                "glosa": "Compra adaptador v5 para panel B15",
+                "montoTotal": "950.00",
+                "deletedAt": null
+            }
+        },
+        {
+            "cuentaPorPagarId": "5b487796-3995-493b-92a0-43b15cc93aec",
+            "estado": "PAGADO",
+            "fechaVencimiento": null,
+            "montoTotal": "2750.00",
+            "montoPagado": "2750.00",
+            "saldo": "0.00",
+            "descripcion": "Deuda compra - Distribuidora Solar Bolivia",
+            "notaCompra": {
+                "notaCompraId": "4366ec9d-a126-41b3-90ed-e2d43cde1c7d",
+                "fecha": "2026-04-12",
+                "glosa": null,
+                "montoTotal": "2750.00",
+                "deletedAt": null
+            }
+        }
+    ],
+    "total": 3,
+    "limit": 10,
+    "offset": 0,
+    "totalPendiente": 2900
+}

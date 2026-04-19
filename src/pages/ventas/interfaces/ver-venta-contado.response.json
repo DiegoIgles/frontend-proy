@@ -1,0 +1,86 @@
+{
+    "notaVentaId": "87adb4dc-7e97-4aa2-983e-37e9dd213f7d",
+    "fecha": "2025-04-15",
+    "montoTotal": "3120.00",
+    "descuento": "5.00",
+    "glosa": "Venta sistema solar residencial",
+    "deletedAt": null,
+    "cliente": {
+        "clienteId": "22dbed3f-ebb5-447b-ac9f-ebe3105ffbe6",
+        "nombre": "Roberto",
+        "apellidoPaterno": "Vargas",
+        "apellidoMaterno": "Lima",
+        "correo": "roberto.vargas@gmail.com",
+        "telefono": "70011001",
+        "direccion": "Av. Arce 123"
+    },
+    "usuario": {
+        "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+        "email": "vendedor@biovida.com",
+        "name": "Maria",
+        "lastName": "Gonzalez",
+        "isActive": true,
+        "roles": [
+            "user"
+        ]
+    },
+    "detallesVenta": [
+        {
+            "detalleVentaId": "ee84dd86-55cb-416c-bfad-da0abed50519",
+            "cantidad": 8,
+            "precioVenta": "5.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "2398527c-6ed6-42c3-9541-05a28c155a9a",
+                "stock": 300,
+                "producto": {
+                    "productoId": "c98f8c16-a995-488e-b506-123145503517",
+                    "codigo": "CON-MC4",
+                    "nombre": "Conector MC4 par",
+                    "descripcion": "Par de conectores MC4 macho/hembra IP67",
+                    "imagen": null,
+                    "sku": "SKU-MC4PAR",
+                    "porcentajeGanancia": "50.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "detalleVentaId": "24d13be0-2bdc-4a61-9a57-93121383aff3",
+            "cantidad": 4,
+            "precioVenta": "750.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "44ce54b7-a3cc-4860-b297-107efea29a74",
+                "stock": 10,
+                "producto": {
+                    "productoId": "840397a1-846f-4f41-a711-0d13337efbf5",
+                    "codigo": "PS-400M",
+                    "nombre": "Panel Solar 400W Monocristalino",
+                    "descripcion": "Panel monocristalino de alta eficiencia 22%",
+                    "imagen": null,
+                    "sku": "SKU-PS400M",
+                    "porcentajeGanancia": "25.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+                    "nombre": "Almacén Norte"
+                }
+            }
+        }
+    ],
+    "cuentaPorCobrar": null,
+    "movimientoCaja": {
+        "movimientoCajaId": "2807db2e-0699-4323-be4e-b075814679f1",
+        "fecha": "2026-04-03",
+        "glosa": "Venta contado - Roberto Vargas",
+        "monto": "3120.00",
+        "tipoMovimiento": "INGRESO"
+    },
+    "esCredito": false,
+    "saldoPendiente": 0,
+    "puedeRegistrarCobro": false
+}

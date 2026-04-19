@@ -1,0 +1,97 @@
+{
+    "notaVentaId": "0e72f4b3-f158-4d25-a774-14fcfa0d39cf",
+    "fecha": "2025-05-02",
+    "montoTotal": "4200.00",
+    "descuento": "0.00",
+    "glosa": "Venta sistema solar comercial - crédito",
+    "deletedAt": null,
+    "cliente": {
+        "clienteId": "640ea9b0-70c1-4f95-a9e7-7e1b5c029b00",
+        "nombre": "Empresa",
+        "apellidoPaterno": "SolarTech",
+        "apellidoMaterno": "S.A.",
+        "correo": "contacto@solartech.bo",
+        "telefono": "22331100",
+        "direccion": "Parque Industrial"
+    },
+    "usuario": {
+        "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+        "email": "vendedor@biovida.com",
+        "name": "Maria",
+        "lastName": "Gonzalez",
+        "isActive": true,
+        "roles": [
+            "user"
+        ]
+    },
+    "detallesVenta": [
+        {
+            "detalleVentaId": "2dc7bf78-e186-4da4-9ae6-50023417a19c",
+            "cantidad": 6,
+            "precioVenta": "390.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "573db2e9-1d8a-4f4f-aac6-fb56f90b55ab",
+                "stock": 18,
+                "producto": {
+                    "productoId": "9546c8c4-0c48-4030-8a40-d9d67e431958",
+                    "codigo": "BAT-AGM-200",
+                    "nombre": "Batería AGM 200Ah 12V",
+                    "descripcion": "Batería de plomo-ácido sellada libre mantenimiento",
+                    "imagen": null,
+                    "sku": "SKU-BATAGM200",
+                    "porcentajeGanancia": "22.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        },
+        {
+            "detalleVentaId": "58e6e26f-4ccc-419b-9eaf-acea4a1f589e",
+            "cantidad": 2,
+            "precioVenta": "800.00",
+            "productoAlmacen": {
+                "productoAlmacenId": "c56e37e0-a43c-4b79-8c8a-27286f8140bc",
+                "stock": 12,
+                "producto": {
+                    "productoId": "dd047961-d774-4620-bfb7-10e707b4cf40",
+                    "codigo": "INV-3000",
+                    "nombre": "Inversor Cargador 3000W 24V",
+                    "descripcion": "Inversor solar onda pura 3000W con cargador MPPT",
+                    "imagen": null,
+                    "sku": "SKU-INV3000",
+                    "porcentajeGanancia": "28.00",
+                    "deletedAt": null
+                },
+                "almacen": {
+                    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                    "nombre": "Almacén Central"
+                }
+            }
+        }
+    ],
+    "cuentaPorCobrar": {
+        "cuentaPorCobrarId": "1b4234f0-c456-4e96-942d-8f9f48720481",
+        "estado": "PAGADO_PARCIAL",
+        "fechaVencimiento": "2025-08-02",
+        "montoTotal": "4200.00",
+        "montoCobrado": "1200.00",
+        "saldo": "3000.00",
+        "descripcion": "Deuda venta - Empresa SolarTech S.A.",
+        "movimientosCaja": [
+            {
+                "movimientoCajaId": "7f0b6da4-a6be-427a-a031-c47c40f42a50",
+                "fecha": "2026-04-03",
+                "glosa": "Cobro inicial venta - Empresa SolarTech S.A.",
+                "monto": "1200.00",
+                "tipoMovimiento": "INGRESO"
+            }
+        ]
+    },
+    "movimientoCaja": null,
+    "esCredito": true,
+    "saldoPendiente": 3000,
+    "puedeRegistrarCobro": true
+}

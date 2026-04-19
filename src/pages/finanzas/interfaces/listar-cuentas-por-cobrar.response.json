@@ -1,0 +1,25 @@
+{
+    "data": [
+        {
+            "cuentaPorCobrarId": "1b4234f0-c456-4e96-942d-8f9f48720481",
+            "estado": "PAGADO_PARCIAL",
+            "fechaVencimiento": "2025-08-02",
+            "montoTotal": "4200.00",
+            "montoCobrado": "1200.00",
+            "saldo": "3000.00",
+            "descripcion": "Deuda venta - Empresa SolarTech S.A.",
+            "notaVenta": {
+                "notaVentaId": "0e72f4b3-f158-4d25-a774-14fcfa0d39cf",
+                "fecha": "2025-05-02",
+                "montoTotal": "4200.00",
+                "descuento": "0.00",
+                "glosa": "Venta sistema solar comercial - crédito",
+                "deletedAt": null
+            }
+        }
+    ],
+    "total": 1,
+    "limit": 10,
+    "offset": 0,
+    "totalPendiente": 3000
+}

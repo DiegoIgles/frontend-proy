@@ -1,0 +1,36 @@
+{
+    "cuentaPorPagarId": "0913c652-e3aa-4d5c-9aa1-7d8b8d98e17c",
+    "estado": "PAGADO_PARCIAL",
+    "fechaVencimiento": "2025-06-05",
+    "montoTotal": "2800.00",
+    "montoPagado": "800.00",
+    "saldo": "2000.00",
+    "descripcion": "Deuda compra - TechEnergy Import",
+    "notaCompra": {
+        "notaCompraId": "0b58511f-2cef-4351-8ff4-6b0502ff6f63",
+        "fecha": "2025-04-05",
+        "glosa": "Reposición accesorios - crédito 60 días",
+        "montoTotal": "2800.00",
+        "deletedAt": null
+    },
+    "movimientosCaja": [
+        {
+            "movimientoCajaId": "a941434f-78af-40b0-9704-519e3d502091",
+            "fecha": "2026-04-03",
+            "glosa": "Pago inicial compra - TechEnergy Import",
+            "monto": "800.00",
+            "tipoMovimiento": "EGRESO",
+            "usuario": {
+                "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+                "email": "admin@biovida.com",
+                "name": "Juan Pablo",
+                "lastName": "Rodriguez",
+                "isActive": true,
+                "roles": [
+                    "admin",
+                    "user"
+                ]
+            }
+        }
+    ]
+}

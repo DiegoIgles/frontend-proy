@@ -1,0 +1,29 @@
+{
+    "proyecto": {
+        "proyectoId": "68f4d7c1-b110-40ff-8c32-2240189a8f5e",
+        "nombre": "Instalación Solar 10kW - Casa García",
+        "estado": "COTIZACION",
+        "fechaInicio": "2025-06-01",
+        "fechaFinal": "2025-07-15"
+    },
+    "presupuesto": {
+        "montoFinal": 18500,
+        "limiteDiario": 420.45,
+        "diasTotales": 44,
+        "diasTranscurridos": 323,
+        "diasRestantes": 0
+    },
+    "ejecucion": {
+        "gastadoTotal": 0,
+        "saldoDisponible": 18500,
+        "porcentajeEjecutado": 0,
+        "proyeccionAlFinal": 0,
+        "alertaProyeccion": false,
+        "gastoPorTipo": {}
+    },
+    "gastosPorDia": [],
+    "alertas": {
+        "totalDiasConAlerta": 0,
+        "dias": []
+    }
+}

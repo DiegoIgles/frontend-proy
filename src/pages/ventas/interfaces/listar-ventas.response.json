@@ -1,0 +1,62 @@
+[
+    {
+        "notaVentaId": "0e72f4b3-f158-4d25-a774-14fcfa0d39cf",
+        "fecha": "2025-05-02",
+        "glosa": "Venta sistema solar comercial - crédito",
+        "montoTotal": "4200.00",
+        "descuento": "0.00",
+        "cliente": {
+            "clienteId": "640ea9b0-70c1-4f95-a9e7-7e1b5c029b00",
+            "nombre": "Empresa",
+            "apellidoPaterno": "SolarTech",
+            "apellidoMaterno": "S.A.",
+            "correo": "contacto@solartech.bo",
+            "telefono": "22331100",
+            "direccion": "Parque Industrial"
+        },
+        "usuario": {
+            "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+            "email": "vendedor@biovida.com",
+            "name": "Maria",
+            "lastName": "Gonzalez",
+            "isActive": true,
+            "roles": [
+                "user"
+            ]
+        },
+        "esCredito": true,
+        "saldoPendiente": 3000,
+        "estadoDeuda": "PAGADO_PARCIAL",
+        "puedeRegistrarCobro": true
+    },
+    {
+        "notaVentaId": "87adb4dc-7e97-4aa2-983e-37e9dd213f7d",
+        "fecha": "2025-04-15",
+        "glosa": "Venta sistema solar residencial",
+        "montoTotal": "3120.00",
+        "descuento": "5.00",
+        "cliente": {
+            "clienteId": "22dbed3f-ebb5-447b-ac9f-ebe3105ffbe6",
+            "nombre": "Roberto",
+            "apellidoPaterno": "Vargas",
+            "apellidoMaterno": "Lima",
+            "correo": "roberto.vargas@gmail.com",
+            "telefono": "70011001",
+            "direccion": "Av. Arce 123"
+        },
+        "usuario": {
+            "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+            "email": "vendedor@biovida.com",
+            "name": "Maria",
+            "lastName": "Gonzalez",
+            "isActive": true,
+            "roles": [
+                "user"
+            ]
+        },
+        "esCredito": false,
+        "saldoPendiente": 0,
+        "estadoDeuda": null,
+        "puedeRegistrarCobro": false
+    }
+]

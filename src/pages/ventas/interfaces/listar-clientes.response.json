@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "clienteId": "7b2d2929-aa40-473c-970f-64abdddc5265",
+            "nombre": "Lucía",
+            "apellidoPaterno": "Flores",
+            "apellidoMaterno": "Chávez",
+            "correo": "lucia.flores@hotmail.com",
+            "telefono": "70022002",
+            "direccion": "Calle Potosí 45"
+        },
+        {
+            "clienteId": "89bf3db5-ba58-44e3-af36-b340367f25cb",
+            "nombre": "Patricia",
+            "apellidoPaterno": "Mamani",
+            "apellidoMaterno": "Ticona",
+            "correo": "patricia.mamani@yahoo.com",
+            "telefono": "70044004",
+            "direccion": "Zona Sur Mz. 5"
+        },
+        {
+            "clienteId": "3064f19f-50b0-43fa-95ab-8d8d68910e88",
+            "nombre": "Marco",
+            "apellidoPaterno": "Quispe",
+            "apellidoMaterno": null,
+            "correo": "marco.quispe@gmail.com",
+            "telefono": "70033003",
+            "direccion": "Av. Ballivián 78"
+        },
+        {
+            "clienteId": "640ea9b0-70c1-4f95-a9e7-7e1b5c029b00",
+            "nombre": "Empresa",
+            "apellidoPaterno": "SolarTech",
+            "apellidoMaterno": "S.A.",
+            "correo": "contacto@solartech.bo",
+            "telefono": "22331100",
+            "direccion": "Parque Industrial"
+        },
+        {
+            "clienteId": "22dbed3f-ebb5-447b-ac9f-ebe3105ffbe6",
+            "nombre": "Roberto",
+            "apellidoPaterno": "Vargas",
+            "apellidoMaterno": "Lima",
+            "correo": "roberto.vargas@gmail.com",
+            "telefono": "70011001",
+            "direccion": "Av. Arce 123"
+        }
+    ],
+    "total": 5,
+    "limit": 10,
+    "offset": 0
+}

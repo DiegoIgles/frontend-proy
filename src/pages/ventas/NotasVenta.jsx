@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 import Layout from "../../components/layout/Layout";
 import { Link } from "react-router-dom";
-import { useNotasCompra } from "./hooks/useNotasCompra";
-import { deleteNotaCompraAction } from "./actions/delete-nota-compra.action";
+import { useNotasVenta } from "./hooks/useNotasVenta";
+import { deleteNotaVentaAction } from "./actions/delete-nota-venta.action";
 import { FaPlus, FaEye, FaMoneyBillWave, FaTrash } from "react-icons/fa";
 import EstadoBadge from "../../components/EstadoBadge";
 
-function NotasCompra() {
-  const { notas, setNotas, loading, error } = useNotasCompra();
+function NotasVenta() {
+  const { notas, setNotas, loading, error } = useNotasVenta();
   const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta nota de compra? Se revertirá el stock.")) return;
+    if (!window.confirm("¿Seguro que deseas eliminar esta nota de venta? Se revertirá el stock.")) return;
     try {
       setDeletingId(id);
-      await deleteNotaCompraAction(id);
-      setNotas((prev) => prev.filter((n) => n.notaCompraId !== id));
+      await deleteNotaVentaAction(id);
+      setNotas((prev) => prev.filter((n) => n.notaVentaId !== id));
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar la compra");
+      alert(err.response?.data?.message || "Error al eliminar la venta");
     } finally {
       setDeletingId(null);
     }
   };
 
   if (loading) return <Layout><p>Cargando...</p></Layout>;
-  if (error)   return <Layout><p>Error al cargar las notas de compra.</p></Layout>;
+  if (error)   return <Layout><p>Error al cargar las notas de venta.</p></Layout>;
 
   return (
     <Layout>
       <div className="page-header">
-        <h1>Notas de Compra</h1>
-        <Link to="/compras/notas/crear" className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <FaPlus /> Nueva Nota
+        <h1>Notas de Venta</h1>
+        <Link to="/ventas/notas/crear" className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <FaPlus /> Nueva Venta
         </Link>
       </div>
 
@@ -41,11 +41,11 @@ function NotasCompra() {
             <thead>
               <tr>
                 <th>Fecha</th>
-                <th>Proveedor</th>
+                <th>Cliente</th>
                 <th className="col-hide-mobile">Glosa</th>
                 <th className="col-hide-mobile">Usuario</th>
                 <th>Monto Total</th>
-                <th className="col-hide-mobile">Crédito</th>
+                <th className="col-hide-mobile">Tipo</th>
                 <th className="col-hide-mobile">Saldo Pendiente</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -53,14 +53,14 @@ function NotasCompra() {
             </thead>
             <tbody>
               {notas.map((nota) => (
-                <tr key={nota.notaCompraId}>
+                <tr key={nota.notaVentaId}>
                   <td>{new Date(nota.fecha).toLocaleDateString("es-BO")}</td>
                   <td>
-                    <strong>{nota.proveedor.nombre}</strong>
+                    <strong>{nota.cliente.nombre} {nota.cliente.apellidoPaterno}{nota.cliente.apellidoMaterno ? ` ${nota.cliente.apellidoMaterno}` : ""}</strong>
                     <br />
-                    <small style={{ color: "#6b7280" }}>{nota.proveedor.ciudad}, {nota.proveedor.pais}</small>
+                    <small style={{ color: "#6b7280" }}>{nota.cliente.telefono}</small>
                   </td>
-                  <td className="col-hide-mobile">{nota.glosa}</td>
+                  <td className="col-hide-mobile">{nota.glosa || "—"}</td>
                   <td className="col-hide-mobile">{nota.usuario.name} {nota.usuario.lastName}</td>
                   <td><strong>Bs. {Number(nota.montoTotal).toFixed(2)}</strong></td>
                   <td className="col-hide-mobile">
@@ -79,18 +79,18 @@ function NotasCompra() {
                   <td><EstadoBadge estado={nota.estadoDeuda} /></td>
                   <td>
                     <div style={{ display: "flex", gap: 6 }}>
-                      <Link to={`/compras/notas/${nota.notaCompraId}`} className="btn-secondary" title="Ver detalle">
+                      <Link to={`/ventas/notas/${nota.notaVentaId}`} className="btn-secondary" title="Ver detalle">
                         <FaEye />
                       </Link>
-                      {nota.puedeRegistrarPago && (
-                        <Link to={`/compras/notas/${nota.notaCompraId}/pago`} className="btn-primary" title="Registrar pago">
+                      {nota.puedeRegistrarCobro && (
+                        <Link to={`/ventas/notas/${nota.notaVentaId}/cobro`} className="btn-primary" title="Registrar cobro">
                           <FaMoneyBillWave />
                         </Link>
                       )}
                       <button
                         className="btn-danger"
-                        onClick={() => handleDelete(nota.notaCompraId)}
-                        disabled={deletingId === nota.notaCompraId}
+                        onClick={() => handleDelete(nota.notaVentaId)}
+                        disabled={deletingId === nota.notaVentaId}
                         title="Eliminar"
                       >
                         <FaTrash />
@@ -107,4 +107,4 @@ function NotasCompra() {
   );
 }
 
-export default NotasCompra;
+export default NotasVenta;
