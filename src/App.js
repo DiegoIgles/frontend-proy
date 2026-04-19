@@ -36,6 +36,10 @@ import Ajustes from "./pages/ajustes/Ajustes";
 import CreateAjuste from "./pages/ajustes/CreateAjuste";
 import VerAjuste from "./pages/ajustes/VerAjuste";
 
+// Usuarios
+import Usuarios from "./pages/usuarios/Usuarios";
+import VerUsuario from "./pages/usuarios/VerUsuario";
+
 // Ventas
 import NotasVenta from "./pages/ventas/NotasVenta";
 import VerNotaVenta from "./pages/ventas/VerNotaVenta";
@@ -89,6 +93,10 @@ function App() {
         <Route path="/ventas/notas/:id"         element={<PrivateRoute><VerNotaVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/:id/cobro"    element={<PrivateRoute><CobroNotaVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/:id/recibo"  element={<PrivateRoute><ReciboVenta /></PrivateRoute>} />
+
+        {/* Usuarios */}
+        <Route path="/usuarios"     element={<PrivateRoute><Usuarios /></PrivateRoute>} />
+        <Route path="/usuarios/:id" element={<PrivateRoute><VerUsuario /></PrivateRoute>} />
 
         {/* Perfil */}
         <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />

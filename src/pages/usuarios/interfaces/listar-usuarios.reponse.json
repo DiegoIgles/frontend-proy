@@ -1,0 +1,56 @@
+{
+    "data": [
+        {
+            "id": "3a939cf6-cb1a-4601-be22-b6afed64a86a",
+            "email": "bodega@biovida.com",
+            "name": "Carlos",
+            "lastName": "Mendoza",
+            "isActive": true,
+            "roles": [
+                "user"
+            ],
+            "profile": {
+                "id": 4,
+                "gender": "femenino",
+                "photo": "https://res.cloudinary.com/dyvyg2lm2/image/upload/v1772590391/backend-images/y8refinys2ywefwaa49h.jpg",
+                "photoPublicId": "backend-images/y8refinys2ywefwaa49h"
+            }
+        },
+        {
+            "id": "98d74b0b-3d71-4ea0-bb95-0cd606e451ac",
+            "email": "admin@biovida.com",
+            "name": "Juan Pablo",
+            "lastName": "Rodriguez",
+            "isActive": true,
+            "roles": [
+                "admin",
+                "user"
+            ],
+            "profile": {
+                "id": 3,
+                "gender": "masculino",
+                "photo": "https://res.cloudinary.com/dyvyg2lm2/image/upload/v1776616412/backend-images/xisbauklfuu44ajmclmz.png",
+                "photoPublicId": "backend-images/xisbauklfuu44ajmclmz"
+            }
+        },
+        {
+            "id": "433581a3-4f0f-4b6a-b5af-b264179c35b2",
+            "email": "vendedor@biovida.com",
+            "name": "Maria",
+            "lastName": "Gonzalez",
+            "isActive": true,
+            "roles": [
+                "user"
+            ],
+            "profile": {
+                "id": 5,
+                "gender": "femenino",
+                "photo": "https://res.cloudinary.com/dyvyg2lm2/image/upload/v1772590391/backend-images/y8refinys2ywefwaa49h.jpg",
+                "photoPublicId": "backend-images/y8refinys2ywefwaa49h"
+            }
+        }
+    ],
+    "total": 3,
+    "limit": 10,
+    "offset": 0
+}

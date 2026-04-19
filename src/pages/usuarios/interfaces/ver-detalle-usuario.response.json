@@ -1,0 +1,16 @@
+{
+    "id": "3a939cf6-cb1a-4601-be22-b6afed64a86a",
+    "email": "bodega@biovida.com",
+    "name": "Carlos",
+    "lastName": "Mendoza",
+    "isActive": true,
+    "roles": [
+        "user"
+    ],
+    "profile": {
+        "id": 4,
+        "gender": "femenino",
+        "photo": "https://res.cloudinary.com/dyvyg2lm2/image/upload/v1772590391/backend-images/y8refinys2ywefwaa49h.jpg",
+        "photoPublicId": "backend-images/y8refinys2ywefwaa49h"
+    }
+}
