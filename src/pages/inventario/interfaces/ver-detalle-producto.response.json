@@ -1,0 +1,60 @@
+{
+    "productoId": "9546c8c4-0c48-4030-8a40-d9d67e431958",
+    "codigo": "BAT-AGM-200",
+    "nombre": "Batería AGM 200Ah 12V",
+    "descripcion": "Batería de plomo-ácido sellada libre mantenimiento",
+    "imagen": null,
+    "sku": "SKU-BATAGM200",
+    "porcentajeGanancia": "22.00",
+    "deletedAt": null,
+    "categoria": {
+        "categoriaId": "cbce7b6c-f94c-48aa-9dcf-ede698e54de7",
+        "nombre": "AGM",
+        "categoriaPadre": {
+            "categoriaId": "45989f14-d7a5-471c-b618-9ee4728e47ec",
+            "nombre": "Baterías"
+        }
+    },
+    "marcaModelo": {
+        "marcaModeloId": "45546893-c3b6-4838-8a78-cd503c253f3f",
+        "marca": {
+            "marcaId": "e87013c9-20d2-494e-93ce-30f47932e4c5",
+            "nombre": "Renogy"
+        },
+        "modelo": {
+            "modeloId": "96fbc1de-26d3-46c3-9fb9-cf14fb176e5b",
+            "nombre": "RNG-100D"
+        }
+    },
+    "productoAlmacenes": [
+        {
+            "productoAlmacenId": "13363a3a-3e9e-4a95-8e69-efe2a68247e7",
+            "stock": 36,
+            "almacen": {
+                "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+                "nombre": "Almacén Norte"
+            }
+        },
+        {
+            "productoAlmacenId": "573db2e9-1d8a-4f4f-aac6-fb56f90b55ab",
+            "stock": 33,
+            "almacen": {
+                "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+                "nombre": "Almacén Central"
+            }
+        }
+    ],
+    "precios": [
+        {
+            "precioId": "57c9bf4f-e381-43d3-8716-b6e1948702c1",
+            "precio": "280.00",
+            "fecha": "2025-01-01"
+        }
+    ],
+    "stockTotal": 69,
+    "precioActual": {
+        "precioId": "57c9bf4f-e381-43d3-8716-b6e1948702c1",
+        "precio": "280.00",
+        "fecha": "2025-01-01"
+    }
+}

@@ -36,6 +36,10 @@ import Ajustes from "./pages/ajustes/Ajustes";
 import CreateAjuste from "./pages/ajustes/CreateAjuste";
 import VerAjuste from "./pages/ajustes/VerAjuste";
 
+// Inventario - Productos
+import Productos from "./pages/inventario/Productos";
+import VerProducto from "./pages/inventario/VerProducto";
+
 // Usuarios
 import Usuarios from "./pages/usuarios/Usuarios";
 import VerUsuario from "./pages/usuarios/VerUsuario";
@@ -61,6 +65,8 @@ function App() {
         {/* Inventario */}
         <Route path="/inventario/categorias"        element={<PrivateRoute><Categorias /></PrivateRoute>} />
         <Route path="/inventario/categorias/crear"  element={<PrivateRoute><CreateCategoria /></PrivateRoute>} />
+        <Route path="/inventario/productos"         element={<PrivateRoute><Productos /></PrivateRoute>} />
+        <Route path="/inventario/productos/:id"     element={<PrivateRoute><VerProducto /></PrivateRoute>} />
 
         {/* Compras */}
         <Route path="/compras/notas"        element={<PrivateRoute><NotasCompra /></PrivateRoute>} />

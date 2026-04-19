@@ -226,7 +226,8 @@ function Usuarios() {
           total={total}
           limit={limit}
           offset={offset}
-          onPageChange={(newOffset) => setOffset(newOffset)}
+          onOffsetChange={(newOffset) => setOffset(newOffset)}
+          onLimitChange={(newLimit) => { setLimit(newLimit); setOffset(0); }}
         />
       </div>
 
