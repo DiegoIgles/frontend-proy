@@ -1,21 +1,31 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "../styles/login.css";
 import { loginAction } from "./auth/actions/login.action";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const { user, loading, login } = useAuth();
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  // Si ya está autenticado, va directo al dashboard
+  if (loading) return null;
+  if (user)    return <Navigate to="/dashboard" replace />;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      setSubmitting(true);
       const data = await loginAction({ email, password });
-      localStorage.setItem("token", data.token);
+      login(data);
       navigate("/dashboard");
     } catch (error) {
-      alert(error.response?.data?.message || "Error de conexión");
+      alert(error.response?.data?.message || "Credenciales incorrectas");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -37,11 +47,12 @@ function Login() {
 
           <input
             type="email"
-            placeholder="Correo"
+            placeholder="Correo electrónico"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="login-input"
             required
+            autoComplete="email"
           />
 
           <input
@@ -51,10 +62,11 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             className="login-input"
             required
+            autoComplete="current-password"
           />
 
-          <button type="submit" className="login-button">
-            Ingresar
+          <button type="submit" className="login-button" disabled={submitting}>
+            {submitting ? "Ingresando..." : "Ingresar"}
           </button>
         </form>
       </div>

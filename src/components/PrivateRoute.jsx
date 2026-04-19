@@ -1,15 +1,22 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function PrivateRoute({ children }) {
-  const token = localStorage.getItem("token");
+  const { user, loading } = useAuth();
 
-  // Si NO hay token → login
-  if (!token) {
-    return <Navigate to="/" replace />;
+  // Mientras se verifica el token con el backend, no renderiza nada
+  if (loading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center",
+        height: "100vh", fontFamily: "Segoe UI, sans-serif", color: "#6b7280", fontSize: 15 }}>
+        Cargando...
+      </div>
+    );
   }
 
-  // Si hay token → deja pasar
+  if (!user) return <Navigate to="/" replace />;
+
   return children;
 }
 

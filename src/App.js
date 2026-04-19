@@ -1,9 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import Perfil from "./pages/Perfil";
 
 // Inventario
 import Categorias from "./pages/Categorias/Categorias";
@@ -44,6 +46,7 @@ import ReciboVenta from "./pages/ventas/ReciboVenta";
 function App() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         {/* Pública */}
         <Route path="/" element={<Login />} />
@@ -86,7 +89,11 @@ function App() {
         <Route path="/ventas/notas/:id"         element={<PrivateRoute><VerNotaVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/:id/cobro"    element={<PrivateRoute><CobroNotaVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/:id/recibo"  element={<PrivateRoute><ReciboVenta /></PrivateRoute>} />
+
+        {/* Perfil */}
+        <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
