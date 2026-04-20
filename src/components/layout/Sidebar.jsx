@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import {
   FaTachometerAlt,
   FaTags,
@@ -17,6 +18,8 @@ import {
   FaProjectDiagram,
   FaUserCog,
 } from "react-icons/fa";
+
+let _navScroll = 0;
 
 const MENU = [
   {
@@ -68,6 +71,11 @@ const MENU = [
 
 function Sidebar({ onNavigate }) {
   const location = useLocation();
+  const navRef   = useRef(null);
+
+  useEffect(() => {
+    if (navRef.current) navRef.current.scrollTop = _navScroll;
+  }, []);
 
   const isActive = (path) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
@@ -94,7 +102,7 @@ function Sidebar({ onNavigate }) {
       </div>
 
       {/* Nav scrolleable */}
-      <nav className="menu sidebar-nav">
+      <nav ref={navRef} className="menu sidebar-nav" onScroll={(e) => { _navScroll = e.currentTarget.scrollTop; }}>
         {MENU.map((section) => (
           <div key={section.title}>
             <p className="menu-title">{section.title}</p>
