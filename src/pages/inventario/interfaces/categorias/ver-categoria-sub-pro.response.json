@@ -1,0 +1,23 @@
+{
+    "categoriaId": "103c5ff2-a9a7-4f94-b427-17e976f6fcdc",
+    "nombre": "Litio",
+    "categoriaPadre": {
+        "categoriaId": "45989f14-d7a5-471c-b618-9ee4728e47ec",
+        "nombre": "Baterías"
+    },
+    "subcategorias": [],
+    "productos": [
+        {
+            "productoId": "09a64bc8-df15-414f-a5a9-0a380a929e62",
+            "codigo": "BAT-LI-100",
+            "nombre": "Batería Litio LiFePO4 100Ah 48V",
+            "descripcion": "Batería de litio ciclo profundo 4.8kWh",
+            "imagen": null,
+            "sku": "SKU-BATLI100",
+            "porcentajeGanancia": "30.00",
+            "createdAt": "2026-04-19T23:22:50.535Z",
+            "updatedAt": "2026-04-19T23:22:50.535Z",
+            "deletedAt": null
+        }
+    ]
+}

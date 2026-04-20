@@ -9,7 +9,7 @@ import Perfil from "./pages/Perfil";
 
 // Inventario
 import Categorias from "./pages/Categorias/Categorias";
-import CreateCategoria from "./pages/Categorias/CreateCategoria";
+import VerCategoria from "./pages/Categorias/VerCategoria";
 
 // Compras
 import NotasCompra from "./pages/compras/NotasCompra";
@@ -17,6 +17,8 @@ import VerNotaCompra from "./pages/compras/VerNotaCompra";
 import CreateNotaCompra from "./pages/compras/CreateNotaCompra";
 import PagoNotaCompra from "./pages/compras/PagoNotaCompra";
 import ReciboCompra from "./pages/compras/ReciboCompra";
+import Proveedores from "./pages/compras/Proveedores";
+import VerProveedor from "./pages/compras/VerProveedor";
 
 // Finanzas
 import Caja from "./pages/finanzas/Caja";
@@ -38,6 +40,9 @@ import VerAjuste from "./pages/ajustes/VerAjuste";
 
 // Inventario - Productos
 import Productos from "./pages/inventario/Productos";
+import Almacenes from "./pages/inventario/Almacenes";
+import VerAlmacen from "./pages/inventario/VerAlmacen";
+import MarcasModelos from "./pages/marca-modelo/MarcasModelos";
 import VerProducto from "./pages/inventario/VerProducto";
 
 // Usuarios
@@ -45,6 +50,8 @@ import Usuarios from "./pages/usuarios/Usuarios";
 import VerUsuario from "./pages/usuarios/VerUsuario";
 
 // Ventas
+import Clientes from "./pages/ventas/Clientes";
+import VerCliente from "./pages/ventas/VerCliente";
 import NotasVenta from "./pages/ventas/NotasVenta";
 import VerNotaVenta from "./pages/ventas/VerNotaVenta";
 import CreateNotaVenta from "./pages/ventas/CreateNotaVenta";
@@ -63,17 +70,22 @@ function App() {
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 
         {/* Inventario */}
-        <Route path="/inventario/categorias"        element={<PrivateRoute><Categorias /></PrivateRoute>} />
-        <Route path="/inventario/categorias/crear"  element={<PrivateRoute><CreateCategoria /></PrivateRoute>} />
+        <Route path="/inventario/categorias"     element={<PrivateRoute><Categorias /></PrivateRoute>} />
+        <Route path="/inventario/categorias/:id" element={<PrivateRoute><VerCategoria /></PrivateRoute>} />
         <Route path="/inventario/productos"         element={<PrivateRoute><Productos /></PrivateRoute>} />
         <Route path="/inventario/productos/:id"     element={<PrivateRoute><VerProducto /></PrivateRoute>} />
+        <Route path="/inventario/almacenes"            element={<PrivateRoute><Almacenes /></PrivateRoute>} />
+        <Route path="/inventario/almacenes/:id"      element={<PrivateRoute><VerAlmacen /></PrivateRoute>} />
+        <Route path="/inventario/marcas"             element={<PrivateRoute><MarcasModelos /></PrivateRoute>} />
 
         {/* Compras */}
         <Route path="/compras/notas"        element={<PrivateRoute><NotasCompra /></PrivateRoute>} />
         <Route path="/compras/notas/crear"  element={<PrivateRoute><CreateNotaCompra /></PrivateRoute>} />
         <Route path="/compras/notas/:id"      element={<PrivateRoute><VerNotaCompra /></PrivateRoute>} />
         <Route path="/compras/notas/:id/pago"   element={<PrivateRoute><PagoNotaCompra /></PrivateRoute>} />
-        <Route path="/compras/notas/:id/recibo" element={<PrivateRoute><ReciboCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/:id/recibo"      element={<PrivateRoute><ReciboCompra /></PrivateRoute>} />
+        <Route path="/compras/proveedores"            element={<PrivateRoute><Proveedores /></PrivateRoute>} />
+        <Route path="/compras/proveedores/:id"        element={<PrivateRoute><VerProveedor /></PrivateRoute>} />
 
         {/* Finanzas */}
         <Route path="/finanzas/caja"                          element={<PrivateRoute><Caja /></PrivateRoute>} />
@@ -94,6 +106,8 @@ function App() {
         <Route path="/ajustes/:id"    element={<PrivateRoute><VerAjuste /></PrivateRoute>} />
 
         {/* Ventas */}
+        <Route path="/ventas/clientes"     element={<PrivateRoute><Clientes /></PrivateRoute>} />
+        <Route path="/ventas/clientes/:id" element={<PrivateRoute><VerCliente /></PrivateRoute>} />
         <Route path="/ventas/notas"             element={<PrivateRoute><NotasVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/crear"       element={<PrivateRoute><CreateNotaVenta /></PrivateRoute>} />
         <Route path="/ventas/notas/:id"         element={<PrivateRoute><VerNotaVenta /></PrivateRoute>} />

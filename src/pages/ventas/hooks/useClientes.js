@@ -7,8 +7,8 @@ export const useClientes = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getClientesAction()
-      .then(setClientes)
+    getClientesAction({ limit: 200 })
+      .then((res) => setClientes(Array.isArray(res) ? res : (res.data ?? [])))
       .catch(setError)
       .finally(() => setLoading(false));
   }, []);

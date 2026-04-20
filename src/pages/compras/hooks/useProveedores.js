@@ -6,8 +6,8 @@ export const useProveedores = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProveedoresAction()
-      .then(setProveedores)
+    getProveedoresAction({ limit: 200 })
+      .then((res) => setProveedores(Array.isArray(res) ? res : (res.data ?? [])))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);

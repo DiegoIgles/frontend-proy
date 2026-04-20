@@ -1,0 +1,13 @@
+{
+    "modeloId": "40d7b7fa-30c2-4a0d-856b-c723dbfbe379",
+    "nombre": "HiKu6",
+    "marcaModelos": [
+        {
+            "marcaModeloId": "43edeb63-e8ab-490e-ba2e-794258e46edb",
+            "marca": {
+                "marcaId": "7026b053-2104-4ee3-8046-cd9d9c15e675",
+                "nombre": "Canadian Solar"
+            }
+        }
+    ]
+}

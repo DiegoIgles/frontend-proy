@@ -1,0 +1,39 @@
+{
+    "marcaId": "7026b053-2104-4ee3-8046-cd9d9c15e675",
+    "nombre": "Canadian Solar",
+    "marcaModelos": [
+        {
+            "marcaModeloId": "43edeb63-e8ab-490e-ba2e-794258e46edb",
+            "modelo": {
+                "modeloId": "40d7b7fa-30c2-4a0d-856b-c723dbfbe379",
+                "nombre": "HiKu6"
+            },
+            "productos": [
+                {
+                    "productoId": "840397a1-846f-4f41-a711-0d13337efbf5",
+                    "codigo": "PS-400M",
+                    "nombre": "Panel Solar 400W Monocristalino",
+                    "descripcion": "Panel monocristalino de alta eficiencia 22%",
+                    "imagen": null,
+                    "sku": "SKU-PS400M",
+                    "porcentajeGanancia": "25.00",
+                    "createdAt": "2026-04-19T23:22:50.535Z",
+                    "updatedAt": "2026-04-19T23:22:50.535Z",
+                    "deletedAt": null
+                },
+                {
+                    "productoId": "242cdd9d-8312-494c-b707-f6ba66ef9695",
+                    "codigo": "PS-250P",
+                    "nombre": "Panel Solar 250W Policristalino",
+                    "descripcion": "Panel policristalino eficiencia 17%",
+                    "imagen": null,
+                    "sku": "SKU-PS250P",
+                    "porcentajeGanancia": "20.00",
+                    "createdAt": "2026-04-19T23:22:50.535Z",
+                    "updatedAt": "2026-04-19T23:22:50.535Z",
+                    "deletedAt": null
+                }
+            ]
+        }
+    ]
+}

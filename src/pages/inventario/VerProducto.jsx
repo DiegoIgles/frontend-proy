@@ -8,6 +8,7 @@ import { assignAlmacenAction }  from "./actions/assign-almacen.action";
 import { addPrecioAction }      from "./actions/add-precio.action";
 import { getAlmacenesAction }   from "./actions/get-almacenes.action";
 import { getCategoriasAction }  from "../Categorias/actions/get-categorias.action";
+import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.action";
 import {
   FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaDollarSign,
   FaBoxOpen, FaTag, FaChartBar,
@@ -32,8 +33,9 @@ function VerProducto() {
   const [producto,   setProducto]   = useState(null);
   const [loading,    setLoading]    = useState(true);
   const [tab,        setTab]        = useState("info");
-  const [almacenes,  setAlmacenes]  = useState([]);
-  const [categorias, setCategorias] = useState([]);
+  const [almacenes,   setAlmacenes]   = useState([]);
+  const [categorias,  setCategorias]  = useState([]);
+  const [marcaModelos,setMarcaModelos]= useState([]);
 
   // Edit modal
   const [showEdit, setShowEdit]   = useState(false);
@@ -72,6 +74,7 @@ function VerProducto() {
     fetchProducto();
     getAlmacenesAction().then(setAlmacenes).catch(() => {});
     getCategoriasAction().then(setCategorias).catch(() => {});
+    getMarcaModelosAction().then((d) => setMarcaModelos(Array.isArray(d) ? d : [])).catch(() => {});
   }, [id]); // eslint-disable-line
 
   // ── Edit ──
@@ -83,6 +86,7 @@ function VerProducto() {
       descripcion:        producto.descripcion ?? "",
       porcentajeGanancia: producto.porcentajeGanancia ?? "",
       categoriaId:        producto.categoria?.categoriaId ?? "",
+      marcaModeloId:      producto.marcaModelo?.marcaModeloId ?? "",
     });
     setEditErr("");
     setShowEdit(true);
@@ -99,8 +103,9 @@ function VerProducto() {
     try {
       setSavingEdit(true);
       const dto = { ...editForm };
-      if (!dto.categoriaId) delete dto.categoriaId;
-      if (!dto.descripcion) delete dto.descripcion;
+      if (!dto.categoriaId)   delete dto.categoriaId;
+      if (!dto.marcaModeloId) delete dto.marcaModeloId;
+      if (!dto.descripcion)   delete dto.descripcion;
       if (dto.porcentajeGanancia === "") delete dto.porcentajeGanancia;
       else dto.porcentajeGanancia = Number(dto.porcentajeGanancia);
       await updateProductoAction(id, dto);
@@ -399,6 +404,17 @@ function VerProducto() {
                     <option value="">Sin categoría</option>
                     {categorias.map((c) => (
                       <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label>Marca / Modelo</label>
+                  <select name="marcaModeloId" value={editForm.marcaModeloId} onChange={handleEditChange}>
+                    <option value="">Sin marca-modelo</option>
+                    {marcaModelos.map((mm) => (
+                      <option key={mm.marcaModeloId} value={mm.marcaModeloId}>
+                        {mm.marca?.nombre} / {mm.modelo?.nombre}
+                      </option>
                     ))}
                   </select>
                 </div>

@@ -1,0 +1,14 @@
+[
+    {
+        "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+        "nombre": "Almacén Central"
+    },
+    {
+        "almacenId": "e8fd7e61-0152-4ca4-bb3b-e3d57d710e12",
+        "nombre": "Almacén Norte"
+    },
+    {
+        "almacenId": "8a53a574-9379-40cb-9685-f588c20b25eb",
+        "nombre": "Almacén Sur"
+    }
+]

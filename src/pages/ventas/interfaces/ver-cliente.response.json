@@ -1,0 +1,19 @@
+{
+    "clienteId": "640ea9b0-70c1-4f95-a9e7-7e1b5c029b00",
+    "nombre": "Empresa",
+    "apellidoPaterno": "SolarTech",
+    "apellidoMaterno": "S.A.",
+    "correo": "contacto@solartech.bo",
+    "telefono": "22331100",
+    "direccion": "Parque Industrial",
+    "notasVenta": [
+        {
+            "notaVentaId": "0e72f4b3-f158-4d25-a774-14fcfa0d39cf",
+            "fecha": "2025-05-02",
+            "montoTotal": "4200.00",
+            "descuento": "0.00",
+            "glosa": "Venta sistema solar comercial - crédito",
+            "deletedAt": null
+        }
+    ]
+}

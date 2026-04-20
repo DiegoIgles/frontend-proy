@@ -1,0 +1,26 @@
+{
+    "proveedorId": "aa1b2dd0-ee6e-4509-835d-898ce1974136",
+    "nombre": "Distribuidora Solar Bolivia",
+    "contacto": "Pedro Ruiz",
+    "email": "ventas@solbol.com",
+    "telefono": "22441122",
+    "direccion": "Av. Montes 234",
+    "ciudad": "La Paz",
+    "pais": "Bolivia",
+    "notasCompra": [
+        {
+            "notaCompraId": "50b462e7-0930-4b5a-b27a-a84d0b8a7c9a",
+            "fecha": "2025-03-10",
+            "glosa": "Compra inicial de equipos solares",
+            "montoTotal": "7500.00",
+            "deletedAt": null
+        },
+        {
+            "notaCompraId": "4366ec9d-a126-41b3-90ed-e2d43cde1c7d",
+            "fecha": "2026-04-12",
+            "glosa": null,
+            "montoTotal": "2750.00",
+            "deletedAt": null
+        }
+    ]
+}

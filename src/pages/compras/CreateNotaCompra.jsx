@@ -121,7 +121,7 @@ function CreateNotaCompra() {
   ]);
 
   useEffect(() => {
-    getProductosAction().then(setProductos).catch(console.error);
+    getProductosAction({ limit: 200 }).then((res) => setProductos(Array.isArray(res) ? res : (res.data ?? []))).catch(console.error);
   }, []);
 
   const total = detalles.reduce(

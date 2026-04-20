@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import { getProductosAction }  from "./actions/get-productos.action";
 import { createProductoAction } from "./actions/create-producto.action";
 import { getCategoriasAction }  from "../Categorias/actions/get-categorias.action";
+import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.action";
 import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
@@ -36,7 +37,8 @@ function Productos() {
   const [productos,  setProductos]  = useState([]);
   const [total,      setTotal]      = useState(0);
   const [loading,    setLoading]    = useState(true);
-  const [categorias, setCategorias] = useState([]);
+  const [categorias,    setCategorias]    = useState([]);
+  const [marcaModelos,  setMarcaModelos]  = useState([]);
 
   const [search,   setSearch]   = useState("");
   const [catId,    setCatId]    = useState("");
@@ -51,6 +53,7 @@ function Productos() {
 
   useEffect(() => {
     getCategoriasAction().then(setCategorias).catch(() => {});
+    getMarcaModelosAction().then((d) => setMarcaModelos(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const fetchProductos = useCallback(async () => {
@@ -265,6 +268,17 @@ function Productos() {
                     <option value="">Sin categoría</option>
                     {categorias.map((c) => (
                       <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
+                    ))}
+                  </select>
+                </div>
+                <div style={{ gridColumn: "1 / -1" }}>
+                  <label>Marca / Modelo</label>
+                  <select name="marcaModeloId" value={form.marcaModeloId} onChange={handleFormChange}>
+                    <option value="">Sin marca-modelo</option>
+                    {marcaModelos.map((mm) => (
+                      <option key={mm.marcaModeloId} value={mm.marcaModeloId}>
+                        {mm.marca?.nombre} / {mm.modelo?.nombre}
+                      </option>
                     ))}
                   </select>
                 </div>

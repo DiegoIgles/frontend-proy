@@ -1,0 +1,286 @@
+{
+    "almacenId": "2531941e-e4bb-4535-839d-fb69f50bbe94",
+    "nombre": "Almacén Central",
+    "productoAlmacenes": [
+        {
+            "productoAlmacenId": "a9aa755a-3a24-4f42-9fbe-e57cd9f06473",
+            "stock": 30,
+            "producto": {
+                "productoId": "840397a1-846f-4f41-a711-0d13337efbf5",
+                "codigo": "PS-400M",
+                "nombre": "Panel Solar 400W Monocristalino",
+                "descripcion": "Panel monocristalino de alta eficiencia 22%",
+                "imagen": null,
+                "sku": "SKU-PS400M",
+                "porcentajeGanancia": "25.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "66f3ff96-e2ef-4932-9ca6-f7aa4fbe9176",
+                    "nombre": "Monocristalinos"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "43edeb63-e8ab-490e-ba2e-794258e46edb",
+                    "marca": {
+                        "marcaId": "7026b053-2104-4ee3-8046-cd9d9c15e675",
+                        "nombre": "Canadian Solar"
+                    },
+                    "modelo": {
+                        "modeloId": "40d7b7fa-30c2-4a0d-856b-c723dbfbe379",
+                        "nombre": "HiKu6"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "1fdefb0f-ae79-437a-9479-5b0bca51547f",
+            "stock": 25,
+            "producto": {
+                "productoId": "09a64bc8-df15-414f-a5a9-0a380a929e62",
+                "codigo": "BAT-LI-100",
+                "nombre": "Batería Litio LiFePO4 100Ah 48V",
+                "descripcion": "Batería de litio ciclo profundo 4.8kWh",
+                "imagen": null,
+                "sku": "SKU-BATLI100",
+                "porcentajeGanancia": "30.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "103c5ff2-a9a7-4f94-b427-17e976f6fcdc",
+                    "nombre": "Litio"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "d2d3b2d5-56da-462e-9356-7f03969dbf3c",
+                    "marca": {
+                        "marcaId": "57b2977f-5c25-4aa5-867e-b8be2b31a603",
+                        "nombre": "Pylontech"
+                    },
+                    "modelo": {
+                        "modeloId": "b7ce0c81-04d4-457a-97ed-5a947e4d0bed",
+                        "nombre": "US2000"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "c56e37e0-a43c-4b79-8c8a-27286f8140bc",
+            "stock": 12,
+            "producto": {
+                "productoId": "dd047961-d774-4620-bfb7-10e707b4cf40",
+                "codigo": "INV-3000",
+                "nombre": "Inversor Cargador 3000W 24V",
+                "descripcion": "Inversor solar onda pura 3000W con cargador MPPT",
+                "imagen": null,
+                "sku": "SKU-INV3000",
+                "porcentajeGanancia": "28.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "4e15f313-9c02-42cb-8650-a8af4abd2f46",
+                    "nombre": "Inversores"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "d6b342b1-95d3-4358-901f-86b0ea5308fb",
+                    "marca": {
+                        "marcaId": "96c29bfb-8e25-4d0b-83f7-424952419c71",
+                        "nombre": "Growatt"
+                    },
+                    "modelo": {
+                        "modeloId": "cf57bbc8-0688-48e0-b71a-e37dcf630ef3",
+                        "nombre": "SPF5000"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "d7154e16-bf89-4f90-91eb-a49a9628ce0a",
+            "stock": 8,
+            "producto": {
+                "productoId": "b566025c-54e5-4aec-82a8-1fc81b2826c2",
+                "codigo": "INV-5000",
+                "nombre": "Inversor Cargador 5000W 48V",
+                "descripcion": "Inversor solar onda pura 5000W con cargador MPPT 80A",
+                "imagen": null,
+                "sku": "SKU-INV5000",
+                "porcentajeGanancia": "28.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "4e15f313-9c02-42cb-8650-a8af4abd2f46",
+                    "nombre": "Inversores"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "d6b342b1-95d3-4358-901f-86b0ea5308fb",
+                    "marca": {
+                        "marcaId": "96c29bfb-8e25-4d0b-83f7-424952419c71",
+                        "nombre": "Growatt"
+                    },
+                    "modelo": {
+                        "modeloId": "cf57bbc8-0688-48e0-b71a-e37dcf630ef3",
+                        "nombre": "SPF5000"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "55623a63-4279-4461-8fc3-90007cdb8d46",
+            "stock": 20,
+            "producto": {
+                "productoId": "99206d91-f330-4bff-8285-98bdc50bc74d",
+                "codigo": "REG-MPPT-60",
+                "nombre": "Regulador MPPT 60A",
+                "descripcion": "Controlador de carga solar MPPT 60A 12/24/48V",
+                "imagen": null,
+                "sku": "SKU-MPPT60",
+                "porcentajeGanancia": "30.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "c9664e98-ac35-48ee-a63f-29fc9b77313a",
+                    "nombre": "Accesorios"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "79a6ecca-0cce-4aa2-81f8-9e2fe1f3c413",
+                    "marca": {
+                        "marcaId": "71750d13-2775-4656-8e4d-da3e94999468",
+                        "nombre": "Victron Energy"
+                    },
+                    "modelo": {
+                        "modeloId": "078f55f1-4aaf-4b79-933a-859e71991a59",
+                        "nombre": "SmartSolar"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "2c84e6f5-6151-475e-8a84-3ac2bb8c22a9",
+            "stock": 500,
+            "producto": {
+                "productoId": "897515c3-1978-4391-9af7-6ee720e21df2",
+                "codigo": "CAB-SOL-6",
+                "nombre": "Cable Solar 6mm² (metro)",
+                "descripcion": "Cable solar doble aislamiento UV resistente",
+                "imagen": null,
+                "sku": "SKU-CABSOL6",
+                "porcentajeGanancia": "40.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "c9664e98-ac35-48ee-a63f-29fc9b77313a",
+                    "nombre": "Accesorios"
+                },
+                "marcaModelo": null
+            }
+        },
+        {
+            "productoAlmacenId": "2398527c-6ed6-42c3-9541-05a28c155a9a",
+            "stock": 300,
+            "producto": {
+                "productoId": "c98f8c16-a995-488e-b506-123145503517",
+                "codigo": "CON-MC4",
+                "nombre": "Conector MC4 par",
+                "descripcion": "Par de conectores MC4 macho/hembra IP67",
+                "imagen": null,
+                "sku": "SKU-MC4PAR",
+                "porcentajeGanancia": "50.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "c9664e98-ac35-48ee-a63f-29fc9b77313a",
+                    "nombre": "Accesorios"
+                },
+                "marcaModelo": null
+            }
+        },
+        {
+            "productoAlmacenId": "14c9a054-44d2-4b03-bd93-e86950fff272",
+            "stock": 35,
+            "producto": {
+                "productoId": "b3c8b6c7-22c3-4e64-b208-7482e8ba8f78",
+                "codigo": "EST-4P",
+                "nombre": "Estructura Montaje 4 Paneles",
+                "descripcion": "Estructura aluminio para montaje de 4 paneles en techo",
+                "imagen": null,
+                "sku": "SKU-EST4P",
+                "porcentajeGanancia": "35.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "c9664e98-ac35-48ee-a63f-29fc9b77313a",
+                    "nombre": "Accesorios"
+                },
+                "marcaModelo": null
+            }
+        },
+        {
+            "productoAlmacenId": "8d066085-5179-4735-82d3-99f94da953f3",
+            "stock": 20,
+            "producto": {
+                "productoId": "242cdd9d-8312-494c-b707-f6ba66ef9695",
+                "codigo": "PS-250P",
+                "nombre": "Panel Solar 250W Policristalino",
+                "descripcion": "Panel policristalino eficiencia 17%",
+                "imagen": null,
+                "sku": "SKU-PS250P",
+                "porcentajeGanancia": "20.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "feb6028e-b910-41c3-8945-94bddb0a7d72",
+                    "nombre": "Policristalinos"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "43edeb63-e8ab-490e-ba2e-794258e46edb",
+                    "marca": {
+                        "marcaId": "7026b053-2104-4ee3-8046-cd9d9c15e675",
+                        "nombre": "Canadian Solar"
+                    },
+                    "modelo": {
+                        "modeloId": "40d7b7fa-30c2-4a0d-856b-c723dbfbe379",
+                        "nombre": "HiKu6"
+                    }
+                }
+            }
+        },
+        {
+            "productoAlmacenId": "573db2e9-1d8a-4f4f-aac6-fb56f90b55ab",
+            "stock": 33,
+            "producto": {
+                "productoId": "9546c8c4-0c48-4030-8a40-d9d67e431958",
+                "codigo": "BAT-AGM-200",
+                "nombre": "Batería AGM 200Ah 12V",
+                "descripcion": "Batería de plomo-ácido sellada libre mantenimiento",
+                "imagen": null,
+                "sku": "SKU-BATAGM200",
+                "porcentajeGanancia": "22.00",
+                "createdAt": "2026-04-19T23:22:50.535Z",
+                "updatedAt": "2026-04-19T23:22:50.535Z",
+                "deletedAt": null,
+                "categoria": {
+                    "categoriaId": "cbce7b6c-f94c-48aa-9dcf-ede698e54de7",
+                    "nombre": "AGM"
+                },
+                "marcaModelo": {
+                    "marcaModeloId": "45546893-c3b6-4838-8a78-cd503c253f3f",
+                    "marca": {
+                        "marcaId": "e87013c9-20d2-494e-93ce-30f47932e4c5",
+                        "nombre": "Renogy"
+                    },
+                    "modelo": {
+                        "modeloId": "96fbc1de-26d3-46c3-9fb9-cf14fb176e5b",
+                        "nombre": "RNG-100D"
+                    }
+                }
+            }
+        }
+    ]
+}

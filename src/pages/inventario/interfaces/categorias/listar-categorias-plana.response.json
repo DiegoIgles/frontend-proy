@@ -1,0 +1,54 @@
+[
+    {
+        "categoriaId": "c9664e98-ac35-48ee-a63f-29fc9b77313a",
+        "nombre": "Accesorios",
+        "categoriaPadre": null
+    },
+    {
+        "categoriaId": "cbce7b6c-f94c-48aa-9dcf-ede698e54de7",
+        "nombre": "AGM",
+        "categoriaPadre": {
+            "categoriaId": "45989f14-d7a5-471c-b618-9ee4728e47ec",
+            "nombre": "Baterías"
+        }
+    },
+    {
+        "categoriaId": "45989f14-d7a5-471c-b618-9ee4728e47ec",
+        "nombre": "Baterías",
+        "categoriaPadre": null
+    },
+    {
+        "categoriaId": "4e15f313-9c02-42cb-8650-a8af4abd2f46",
+        "nombre": "Inversores",
+        "categoriaPadre": null
+    },
+    {
+        "categoriaId": "103c5ff2-a9a7-4f94-b427-17e976f6fcdc",
+        "nombre": "Litio",
+        "categoriaPadre": {
+            "categoriaId": "45989f14-d7a5-471c-b618-9ee4728e47ec",
+            "nombre": "Baterías"
+        }
+    },
+    {
+        "categoriaId": "66f3ff96-e2ef-4932-9ca6-f7aa4fbe9176",
+        "nombre": "Monocristalinos",
+        "categoriaPadre": {
+            "categoriaId": "3c2df54e-e648-4e37-a930-b3c02b99cd22",
+            "nombre": "Paneles Solares"
+        }
+    },
+    {
+        "categoriaId": "3c2df54e-e648-4e37-a930-b3c02b99cd22",
+        "nombre": "Paneles Solares",
+        "categoriaPadre": null
+    },
+    {
+        "categoriaId": "feb6028e-b910-41c3-8945-94bddb0a7d72",
+        "nombre": "Policristalinos",
+        "categoriaPadre": {
+            "categoriaId": "3c2df54e-e648-4e37-a930-b3c02b99cd22",
+            "nombre": "Paneles Solares"
+        }
+    }
+]

@@ -1,0 +1,67 @@
+[
+    {
+        "modeloId": "40d7b7fa-30c2-4a0d-856b-c723dbfbe379",
+        "nombre": "HiKu6",
+        "marcaModelos": [
+            {
+                "marcaModeloId": "43edeb63-e8ab-490e-ba2e-794258e46edb",
+                "marca": {
+                    "marcaId": "7026b053-2104-4ee3-8046-cd9d9c15e675",
+                    "nombre": "Canadian Solar"
+                }
+            }
+        ]
+    },
+    {
+        "modeloId": "96fbc1de-26d3-46c3-9fb9-cf14fb176e5b",
+        "nombre": "RNG-100D",
+        "marcaModelos": [
+            {
+                "marcaModeloId": "45546893-c3b6-4838-8a78-cd503c253f3f",
+                "marca": {
+                    "marcaId": "e87013c9-20d2-494e-93ce-30f47932e4c5",
+                    "nombre": "Renogy"
+                }
+            }
+        ]
+    },
+    {
+        "modeloId": "078f55f1-4aaf-4b79-933a-859e71991a59",
+        "nombre": "SmartSolar",
+        "marcaModelos": [
+            {
+                "marcaModeloId": "79a6ecca-0cce-4aa2-81f8-9e2fe1f3c413",
+                "marca": {
+                    "marcaId": "71750d13-2775-4656-8e4d-da3e94999468",
+                    "nombre": "Victron Energy"
+                }
+            }
+        ]
+    },
+    {
+        "modeloId": "cf57bbc8-0688-48e0-b71a-e37dcf630ef3",
+        "nombre": "SPF5000",
+        "marcaModelos": [
+            {
+                "marcaModeloId": "d6b342b1-95d3-4358-901f-86b0ea5308fb",
+                "marca": {
+                    "marcaId": "96c29bfb-8e25-4d0b-83f7-424952419c71",
+                    "nombre": "Growatt"
+                }
+            }
+        ]
+    },
+    {
+        "modeloId": "b7ce0c81-04d4-457a-97ed-5a947e4d0bed",
+        "nombre": "US2000",
+        "marcaModelos": [
+            {
+                "marcaModeloId": "d2d3b2d5-56da-462e-9356-7f03969dbf3c",
+                "marca": {
+                    "marcaId": "57b2977f-5c25-4aa5-867e-b8be2b31a603",
+                    "nombre": "Pylontech"
+                }
+            }
+        ]
+    }
+]
