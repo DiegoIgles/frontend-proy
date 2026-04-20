@@ -16,25 +16,77 @@ body {
 .sidebar {
   width: 240px;
   height: 100vh;
-  overflow-y: auto;
   flex-shrink: 0;
   background: #2c3e50;
   color: #fff;
-  padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  flex-shrink: 0;
+  padding: 20px 20px 0;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 20px;
   scrollbar-width: thin;
   scrollbar-color: #4a6278 transparent;
 }
 
-.sidebar::-webkit-scrollbar {
+.sidebar-nav::-webkit-scrollbar {
   width: 4px;
 }
-.sidebar::-webkit-scrollbar-thumb {
+.sidebar-nav::-webkit-scrollbar-thumb {
   background: #4a6278;
   border-radius: 4px;
 }
 
-/* Título */
+/* Logo área */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-logo-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.sidebar-logo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1;
+}
+.sidebar .sidebar-logo-text h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+.sidebar-logo-text span {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1;
+}
+
+/* Título (legacy, keep for spacing in menu) */
 .sidebar h2 {
   margin-bottom: 30px;
   font-size: 22px;

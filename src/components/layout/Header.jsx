@@ -24,7 +24,7 @@ function Header({ toggleSidebar }) {
       </div>
 
       {/* Derecha: perfil + logout */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Info del usuario */}
         {user && (
@@ -70,6 +70,9 @@ function Header({ toggleSidebar }) {
             </div>
           </button>
         )}
+
+        {/* Separador */}
+        <div style={{ width: 1, height: 32, background: "#e5e7eb", flexShrink: 0 }} />
 
         {/* Logout */}
         <button className="logout-btn" onClick={handleLogout} title="Cerrar sesión">
