@@ -79,62 +79,54 @@ function Ajustes() {
       </div>
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
-          <div style={{ flex: "1 1 200px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Buscar</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 9, top: "50%", transform: "translateY(-50%)", color: "#9ca3af", fontSize: 13 }} />
-              <input placeholder="Buscar en glosa..." value={search}
-                onChange={(e) => applyFilter(setSearch, e.target.value)}
-                style={{ paddingLeft: 30, width: "100%", boxSizing: "border-box" }} />
-            </div>
-          </div>
-          <div style={{ flex: "1 1 140px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Tipo</label>
-            <select value={tipo} onChange={(e) => applyFilter(setTipo, e.target.value)} style={{ width: "100%" }}>
-              <option value="">Todos</option>
-              <option value="ENTRADA">ENTRADA</option>
-              <option value="SALIDA">SALIDA</option>
-            </select>
-          </div>
-          <div>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Fechas</label>
-            <button onClick={() => setShowFechas((v) => !v)}
-              style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px",
-                borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#dbeafe" : "#fff",
-                color: showFechas ? "#1d4ed8" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
-              <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#1d4ed8", color: "#fff",
-                borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center",
-                justifyContent: "center", fontSize: 11 }}>{activeFechas}</span>}
-            </button>
-          </div>
-          <div style={{ flex: "0 0 110px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Por página</label>
-            <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }} style={{ width: "100%" }}>
-              <option value={10}>10</option><option value={25}>25</option><option value={100}>100</option>
-            </select>
-          </div>
+      <div className="filters-bar">
+        <div className="filter-field filter-search" style={{ flex: "1 1 200px" }}>
+          <label>Buscar</label>
+          <FaSearch className="filter-search-icon" />
+          <input placeholder="Buscar en glosa..." value={search}
+            onChange={(e) => applyFilter(setSearch, e.target.value)} />
+        </div>
+        <div className="filter-field" style={{ flex: "1 1 140px" }}>
+          <label>Tipo</label>
+          <select value={tipo} onChange={(e) => applyFilter(setTipo, e.target.value)}>
+            <option value="">Todos</option>
+            <option value="ENTRADA">ENTRADA</option>
+            <option value="SALIDA">SALIDA</option>
+          </select>
+        </div>
+        <div className="filter-field">
+          <label>Fechas</label>
+          <button onClick={() => setShowFechas((v) => !v)}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px",
+              borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#dbeafe" : "#fff",
+              color: showFechas ? "#1d4ed8" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
+            <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#1d4ed8", color: "#fff",
+              borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center",
+              justifyContent: "center", fontSize: 11 }}>{activeFechas}</span>}
+          </button>
+        </div>
+        <div className="filter-field" style={{ flex: "0 0 110px" }}>
+          <label>Por página</label>
+          <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }}>
+            <option value={10}>10</option><option value={25}>25</option><option value={100}>100</option>
+          </select>
         </div>
         {showFechas && (
-          <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-            <div style={{ flex: "1 1 180px" }}>
-              <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Desde</label>
-              <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde, e.target.value)} style={{ width: "100%", boxSizing: "border-box" }} />
+          <>
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Desde</label>
+              <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde, e.target.value)} />
             </div>
-            <div style={{ flex: "1 1 180px" }}>
-              <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Hasta</label>
-              <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta, e.target.value)} style={{ width: "100%", boxSizing: "border-box" }} />
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Hasta</label>
+              <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta, e.target.value)} />
             </div>
             {activeFechas > 0 && (
-              <div style={{ display: "flex", alignItems: "flex-end" }}>
-                <button onClick={() => { applyFilter(setFechaDesde, ""); setFechaHasta(""); }}
-                  style={{ padding: "8px 12px", borderRadius: 6, border: "1px solid #d1d5db", background: "#fff", cursor: "pointer", fontSize: 13 }}>
-                  Limpiar
-                </button>
-              </div>
+              <button className="filters-bar-clear" onClick={() => { applyFilter(setFechaDesde, ""); setFechaHasta(""); }}>
+                Limpiar
+              </button>
             )}
-          </div>
+          </>
         )}
       </div>
 

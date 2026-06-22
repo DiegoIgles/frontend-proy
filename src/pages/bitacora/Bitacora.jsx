@@ -153,52 +153,43 @@ function Bitacora() {
       </div>
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
-          <div style={{ flex: "1 1 200px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Buscar</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 9, top: "50%", transform: "translateY(-50%)",
-                color: "#9ca3af", fontSize: 13 }} />
-              <input
-                placeholder="Tabla o acción..."
-                value={search}
-                onChange={(e) => applyFilter(setSearch)(e.target.value)}
-                style={{ paddingLeft: 30, width: "100%", boxSizing: "border-box" }}
-              />
-            </div>
-          </div>
-          <div style={{ flex: "1 1 160px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Módulo</label>
-            <select value={modulo} onChange={(e) => applyFilter(setModulo)(e.target.value)} style={{ width: "100%" }}>
-              <option value="">Todos</option>
-              {opciones.modulos.map((m) => <option key={m} value={m}>{m}</option>)}
-            </select>
-          </div>
-          <div style={{ flex: "1 1 160px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Acción</label>
-            <select value={accion} onChange={(e) => applyFilter(setAccion)(e.target.value)} style={{ width: "100%" }}>
-              <option value="">Todas</option>
-              {opciones.acciones.map((a) => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </div>
-          <div style={{ flex: "0 1 150px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Desde</label>
-            <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde)(e.target.value)}
-              style={{ width: "100%" }} />
-          </div>
-          <div style={{ flex: "0 1 150px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Hasta</label>
-            <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta)(e.target.value)}
-              style={{ width: "100%" }} />
-          </div>
-          {hayFiltros && (
-            <button className="btn-secondary" onClick={limpiarFiltros}
-              style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1 }}>
-              <FaTimes /> Limpiar
-            </button>
-          )}
+      <div className="filters-bar">
+        <div className="filter-field filter-search" style={{ flex: "1 1 200px" }}>
+          <label>Buscar</label>
+          <FaSearch className="filter-search-icon" />
+          <input
+            placeholder="Tabla o acción..."
+            value={search}
+            onChange={(e) => applyFilter(setSearch)(e.target.value)}
+          />
         </div>
+        <div className="filter-field" style={{ flex: "1 1 160px" }}>
+          <label>Módulo</label>
+          <select value={modulo} onChange={(e) => applyFilter(setModulo)(e.target.value)}>
+            <option value="">Todos</option>
+            {opciones.modulos.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </div>
+        <div className="filter-field" style={{ flex: "1 1 160px" }}>
+          <label>Acción</label>
+          <select value={accion} onChange={(e) => applyFilter(setAccion)(e.target.value)}>
+            <option value="">Todas</option>
+            {opciones.acciones.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+        <div className="filter-field" style={{ flex: "0 1 150px" }}>
+          <label>Desde</label>
+          <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde)(e.target.value)} />
+        </div>
+        <div className="filter-field" style={{ flex: "0 1 150px" }}>
+          <label>Hasta</label>
+          <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta)(e.target.value)} />
+        </div>
+        {hayFiltros && (
+          <button className="filters-bar-clear" onClick={limpiarFiltros}>
+            <FaTimes /> Limpiar
+          </button>
+        )}
       </div>
 
       {/* Tabla */}

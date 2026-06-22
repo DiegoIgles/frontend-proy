@@ -188,85 +188,75 @@ function Proyectos() {
       )}
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 20 }}>
+      <div className="filters-bar">
 
-        {/* Fila principal */}
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end" }}>
-
-          {/* Búsqueda */}
-          <div className="form-group" style={{ flex: "1 1 220px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Buscar</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#9ca3af", fontSize: 13 }} />
-              <input
-                type="text" placeholder="Nombre o descripción..."
-                value={search}
-                onChange={(e) => applyFilter(setSearch)(e.target.value)}
-                style={{ paddingLeft: 32, width: "100%", boxSizing: "border-box" }}
-              />
-            </div>
-          </div>
-
-          {/* Estado */}
-          <div className="form-group" style={{ flex: "0 1 180px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Estado</label>
-            <select value={estado} onChange={(e) => applyFilter(setEstado)(e.target.value)}>
-              <option value="">Todos</option>
-              <option value="COTIZACION">Cotización</option>
-              <option value="PROYECTO">Proyecto</option>
-            </select>
-          </div>
-
-          {/* Toggle filtros avanzados */}
-          <button
-            type="button"
-            onClick={() => setShowAdvanced((v) => !v)}
-            className="btn-secondary"
-            style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1,
-              color: hasAdvanced ? "#1d4ed8" : undefined,
-              borderColor: hasAdvanced ? "#1d4ed8" : undefined }}
-          >
-            <FaFilter /> Fechas {showAdvanced ? <FaChevronUp /> : <FaChevronDown />}
-            {hasAdvanced && <span style={{ background: "#1d4ed8", color: "#fff", borderRadius: "50%",
-              width: 16, height: 16, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              {[fechaInicioDesde, fechaInicioHasta, fechaFinalDesde, fechaFinalHasta].filter(Boolean).length}
-            </span>}
-          </button>
-
-          {hasAnyFilter && (
-            <button className="btn-secondary" onClick={clearAll}
-              style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1 }}>
-              <FaTimes /> Limpiar todo
-            </button>
-          )}
+        {/* Búsqueda */}
+        <div className="filter-field filter-search" style={{ flex: "1 1 220px" }}>
+          <label>Buscar</label>
+          <FaSearch className="filter-search-icon" />
+          <input
+            type="text" placeholder="Nombre o descripción..."
+            value={search}
+            onChange={(e) => applyFilter(setSearch)(e.target.value)}
+          />
         </div>
+
+        {/* Estado */}
+        <div className="filter-field" style={{ flex: "0 1 180px" }}>
+          <label>Estado</label>
+          <select value={estado} onChange={(e) => applyFilter(setEstado)(e.target.value)}>
+            <option value="">Todos</option>
+            <option value="COTIZACION">Cotización</option>
+            <option value="PROYECTO">Proyecto</option>
+          </select>
+        </div>
+
+        {/* Toggle filtros avanzados */}
+        <button
+          type="button"
+          onClick={() => setShowAdvanced((v) => !v)}
+          className="btn-secondary"
+          style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1,
+            color: hasAdvanced ? "#1d4ed8" : undefined,
+            borderColor: hasAdvanced ? "#1d4ed8" : undefined }}
+        >
+          <FaFilter /> Fechas {showAdvanced ? <FaChevronUp /> : <FaChevronDown />}
+          {hasAdvanced && <span style={{ background: "#1d4ed8", color: "#fff", borderRadius: "50%",
+            width: 16, height: 16, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {[fechaInicioDesde, fechaInicioHasta, fechaFinalDesde, fechaFinalHasta].filter(Boolean).length}
+          </span>}
+        </button>
+
+        {hasAnyFilter && (
+          <button className="filters-bar-clear" onClick={clearAll}>
+            <FaTimes /> Limpiar todo
+          </button>
+        )}
 
         {/* Filtros avanzados — fecha de inicio y fecha final */}
         {showAdvanced && (
-          <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid #f3f4f6",
-            display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-
-            <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Inicio desde</label>
+          <>
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Inicio desde</label>
               <input type="date" value={fechaInicioDesde}
                 onChange={(e) => applyFilter(setFechaInicioDesde)(e.target.value)} />
             </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Inicio hasta</label>
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Inicio hasta</label>
               <input type="date" value={fechaInicioHasta}
                 onChange={(e) => applyFilter(setFechaInicioHasta)(e.target.value)} />
             </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Finalización desde</label>
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Finalización desde</label>
               <input type="date" value={fechaFinalDesde}
                 onChange={(e) => applyFilter(setFechaFinalDesde)(e.target.value)} />
             </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Finalización hasta</label>
+            <div className="filter-field" style={{ flex: "1 1 180px" }}>
+              <label>Finalización hasta</label>
               <input type="date" value={fechaFinalHasta}
                 onChange={(e) => applyFilter(setFechaFinalHasta)(e.target.value)} />
             </div>
-          </div>
+          </>
         )}
       </div>
 

@@ -4,7 +4,7 @@ import Layout from "../../components/layout/Layout";
 import { getAlmacenAction }    from "./actions/get-almacen.action";
 import { updateAlmacenAction } from "./actions/update-almacen.action";
 import { deleteAlmacenAction } from "./actions/delete-almacen.action";
-import { FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaBoxOpen } from "react-icons/fa";
+import { FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaBoxOpen, FaSearch } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
 
@@ -157,12 +157,22 @@ function VerAlmacen() {
           <h3 style={{ margin: 0, fontSize: 15 }}>
             <FaBoxOpen style={{ marginRight: 6 }} />Inventario del Almacén
           </h3>
-          <input
-            placeholder="Buscar producto..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: 220 }}
-          />
+          <div className="filter-search" style={{ width: 240 }}>
+            <FaSearch className="filter-search-icon" />
+            <input
+              placeholder="Buscar producto..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                width: "100%",
+                height: 36,
+                boxSizing: "border-box",
+                border: "1px solid #d8dee6",
+                borderRadius: 7,
+                fontSize: 13.5,
+              }}
+            />
+          </div>
         </div>
 
         {items.length === 0 ? (

@@ -125,50 +125,44 @@ function Productos() {
       </div>
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
+      <div className="filters-bar">
 
-          <div style={{ flex: "1 1 220px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Buscar</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 9, top: "50%", transform: "translateY(-50%)",
-                color: "#9ca3af", fontSize: 13 }} />
-              <input
-                placeholder="Nombre, código o SKU..."
-                value={search}
-                onChange={(e) => applyFilter(setSearch, e.target.value)}
-                style={{ paddingLeft: 30, width: "100%", boxSizing: "border-box" }}
-              />
-            </div>
-          </div>
+        <div className="filter-field filter-search" style={{ flex: "1 1 220px" }}>
+          <label>Buscar</label>
+          <FaSearch className="filter-search-icon" />
+          <input
+            placeholder="Nombre, código o SKU..."
+            value={search}
+            onChange={(e) => applyFilter(setSearch, e.target.value)}
+          />
+        </div>
 
-          <div style={{ flex: "1 1 180px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Categoría</label>
-            <select value={catId} onChange={(e) => applyFilter(setCatId, e.target.value)} style={{ width: "100%" }}>
-              <option value="">Todas</option>
-              {categorias.map((c) => (
-                <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
-              ))}
-            </select>
-          </div>
+        <div className="filter-field" style={{ flex: "1 1 180px" }}>
+          <label>Categoría</label>
+          <select value={catId} onChange={(e) => applyFilter(setCatId, e.target.value)}>
+            <option value="">Todas</option>
+            {categorias.map((c) => (
+              <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
+            ))}
+          </select>
+        </div>
 
-          <div style={{ flex: "1 1 160px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Stock</label>
-            <select value={conStock} onChange={(e) => applyFilter(setConStock, e.target.value)} style={{ width: "100%" }}>
-              <option value="">Todos</option>
-              <option value="true">Con stock</option>
-              <option value="false">Sin stock</option>
-            </select>
-          </div>
+        <div className="filter-field" style={{ flex: "1 1 160px" }}>
+          <label>Stock</label>
+          <select value={conStock} onChange={(e) => applyFilter(setConStock, e.target.value)}>
+            <option value="">Todos</option>
+            <option value="true">Con stock</option>
+            <option value="false">Sin stock</option>
+          </select>
+        </div>
 
-          <div style={{ flex: "1 1 120px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Por página</label>
-            <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }} style={{ width: "100%" }}>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={100}>100</option>
-            </select>
-          </div>
+        <div className="filter-field" style={{ flex: "1 1 120px" }}>
+          <label>Por página</label>
+          <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }}>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={100}>100</option>
+          </select>
         </div>
       </div>
 

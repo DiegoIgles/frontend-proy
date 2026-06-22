@@ -82,38 +82,32 @@ function Leads() {
       </div>
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" }}>
-          <div style={{ flex: "1 1 220px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Buscar</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 9, top: "50%", transform: "translateY(-50%)", color: "#9ca3af", fontSize: 13 }} />
-              <input placeholder="Buscar por nombre..." value={search}
-                onChange={(e) => applyFilter(setSearch, e.target.value)}
-                style={{ paddingLeft: 30, width: "100%", boxSizing: "border-box" }} />
-            </div>
-          </div>
-          <div style={{ flex: "0 1 150px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Desde</label>
-            <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde, e.target.value)} style={{ width: "100%" }} />
-          </div>
-          <div style={{ flex: "0 1 150px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Hasta</label>
-            <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta, e.target.value)} style={{ width: "100%" }} />
-          </div>
-          <div style={{ flex: "0 0 110px" }}>
-            <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Por página</label>
-            <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }} style={{ width: "100%" }}>
-              <option value={10}>10</option><option value={25}>25</option><option value={100}>100</option>
-            </select>
-          </div>
-          {hayFiltros && (
-            <button className="btn-secondary" onClick={limpiarFiltros}
-              style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1 }}>
-              <FaTimes /> Limpiar
-            </button>
-          )}
+      <div className="filters-bar">
+        <div className="filter-field filter-search" style={{ flex: "1 1 220px" }}>
+          <label>Buscar</label>
+          <FaSearch className="filter-search-icon" />
+          <input placeholder="Buscar por nombre..." value={search}
+            onChange={(e) => applyFilter(setSearch, e.target.value)} />
         </div>
+        <div className="filter-field" style={{ flex: "0 1 150px" }}>
+          <label>Desde</label>
+          <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde, e.target.value)} />
+        </div>
+        <div className="filter-field" style={{ flex: "0 1 150px" }}>
+          <label>Hasta</label>
+          <input type="date" value={fechaHasta} onChange={(e) => applyFilter(setFechaHasta, e.target.value)} />
+        </div>
+        <div className="filter-field" style={{ flex: "0 0 110px" }}>
+          <label>Por página</label>
+          <select value={limit} onChange={(e) => { setLimit(Number(e.target.value)); setOffset(0); }}>
+            <option value={10}>10</option><option value={25}>25</option><option value={100}>100</option>
+          </select>
+        </div>
+        {hayFiltros && (
+          <button className="filters-bar-clear" onClick={limpiarFiltros}>
+            <FaTimes /> Limpiar
+          </button>
+        )}
       </div>
 
       {/* Tabla */}

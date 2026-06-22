@@ -180,56 +180,49 @@ function CuentasPagar() {
       )}
 
       {/* Filtros */}
-      <div className="card" style={{ marginBottom: 16 }}>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end" }}>
-
-          <div className="form-group" style={{ flex: "1 1 200px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Buscar en descripción</label>
-            <div style={{ position: "relative" }}>
-              <FaSearch style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "#9ca3af", fontSize: 13 }} />
-              <input
-                type="text"
-                placeholder="Ej: TechEnergy..."
-                value={search}
-                onChange={(e) => applyFilter(setSearch)(e.target.value)}
-                style={{ paddingLeft: 32, width: "100%", boxSizing: "border-box" }}
-              />
-            </div>
-          </div>
-
-          <div className="form-group" style={{ flex: "0 1 180px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Estado</label>
-            <select value={estado} onChange={(e) => applyFilter(setEstado)(e.target.value)}>
-              <option value="">Todos</option>
-              {ESTADOS.map((e) => <option key={e} value={e}>{e.replace("_", " ")}</option>)}
-            </select>
-          </div>
-
-          <div className="form-group" style={{ flex: "0 1 160px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Vence desde</label>
-            <input type="date" value={vencimientoDesde} onChange={(e) => applyFilter(setVencimientoDesde)(e.target.value)} />
-          </div>
-
-          <div className="form-group" style={{ flex: "0 1 160px", margin: 0 }}>
-            <label style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Vence hasta</label>
-            <input type="date" value={vencimientoHasta} onChange={(e) => applyFilter(setVencimientoHasta)(e.target.value)} />
-          </div>
-
-          {hasFilters && (
-            <button
-              className="btn-secondary"
-              onClick={() => {
-                applyFilter(setEstado)("");
-                applyFilter(setSearch)("");
-                applyFilter(setVencimientoDesde)("");
-                applyFilter(setVencimientoHasta)("");
-              }}
-              style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1 }}
-            >
-              <FaTimes /> Limpiar
-            </button>
-          )}
+      <div className="filters-bar">
+        <div className="filter-field filter-search" style={{ flex: "1 1 200px" }}>
+          <label>Buscar en descripción</label>
+          <FaSearch className="filter-search-icon" />
+          <input
+            type="text"
+            placeholder="Ej: TechEnergy..."
+            value={search}
+            onChange={(e) => applyFilter(setSearch)(e.target.value)}
+          />
         </div>
+
+        <div className="filter-field" style={{ flex: "0 1 180px" }}>
+          <label>Estado</label>
+          <select value={estado} onChange={(e) => applyFilter(setEstado)(e.target.value)}>
+            <option value="">Todos</option>
+            {ESTADOS.map((e) => <option key={e} value={e}>{e.replace("_", " ")}</option>)}
+          </select>
+        </div>
+
+        <div className="filter-field" style={{ flex: "0 1 160px" }}>
+          <label>Vence desde</label>
+          <input type="date" value={vencimientoDesde} onChange={(e) => applyFilter(setVencimientoDesde)(e.target.value)} />
+        </div>
+
+        <div className="filter-field" style={{ flex: "0 1 160px" }}>
+          <label>Vence hasta</label>
+          <input type="date" value={vencimientoHasta} onChange={(e) => applyFilter(setVencimientoHasta)(e.target.value)} />
+        </div>
+
+        {hasFilters && (
+          <button
+            className="filters-bar-clear"
+            onClick={() => {
+              applyFilter(setEstado)("");
+              applyFilter(setSearch)("");
+              applyFilter(setVencimientoDesde)("");
+              applyFilter(setVencimientoHasta)("");
+            }}
+          >
+            <FaTimes /> Limpiar
+          </button>
+        )}
       </div>
 
       {/* Tabla */}
