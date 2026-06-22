@@ -8,6 +8,8 @@ import { toggleStatusAction }   from "./actions/toggle-status.action";
 import {
   FaArrowLeft, FaUserCircle, FaEdit, FaKey, FaToggleOn, FaToggleOff,
 } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function RolBadge({ rol }) {
   const esAdmin = rol === "admin" || rol === "super-user";
@@ -26,6 +28,8 @@ function RolBadge({ rol }) {
 function VerUsuario() {
   const { id }   = useParams();
   const navigate = useNavigate();
+  const toast    = useToast();
+  const confirm  = useConfirm();
 
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -85,10 +89,13 @@ function VerUsuario() {
     try {
       setSavingEdit(true);
       await updateUserAction(id, editForm);
+      toast.success("Usuario actualizado correctamente.");
       setShowEditModal(false);
       fetchUsuario();
     } catch (err) {
-      setEditErr(err.response?.data?.message || "Error al actualizar el usuario");
+      const message = err.response?.data?.message || "Error al actualizar el usuario";
+      setEditErr(message);
+      toast.error(message);
     } finally {
       setSavingEdit(false);
     }
@@ -101,23 +108,33 @@ function VerUsuario() {
     try {
       setSavingPass(true);
       await changePasswordAction(id, newPassword);
+      toast.success("Contraseña actualizada correctamente.");
       setShowPassModal(false);
       setNewPassword("");
     } catch (err) {
-      setPassErr(err.response?.data?.message || "Error al cambiar la contraseña");
+      const message = err.response?.data?.message || "Error al cambiar la contraseña";
+      setPassErr(message);
+      toast.error(message);
     } finally {
       setSavingPass(false);
     }
   };
 
   const handleToggleStatus = async () => {
-    if (!window.confirm(`¿${usuario.isActive ? "Desactivar" : "Activar"} a ${usuario.name}?`)) return;
+    const ok = await confirm({
+      title: usuario.isActive ? "Desactivar usuario" : "Activar usuario",
+      message: `¿${usuario.isActive ? "Desactivar" : "Activar"} a ${usuario.name}?`,
+      confirmLabel: usuario.isActive ? "Desactivar" : "Activar",
+      danger: usuario.isActive,
+    });
+    if (!ok) return;
     try {
       setTogglingStatus(true);
       await toggleStatusAction(id);
+      toast.success(usuario.isActive ? "Usuario desactivado correctamente." : "Usuario activado correctamente.");
       fetchUsuario();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al cambiar estado");
+      toast.error(err.response?.data?.message || "Error al cambiar estado");
     } finally {
       setTogglingStatus(false);
     }

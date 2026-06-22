@@ -3,12 +3,14 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "../styles/login.css";
 import { loginAction } from "./auth/actions/login.action";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 /* IMPORTAR CHATBOT */
 import FloatingChatbot from "../components/FloatingChatbot";
 
 function Login() {
   const { user, loading, login } = useAuth();
+  const toast = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,10 +34,11 @@ function Login() {
       });
 
       login(data);
+      toast.success("Bienvenido de nuevo.");
       navigate("/dashboard");
 
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Credenciales incorrectas"
       );

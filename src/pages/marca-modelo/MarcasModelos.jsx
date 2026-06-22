@@ -10,6 +10,8 @@ import {
   getMarcaModelosAction, createMarcaModeloAction, deleteMarcaModeloAction,
 } from "./actions/marca-modelos.action";
 import { FaTrademark, FaPlus, FaEdit, FaTrash, FaLink, FaUnlink, FaTag } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -71,6 +73,8 @@ function NombreModal({ title, value, onChange, onSave, onClose, saving, error })
 // ── componente principal ──────────────────────────────────────────────────────
 
 function MarcasModelos() {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [tab, setTab] = useState("marcas");
 
   // datos
@@ -133,23 +137,36 @@ function MarcasModelos() {
       if (modal.mode === "editMarca")    await updateMarcaAction(modal.item.marcaId ?? modal.item.id, dto);
       if (modal.mode === "createModelo") await createModeloAction(dto);
       if (modal.mode === "editModelo")   await updateModeloAction(modal.item.modeloId ?? modal.item.id, dto);
+      if (modal.mode === "createMarca")  toast.success("Marca creada correctamente.");
+      if (modal.mode === "editMarca")    toast.success("Marca actualizada correctamente.");
+      if (modal.mode === "createModelo") toast.success("Modelo creado correctamente.");
+      if (modal.mode === "editModelo")   toast.success("Modelo actualizado correctamente.");
       setModal(null);
       fetchAll();
     } catch (err) {
-      setModalErr(err.response?.data?.message || "Error al guardar");
+      const message = err.response?.data?.message || "Error al guardar";
+      setModalErr(message);
+      toast.error(message);
     } finally {
       setModalSaving(false);
     }
   };
 
   const handleDelete = async (type, id, nombre) => {
-    if (!window.confirm(`¿Eliminar "${nombre}"?`)) return;
+    const ok = await confirm({
+      title: type === "marca" ? "Eliminar marca" : "Eliminar modelo",
+      message: `¿Eliminar "${nombre}"?`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       if (type === "marca")  await deleteMarcaAction(id);
       if (type === "modelo") await deleteModeloAction(id);
+      toast.success(type === "marca" ? "Marca eliminada correctamente." : "Modelo eliminado correctamente.");
       fetchAll();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     }
   };
 
@@ -161,22 +178,32 @@ function MarcasModelos() {
     setComboSaving(true);
     try {
       await createMarcaModeloAction({ marcaId: comboMarca, modeloId: comboModelo });
+      toast.success("Combinación vinculada correctamente.");
       setShowCombo(false); setComboMarca(""); setComboModelo("");
       fetchAll();
     } catch (err) {
-      setComboErr(err.response?.data?.message || "Error al vincular");
+      const message = err.response?.data?.message || "Error al vincular";
+      setComboErr(message);
+      toast.error(message);
     } finally {
       setComboSaving(false);
     }
   };
 
   const handleDeleteCombo = async (id, label) => {
-    if (!window.confirm(`¿Eliminar combinación "${label}"?`)) return;
+    const ok = await confirm({
+      title: "Eliminar combinación",
+      message: `¿Eliminar combinación "${label}"?`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       await deleteMarcaModeloAction(id);
+      toast.success("Combinación eliminada correctamente.");
       fetchAll();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     }
   };
 

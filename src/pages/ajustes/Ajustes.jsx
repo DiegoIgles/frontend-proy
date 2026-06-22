@@ -5,6 +5,8 @@ import Pagination from "../../components/Pagination";
 import { getAjustesAction }   from "./actions/get-ajustes.action";
 import { deleteAjusteAction } from "./actions/delete-ajuste.action";
 import { FaPlus, FaEye, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function TipoBadge({ tipo }) {
   return tipo === "ENTRADA"
@@ -13,6 +15,8 @@ function TipoBadge({ tipo }) {
 }
 
 function Ajustes() {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [ajustes,  setAjustes]  = useState([]);
   const [total,    setTotal]    = useState(0);
   const [loading,  setLoading]  = useState(true);
@@ -47,13 +51,20 @@ function Ajustes() {
   const applyFilter = (setter, value) => { setter(value); setOffset(0); };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este ajuste? Se revertirá el stock.")) return;
+    const ok = await confirm({
+      title: "Eliminar ajuste",
+      message: "¿Eliminar este ajuste? Se revertirá el stock.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeletingId(id);
       await deleteAjusteAction(id);
+      toast.success("Ajuste de stock eliminado correctamente.");
       fetchAjustes();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally { setDeletingId(null); }
   };
 

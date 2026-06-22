@@ -6,10 +6,14 @@ import { getClientesAction }  from "./actions/get-clientes.action";
 import { createClienteAction } from "./actions/create-cliente.action";
 import { deleteClienteAction } from "./actions/delete-cliente.action";
 import { FaPlus, FaEye, FaTrash, FaSearch, FaUser } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 const EMPTY_FORM = { nombre: "", apellidoPaterno: "", apellidoMaterno: "", correo: "", telefono: "", direccion: "" };
 
 function Clientes() {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [clientes,  setClientes]  = useState([]);
   const [total,     setTotal]     = useState(0);
   const [loading,   setLoading]   = useState(true);
@@ -52,22 +56,32 @@ function Clientes() {
       if (form.telefono.trim())        dto.telefono        = form.telefono.trim();
       if (form.direccion.trim())       dto.direccion       = form.direccion.trim();
       await createClienteAction(dto);
+      toast.success("Cliente creado correctamente.");
       setShowModal(false);
       setForm(EMPTY_FORM);
       fetchClientes();
     } catch (err) {
-      setFormError(err.response?.data?.message || "Error al guardar");
+      const message = err.response?.data?.message || "Error al guardar";
+      setFormError(message);
+      toast.error(message);
     } finally { setSaving(false); }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este cliente? Solo es posible si no tiene ventas.")) return;
+    const ok = await confirm({
+      title: "Eliminar cliente",
+      message: "¿Eliminar este cliente? Solo es posible si no tiene ventas.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeletingId(id);
       await deleteClienteAction(id);
+      toast.success("Cliente eliminado correctamente.");
       fetchClientes();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally { setDeletingId(null); }
   };
 

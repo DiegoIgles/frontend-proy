@@ -6,6 +6,7 @@ import EstadoBadge from "../../components/EstadoBadge";
 import { getCuentasPagarAction } from "./actions/get-cuentas-pagar.action";
 import { createCuentaPagarAction } from "./actions/create-cuenta-pagar.action";
 import { FaPlus, FaTimes, FaCheckCircle, FaSearch, FaEye } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const ESTADOS = ["PENDIENTE", "PAGADO_PARCIAL", "PAGADO", "VENCIDO"];
 
@@ -16,6 +17,7 @@ function fmt(n) {
 // ── Modal nueva cuenta manual ──────────────────────────────
 
 function NuevaCuentaModal({ onClose, onCreated }) {
+  const toast = useToast();
   const [form, setForm]         = useState({ montoTotal: "", descripcion: "", fechaVencimiento: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -30,9 +32,10 @@ function NuevaCuentaModal({ onClose, onCreated }) {
         descripcion:      form.descripcion      || undefined,
         fechaVencimiento: form.fechaVencimiento || undefined,
       });
+      toast.success("Cuenta por pagar creada correctamente.");
       onCreated();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al crear la cuenta por pagar");
+      toast.error(err.response?.data?.message || "Error al crear la cuenta por pagar");
     } finally {
       setSubmitting(false);
     }

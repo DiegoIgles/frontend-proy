@@ -6,6 +6,7 @@ import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { getProductoStockAction } from "../inventario/actions/get-producto-stock.action";
 import { createNotaCompraAction } from "./actions/create-nota-compra.action";
 import { FaArrowLeft, FaPlus, FaTrash, FaTimes, FaSave } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -104,6 +105,7 @@ function DetalleRow({ detalle, index, productos, onChange, onRemove }) {
 
 function CreateNotaCompra() {
   const navigate = useNavigate();
+  const toast = useToast();
   const { proveedores, loading: loadingProveedores } = useProveedores();
   const [productos, setProductos] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -186,9 +188,10 @@ function CreateNotaCompra() {
     try {
       setSubmitting(true);
       const nueva = await createNotaCompraAction(payload);
+      toast.success("Nota de compra creada correctamente.");
       navigate(`/compras/notas/${nueva.notaCompraId}`);
     } catch (error) {
-      alert(error.response?.data?.message || "Error al registrar la compra");
+      toast.error(error.response?.data?.message || "Error al registrar la compra");
     } finally {
       setSubmitting(false);
     }

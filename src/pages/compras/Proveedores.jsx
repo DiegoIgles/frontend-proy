@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import { getProveedoresAction }  from "./actions/get-proveedores.action";
 import { createProveedorAction } from "./actions/create-proveedor.action";
 import { FaTruck, FaPlus, FaSearch, FaEye, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const FORM_VACIO = {
   nombre: "", contacto: "", email: "", telefono: "", direccion: "", ciudad: "", pais: "",
@@ -12,6 +13,7 @@ const FORM_VACIO = {
 
 function Proveedores() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [proveedores, setProveedores] = useState([]);
   const [total,       setTotal]       = useState(0);
@@ -60,11 +62,14 @@ function Proveedores() {
       const dto = { ...form };
       Object.keys(dto).forEach((k) => { if (!dto[k]) delete dto[k]; });
       await createProveedorAction(dto);
+      toast.success("Proveedor creado correctamente.");
       setShowModal(false);
       setForm(FORM_VACIO);
       fetchProveedores();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al crear el proveedor");
+      const message = err.response?.data?.message || "Error al crear el proveedor";
+      setFormErr(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }

@@ -2,6 +2,9 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
+import { ConfirmProvider } from "./context/ConfirmContext";
+import "./styles/feedback.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
@@ -71,6 +74,8 @@ import ReciboVenta from "./pages/ventas/ReciboVenta";
 function App() {
   return (
     <BrowserRouter>
+      <ToastProvider>
+      <ConfirmProvider>
       <AuthProvider>
       <Routes>
         {/* Pública */}
@@ -142,6 +147,8 @@ function App() {
         <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
       </Routes>
       </AuthProvider>
+      </ConfirmProvider>
+      </ToastProvider>
     </BrowserRouter>
   );
 }

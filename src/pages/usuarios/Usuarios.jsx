@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import { getUsersAction } from "./actions/get-users.action";
 import { createUserAction } from "./actions/create-user.action";
 import { FaUserCog, FaPlus, FaSearch, FaUserCircle, FaEye } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const ROLES = [
   { value: "",           label: "Todos los roles" },
@@ -54,6 +55,7 @@ function AvatarSmall({ photo, name, lastName }) {
 
 function Usuarios() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [usuarios, setUsuarios]   = useState([]);
   const [total, setTotal]         = useState(0);
@@ -115,11 +117,14 @@ function Usuarios() {
     try {
       setSaving(true);
       await createUserAction(form);
+      toast.success("Usuario creado correctamente.");
       setShowModal(false);
       setForm(FORM_VACIO);
       fetchUsuarios();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al crear el usuario");
+      const message = err.response?.data?.message || "Error al crear el usuario";
+      setFormErr(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }

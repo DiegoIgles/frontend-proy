@@ -5,6 +5,7 @@ import { useSaldoVenta } from "./hooks/useSaldoVenta";
 import { registrarCobroVentaAction } from "./actions/registrar-cobro-venta.action";
 import { FaArrowLeft, FaTimes, FaCheckCircle } from "react-icons/fa";
 import EstadoBadge from "../../components/EstadoBadge";
+import { useToast } from "../../context/ToastContext";
 
 function MetricaCard({ label, value, color }) {
   return (
@@ -21,6 +22,7 @@ function CobroNotaVenta() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { saldo, loading, error } = useSaldoVenta(id);
+  const toast = useToast();
 
   const [monto, setMonto]     = useState("");
   const [glosa, setGlosa]     = useState("");
@@ -44,9 +46,10 @@ function CobroNotaVenta() {
         monto: montoNum,
         glosa: glosa || undefined,
       });
+      toast.success("Cobro registrado correctamente.");
       navigate(`/ventas/notas/${id}`);
     } catch (err) {
-      alert(err.response?.data?.message || "Error al registrar el cobro");
+      toast.error(err.response?.data?.message || "Error al registrar el cobro");
     } finally {
       setSubmitting(false);
     }

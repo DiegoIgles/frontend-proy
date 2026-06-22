@@ -11,6 +11,8 @@ import {
   FaArrowLeft, FaTimes, FaCheckCircle, FaPlus, FaTrash, FaFilePdf,
   FaExclamationTriangle, FaChartBar, FaListAlt, FaBoxOpen,
 } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 // ── helpers ──────────────────────────────────────────────────
 
@@ -72,6 +74,7 @@ function Tab({ label, active, onClick, icon }) {
 const TIPOS_SEG = ["MATERIAL", "MANO_OBRA", "GASTO_EXTRA", "TRANSPORTE"];
 
 function AgregarSeguimientoModal({ proyectoId, onClose, onAgregado }) {
+  const toast = useToast();
   const [form, setForm]     = useState({ tipo: "MATERIAL", fechaGasto: "", monto: "", descripcion: "" });
   const [submitting, setSub] = useState(false);
 
@@ -87,9 +90,10 @@ function AgregarSeguimientoModal({ proyectoId, onClose, onAgregado }) {
         monto:       Number(form.monto),
         descripcion: form.descripcion || undefined,
       });
+      toast.success("Gasto de seguimiento registrado correctamente.");
       onAgregado();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al registrar el gasto");
+      toast.error(err.response?.data?.message || "Error al registrar el gasto");
     } finally {
       setSub(false);
     }
@@ -233,17 +237,26 @@ function TabInfo({ p }) {
 // ── Tab: Seguimiento ──────────────────────────────────────────
 
 function TabSeguimiento({ p, onRefresh }) {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [showModal, setShowModal] = useState(false);
   const [deleting, setDeleting]   = useState(null);
 
   const handleDelete = async (segId) => {
-    if (!window.confirm("¿Eliminar este registro de seguimiento?")) return;
+    const ok = await confirm({
+      title: "Eliminar seguimiento",
+      message: "¿Eliminar este registro de seguimiento?",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(segId);
       await deleteSeguimientoAction(p.proyectoId, segId);
+      toast.success("Registro de seguimiento eliminado correctamente.");
       onRefresh();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally {
       setDeleting(null);
     }
@@ -507,6 +520,8 @@ function TabAnalisis({ proyectoId }) {
 function VerProyecto() {
   const { id }   = useParams();
   const navigate = useNavigate();
+  const toast    = useToast();
+  const confirm  = useConfirm();
   const [p, setP]           = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
@@ -529,26 +544,40 @@ function VerProyecto() {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleAprobar = async () => {
-    if (!window.confirm("¿Aprobar esta cotización y convertirla en Proyecto?")) return;
+    const ok = await confirm({
+      title: "Aprobar proyecto",
+      message: "¿Aprobar esta cotización y convertirla en Proyecto?",
+      confirmLabel: "Aprobar",
+      danger: false,
+    });
+    if (!ok) return;
     try {
       setAprobando(true);
       await aprobarProyectoAction(id);
+      toast.success("Proyecto aprobado correctamente.");
       await fetchData();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al aprobar el proyecto");
+      toast.error(err.response?.data?.message || "Error al aprobar el proyecto");
     } finally {
       setAprobando(false);
     }
   };
 
   const handleEliminar = async () => {
-    if (!window.confirm("¿Eliminar este proyecto? Esta acción no se puede deshacer.")) return;
+    const ok = await confirm({
+      title: "Eliminar proyecto",
+      message: "¿Eliminar este proyecto? Esta acción no se puede deshacer.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setEliminando(true);
       await deleteProyectoAction(id);
+      toast.success("Proyecto eliminado correctamente.");
       navigate("/proyectos");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setEliminando(false);
     }
   };

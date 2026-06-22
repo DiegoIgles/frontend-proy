@@ -7,6 +7,8 @@ import { updateGenderAction } from "./auth/actions/update-gender.action";
 import {
   FaUserCircle, FaCamera, FaTimes, FaSave, FaCheckCircle,
 } from "react-icons/fa";
+import { useToast } from "../context/ToastContext";
+import { useConfirm } from "../context/ConfirmContext";
 
 const GENEROS = [
   { value: "",            label: "Sin especificar" },
@@ -38,6 +40,8 @@ function Avatar({ photoUrl, initiales, size = 100 }) {
 function Perfil() {
   const { user, refreshUser } = useAuth();
   const fileRef               = useRef(null);
+  const toast                 = useToast();
+  const confirm                = useConfirm();
 
   const [previewUrl, setPreviewUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -69,10 +73,11 @@ function Perfil() {
       setUploadingPhoto(true);
       await uploadProfileImageAction(profileId, selectedFile, gender);
       await refreshUser();
+      toast.success("Foto de perfil actualizada correctamente.");
       setSelectedFile(null);
       setPreviewUrl(null);
     } catch (err) {
-      alert(err.response?.data?.message || "Error al subir la foto");
+      toast.error(err.response?.data?.message || "Error al subir la foto");
     } finally {
       setUploadingPhoto(false);
     }
@@ -86,13 +91,20 @@ function Perfil() {
 
   const handleDeletePhoto = async () => {
     if (!user.profile?.photo) return;
-    if (!window.confirm("¿Eliminar tu foto de perfil?")) return;
+    const ok = await confirm({
+      title: "Eliminar foto de perfil",
+      message: "¿Eliminar tu foto de perfil?",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeletingPhoto(true);
       await deleteProfileImageAction(profileId);
       await refreshUser();
+      toast.success("Foto de perfil eliminada correctamente.");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar la foto");
+      toast.error(err.response?.data?.message || "Error al eliminar la foto");
     } finally {
       setDeletingPhoto(false);
     }
@@ -105,10 +117,11 @@ function Perfil() {
       setSavingGender(true);
       await updateGenderAction(profileId, gender);
       await refreshUser();
+      toast.success("Perfil actualizado correctamente.");
       setGenderSaved(true);
       setTimeout(() => setGenderSaved(false), 2500);
     } catch (err) {
-      alert(err.response?.data?.message || "Error al guardar el género");
+      toast.error(err.response?.data?.message || "Error al guardar el género");
     } finally {
       setSavingGender(false);
     }

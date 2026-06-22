@@ -5,6 +5,7 @@ import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { getProductoStockAction } from "../inventario/actions/get-producto-stock.action";
 import { createAjusteAction } from "./actions/create-ajuste.action";
 import { FaArrowLeft, FaPlus, FaTrash, FaTimes, FaSave } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -78,6 +79,7 @@ function DetalleRow({ detalle, index, productos, onChange, onRemove }) {
 
 function CreateAjuste() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [productos, setProductos] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -126,9 +128,10 @@ function CreateAjuste() {
     try {
       setSubmitting(true);
       const nuevo = await createAjusteAction(payload);
+      toast.success("Ajuste de stock registrado correctamente.");
       navigate(`/ajustes/${nuevo.ajusteId}`);
     } catch (error) {
-      alert(error.response?.data?.message || "Error al registrar el ajuste");
+      toast.error(error.response?.data?.message || "Error al registrar el ajuste");
     } finally {
       setSubmitting(false);
     }

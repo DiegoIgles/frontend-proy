@@ -8,6 +8,8 @@ import {
   FaArrowLeft, FaEdit, FaTrash, FaTruck, FaEnvelope, FaPhone,
   FaMapMarkerAlt, FaUser, FaShoppingCart,
 } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function Campo({ label, value, icon }) {
   return (
@@ -27,6 +29,8 @@ const FORM_VACIO = { nombre: "", contacto: "", email: "", telefono: "", direccio
 function VerProveedor() {
   const { id }   = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [proveedor, setProveedor] = useState(null);
   const [loading,   setLoading]   = useState(true);
@@ -74,23 +78,33 @@ function VerProveedor() {
       const dto = { ...editForm };
       Object.keys(dto).forEach((k) => { if (!dto[k]) delete dto[k]; });
       await updateProveedorAction(id, dto);
+      toast.success("Proveedor actualizado correctamente.");
       setShowEdit(false);
       fetchProveedor();
     } catch (err) {
-      setEditErr(err.response?.data?.message || "Error al actualizar");
+      const message = err.response?.data?.message || "Error al actualizar";
+      setEditErr(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm(`¿Eliminar a "${proveedor.nombre}"? Solo es posible si no tiene compras.`)) return;
+    const ok = await confirm({
+      title: "Eliminar proveedor",
+      message: `¿Eliminar a "${proveedor.nombre}"? Solo es posible si no tiene compras.`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(true);
       await deleteProveedorAction(id);
+      toast.success("Proveedor eliminado correctamente.");
       navigate("/compras/proveedores");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };

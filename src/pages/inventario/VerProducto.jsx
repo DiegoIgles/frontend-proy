@@ -13,6 +13,8 @@ import {
   FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaDollarSign,
   FaBoxOpen, FaTag, FaChartBar,
 } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 const today = () => new Date().toISOString().split("T")[0];
 
@@ -29,6 +31,8 @@ function Campo({ label, value }) {
 function VerProducto() {
   const { id }   = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [producto,   setProducto]   = useState(null);
   const [loading,    setLoading]    = useState(true);
@@ -109,10 +113,13 @@ function VerProducto() {
       if (dto.porcentajeGanancia === "") delete dto.porcentajeGanancia;
       else dto.porcentajeGanancia = Number(dto.porcentajeGanancia);
       await updateProductoAction(id, dto);
+      toast.success("Producto actualizado correctamente.");
       setShowEdit(false);
       fetchProducto();
     } catch (err) {
-      setEditErr(err.response?.data?.message || "Error al actualizar");
+      const msg = err.response?.data?.message || "Error al actualizar";
+      setEditErr(msg);
+      toast.error(msg);
     } finally {
       setSavingEdit(false);
     }
@@ -120,13 +127,20 @@ function VerProducto() {
 
   // ── Delete ──
   const handleDelete = async () => {
-    if (!window.confirm(`¿Eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`)) return;
+    const ok = await confirm({
+      title: "Eliminar producto",
+      message: `¿Eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(true);
       await deleteProductoAction(id);
+      toast.success("Producto eliminado correctamente.");
       navigate("/inventario/productos");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };
@@ -142,11 +156,14 @@ function VerProducto() {
         almacenId:     almacenForm.almacenId,
         stockInicial:  Number(almacenForm.stockInicial),
       });
+      toast.success("Almacén asignado correctamente.");
       setShowAlmacen(false);
       setAlmacenForm({ almacenId: "", stockInicial: 0 });
       fetchProducto();
     } catch (err) {
-      setAlmacenErr(err.response?.data?.message || "Error al asignar almacén");
+      const msg = err.response?.data?.message || "Error al asignar almacén";
+      setAlmacenErr(msg);
+      toast.error(msg);
     } finally {
       setSavingAlmacen(false);
     }
@@ -163,11 +180,14 @@ function VerProducto() {
         precio: Number(precioForm.precio),
         fecha:  precioForm.fecha,
       });
+      toast.success("Precio registrado correctamente.");
       setShowPrecio(false);
       setPrecioForm({ precio: "", fecha: today() });
       fetchProducto();
     } catch (err) {
-      setPrecioErr(err.response?.data?.message || "Error al registrar precio");
+      const msg = err.response?.data?.message || "Error al registrar precio";
+      setPrecioErr(msg);
+      toast.error(msg);
     } finally {
       setSavingPrecio(false);
     }

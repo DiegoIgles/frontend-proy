@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
+import { useToast } from "../../context/ToastContext";
 import { getBitacoraAction } from "./actions/get-bitacora.action";
 import { getBitacoraOpcionesAction } from "./actions/get-bitacora-opciones.action";
 import { exportBitacoraAction } from "./actions/export-bitacora.action";
@@ -79,6 +80,7 @@ function DetalleModal({ registro, onClose }) {
 }
 
 function Bitacora() {
+  const toast = useToast();
   const [registros, setRegistros] = useState([]);
   const [total, setTotal]         = useState(0);
   const [loading, setLoading]     = useState(true);
@@ -130,6 +132,9 @@ function Bitacora() {
     setExporting(true);
     try {
       await exportBitacoraAction({ search, modulo, accion, fechaDesde, fechaHasta });
+      toast.success("Bitácora exportada correctamente.");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error al exportar la bitácora");
     } finally {
       setExporting(false);
     }

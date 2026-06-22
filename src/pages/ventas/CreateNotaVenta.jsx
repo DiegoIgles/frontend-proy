@@ -6,6 +6,7 @@ import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { getProductoStockAction } from "../inventario/actions/get-producto-stock.action";
 import { createNotaVentaAction } from "./actions/create-nota-venta.action";
 import { FaArrowLeft, FaPlus, FaTrash, FaTimes, FaSave } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -98,6 +99,7 @@ function DetalleRow({ detalle, index, productos, onChange, onRemove }) {
 
 function CreateNotaVenta() {
   const navigate = useNavigate();
+  const toast = useToast();
   const { clientes, loading: loadingClientes } = useClientes();
   const [productos, setProductos] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -180,9 +182,10 @@ function CreateNotaVenta() {
     try {
       setSubmitting(true);
       const nueva = await createNotaVentaAction(payload);
+      toast.success("Nota de venta creada correctamente.");
       navigate(`/ventas/notas/${nueva.notaVentaId}`);
     } catch (error) {
-      alert(error.response?.data?.message || "Error al registrar la venta");
+      toast.error(error.response?.data?.message || "Error al registrar la venta");
     } finally {
       setSubmitting(false);
     }

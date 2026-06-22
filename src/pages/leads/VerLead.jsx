@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 import { getLeadAction } from "./actions/get-lead.action";
 import { updateLeadAction } from "./actions/update-lead.action";
 import { deleteLeadAction } from "./actions/delete-lead.action";
@@ -9,6 +11,8 @@ import { FaUserPlus, FaPhone, FaMapMarkerAlt, FaCommentDots, FaEdit, FaTrash, Fa
 function VerLead() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [lead,    setLead]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,19 +63,29 @@ function VerLead() {
       await updateLeadAction(id, dto);
       setShowEdit(false);
       loadLead();
+      toast.success("Lead actualizado correctamente.");
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al guardar");
+      const message = err.response?.data?.message || "Error al guardar";
+      setFormErr(message);
+      toast.error(message);
     } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("¿Eliminar este lead?")) return;
+    const ok = await confirm({
+      title: "Eliminar lead",
+      message: "¿Eliminar este lead?",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     setDeleting(true);
     try {
       await deleteLeadAction(id);
+      toast.success("Lead eliminado correctamente.");
       navigate("/leads");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };

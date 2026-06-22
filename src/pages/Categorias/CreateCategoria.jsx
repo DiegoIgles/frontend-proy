@@ -4,12 +4,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { getCategoriasAction } from "./actions/get-categorias.action";
 import { createCategoriaAction } from "./actions/create-categoria.action";
 import { FaSave, FaTimes } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 function CreateCategoria() {
   const [nombre, setNombre] = useState("");
   const [categoriaPadreId, setCategoriaPadreId] = useState("");
   const [categorias, setCategorias] = useState([]);
   const navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     getCategoriasAction().then(setCategorias).catch(console.error);
@@ -22,10 +24,10 @@ function CreateCategoria() {
         nombre,
         categoriaPadreId: categoriaPadreId || null,
       });
-      alert("Categoría creada correctamente");
+      toast.success("Categoría creada correctamente.");
       navigate("/categorias");
     } catch (error) {
-      alert(error.response?.data?.message || "Error al crear");
+      toast.error(error.response?.data?.message || "Error al crear");
     }
   };
 

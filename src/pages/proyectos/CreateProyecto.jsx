@@ -5,6 +5,7 @@ import { createProyectoAction } from "./actions/create-proyecto.action";
 import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { getProductoStockAction } from "../inventario/actions/get-producto-stock.action";
 import { FaArrowLeft, FaPlus, FaTimes, FaCheckCircle, FaSyncAlt } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 function fmt(n) {
   return Number(n).toLocaleString("es-BO", { minimumFractionDigits: 2 });
@@ -115,6 +116,7 @@ const FILA_VACIA = () => ({ productoId: "", productoAlmacenId: "", cantidad: 1, 
 
 function CreateProyecto() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [productos, setProductos]     = useState([]);
   const [filas, setFilas]             = useState([]);
   const [submitting, setSubmitting]   = useState(false);
@@ -170,8 +172,8 @@ function CreateProyecto() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.nombre.trim()) { alert("El nombre es obligatorio."); return; }
-    if (!form.fechaInicio)   { alert("La fecha de inicio es obligatoria."); return; }
+    if (!form.nombre.trim()) { toast.error("El nombre es obligatorio."); return; }
+    if (!form.fechaInicio)   { toast.error("La fecha de inicio es obligatoria."); return; }
 
     const productosValidos = filas.filter(
       (f) => f.productoId && f.productoAlmacenId && Number(f.cantidad) >= 1
@@ -193,9 +195,10 @@ function CreateProyecto() {
     try {
       setSubmitting(true);
       const created = await createProyectoAction(dto);
+      toast.success("Proyecto creado correctamente.");
       navigate(`/proyectos/${created.proyectoId}`);
     } catch (err) {
-      alert(err.response?.data?.message || "Error al crear la cotización");
+      toast.error(err.response?.data?.message || "Error al crear la cotización");
       setSubmitting(false);
     }
   };

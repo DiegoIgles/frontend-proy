@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 import { getLeadsAction } from "./actions/get-leads.action";
 import { deleteLeadAction } from "./actions/delete-lead.action";
 import { FaEye, FaTrash, FaSearch, FaUserPlus, FaTimes } from "react-icons/fa";
@@ -9,6 +11,8 @@ import { FaEye, FaTrash, FaSearch, FaUserPlus, FaTimes } from "react-icons/fa";
 // El backend solo filtra por "search" (nombre) y no pagina. El rango de fechas
 // y la paginación se aplican aquí sobre el arreglo completo que devuelve la API.
 function Leads() {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [leads,   setLeads]   = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,13 +58,20 @@ function Leads() {
   const hayFiltros = search || fechaDesde || fechaHasta;
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este lead?")) return;
+    const ok = await confirm({
+      title: "Eliminar lead",
+      message: "¿Eliminar este lead?",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeletingId(id);
       await deleteLeadAction(id);
+      toast.success("Lead eliminado correctamente.");
       fetchLeads();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally { setDeletingId(null); }
   };
 

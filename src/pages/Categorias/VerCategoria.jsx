@@ -6,10 +6,14 @@ import { getCategoriasFlatAction } from "./actions/get-categorias-flat.action";
 import { updateCategoriaAction } from "./actions/update-categoria.action";
 import { deleteCategoriaAction } from "./actions/delete-categoria.action";
 import { FaArrowLeft, FaEdit, FaTrash, FaTags, FaBoxOpen, FaEye } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function VerCategoria() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [cat,      setCat]      = useState(null);
   const [flatList, setFlatList] = useState([]);
@@ -50,21 +54,31 @@ function VerCategoria() {
       const dto = { nombre: form.nombre };
       if (form.categoriaPadreId) dto.categoriaPadreId = form.categoriaPadreId;
       await updateCategoriaAction(id, dto);
+      toast.success("Categoría actualizada correctamente.");
       setShowEdit(false);
       load();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al guardar");
+      const msg = err.response?.data?.message || "Error al guardar";
+      setFormErr(msg);
+      toast.error(msg);
     } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("¿Eliminar esta categoría? Solo es posible si no tiene subcategorías ni productos.")) return;
+    const ok = await confirm({
+      title: "Eliminar categoría",
+      message: "¿Eliminar esta categoría? Solo es posible si no tiene subcategorías ni productos.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     setDeleting(true);
     try {
       await deleteCategoriaAction(id);
+      toast.success("Categoría eliminada correctamente.");
       navigate("/inventario/categorias");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };

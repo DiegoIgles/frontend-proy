@@ -4,6 +4,7 @@ import Pagination from "../../components/Pagination";
 import { getMovimientosCajaAction } from "./actions/get-movimientos-caja.action";
 import { createMovimientoCajaAction } from "./actions/create-movimiento-caja.action";
 import { FaPlus, FaTimes, FaCheckCircle, FaSearch } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 // ── helpers ────────────────────────────────────────────────
 
@@ -45,6 +46,7 @@ function MetricCard({ label, value, color, sub }) {
 // ── Modal nuevo movimiento ──────────────────────────────────
 
 function NuevoMovimientoModal({ onClose, onCreated }) {
+  const toast = useToast();
   const [form, setForm]         = useState({ monto: "", tipoMovimiento: "INGRESO", glosa: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -57,9 +59,10 @@ function NuevoMovimientoModal({ onClose, onCreated }) {
         tipoMovimiento: form.tipoMovimiento,
         glosa:          form.glosa || undefined,
       });
+      toast.success("Movimiento de caja registrado correctamente.");
       onCreated();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al registrar el movimiento");
+      toast.error(err.response?.data?.message || "Error al registrar el movimiento");
     } finally {
       setSubmitting(false);
     }

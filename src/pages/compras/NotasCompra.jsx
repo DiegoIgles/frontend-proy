@@ -6,11 +6,15 @@ import { getNotasCompraAction }    from "./actions/get-notas-compra.action";
 import { deleteNotaCompraAction }  from "./actions/delete-nota-compra.action";
 import EstadoBadge from "../../components/EstadoBadge";
 import { FaPlus, FaEye, FaMoneyBillWave, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 const ESTADOS = ["", "PENDIENTE", "PAGADO_PARCIAL", "PAGADO", "VENCIDO"];
 
 function NotasCompra() {
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [notas,   setNotas]   = useState([]);
   const [total,   setTotal]   = useState(0);
@@ -47,13 +51,20 @@ function NotasCompra() {
   const applyFilter = (setter, value) => { setter(value); setOffset(0); };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar esta nota de compra? Se revertirá el stock.")) return;
+    const ok = await confirm({
+      title: "Eliminar nota de compra",
+      message: "¿Eliminar esta nota de compra? Se revertirá el stock.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeletingId(id);
       await deleteNotaCompraAction(id);
+      toast.success("Nota de compra eliminada correctamente.");
       fetchNotas();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally { setDeletingId(null); }
   };
 

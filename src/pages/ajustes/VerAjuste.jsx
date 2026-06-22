@@ -4,6 +4,8 @@ import Layout from "../../components/layout/Layout";
 import { useAjuste } from "./hooks/useAjuste";
 import { deleteAjusteAction } from "./actions/delete-ajuste.action";
 import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function TipoBadge({ tipo }) {
   if (tipo === "ENTRADA") {
@@ -34,15 +36,24 @@ function VerAjuste() {
   const navigate = useNavigate();
   const { ajuste, loading, error } = useAjuste(id);
   const [deleting, setDeleting] = useState(false);
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const handleDelete = async () => {
-    if (!window.confirm("¿Seguro que deseas eliminar este ajuste? Se revertirá el stock.")) return;
+    const ok = await confirm({
+      title: "Eliminar ajuste",
+      message: "¿Seguro que deseas eliminar este ajuste? Se revertirá el stock.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(true);
       await deleteAjusteAction(id);
+      toast.success("Ajuste de stock eliminado correctamente.");
       navigate("/ajustes");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar el ajuste");
+      toast.error(err.response?.data?.message || "Error al eliminar el ajuste");
       setDeleting(false);
     }
   };

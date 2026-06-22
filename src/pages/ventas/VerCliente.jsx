@@ -5,10 +5,14 @@ import { getClienteAction }  from "./actions/get-cliente.action";
 import { updateClienteAction } from "./actions/update-cliente.action";
 import { deleteClienteAction } from "./actions/delete-cliente.action";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaEdit, FaTrash, FaEye, FaArrowLeft } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function VerCliente() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [cliente,  setCliente]  = useState(null);
   const [loading,  setLoading]  = useState(true);
@@ -59,21 +63,31 @@ function VerCliente() {
       if (form.telefono.trim())        dto.telefono        = form.telefono.trim();
       if (form.direccion.trim())       dto.direccion       = form.direccion.trim();
       await updateClienteAction(id, dto);
+      toast.success("Cliente actualizado correctamente.");
       setShowEdit(false);
       loadCliente();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al guardar");
+      const message = err.response?.data?.message || "Error al guardar";
+      setFormErr(message);
+      toast.error(message);
     } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("¿Eliminar este cliente? Solo es posible si no tiene ventas.")) return;
+    const ok = await confirm({
+      title: "Eliminar cliente",
+      message: "¿Eliminar este cliente? Solo es posible si no tiene ventas.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     setDeleting(true);
     try {
       await deleteClienteAction(id);
+      toast.success("Cliente eliminado correctamente.");
       navigate("/ventas/clientes");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };

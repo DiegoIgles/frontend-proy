@@ -7,10 +7,13 @@ import { createCategoriaAction }   from "./actions/create-categoria.action";
 import { updateCategoriaAction }   from "./actions/update-categoria.action";
 import { deleteCategoriaAction }   from "./actions/delete-categoria.action";
 import { FaPlus, FaEdit, FaTrash, FaEye, FaChevronDown, FaChevronRight, FaTags } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 const EMPTY_FORM = { nombre: "", categoriaPadreId: "" };
 
 function CategoriaModal({ show, onClose, onSaved, flatList, editData }) {
+  const toast = useToast();
   const [form,   setForm]   = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [err,    setErr]    = useState("");
@@ -34,9 +37,12 @@ function CategoriaModal({ show, onClose, onSaved, flatList, editData }) {
       if (form.categoriaPadreId) dto.categoriaPadreId = form.categoriaPadreId;
       if (editData) await updateCategoriaAction(editData.categoriaId, dto);
       else          await createCategoriaAction(dto);
+      toast.success(editData ? "Categoría actualizada correctamente." : "Categoría creada correctamente.");
       onSaved();
     } catch (ex) {
-      setErr(ex.response?.data?.message || "Error al guardar");
+      const msg = ex.response?.data?.message || "Error al guardar";
+      setErr(msg);
+      toast.error(msg);
     } finally { setSaving(false); }
   };
 
@@ -151,6 +157,8 @@ function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId }) {
 }
 
 function Categorias() {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [tree,       setTree]       = useState([]);
   const [flatList,   setFlatList]   = useState([]);
   const [loading,    setLoading]    = useState(true);
@@ -183,13 +191,20 @@ function Categorias() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar esta categoría? Solo es posible si no tiene subcategorías ni productos.")) return;
+    const ok = await confirm({
+      title: "Eliminar categoría",
+      message: "¿Eliminar esta categoría? Solo es posible si no tiene subcategorías ni productos.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     setDeletingId(id);
     try {
       await deleteCategoriaAction(id);
+      toast.success("Categoría eliminada correctamente.");
       fetchAll();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
     } finally { setDeletingId(null); }
   };
 

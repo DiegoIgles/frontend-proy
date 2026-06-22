@@ -5,6 +5,8 @@ import { useNotaVenta } from "./hooks/useNotaVenta";
 import { deleteNotaVentaAction } from "./actions/delete-nota-venta.action";
 import { FaPrint, FaMoneyBillWave, FaTrash, FaArrowLeft } from "react-icons/fa";
 import EstadoBadge from "../../components/EstadoBadge";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function InfoRow({ label, value }) {
   return (
@@ -20,15 +22,24 @@ function VerNotaVenta() {
   const navigate = useNavigate();
   const { nota, loading, error } = useNotaVenta(id);
   const [deleting, setDeleting] = useState(false);
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const handleDelete = async () => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta nota de venta? Se revertirá el stock.")) return;
+    const ok = await confirm({
+      title: "Eliminar nota de venta",
+      message: "¿Seguro que deseas eliminar esta nota de venta? Se revertirá el stock.",
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(true);
       await deleteNotaVentaAction(id);
+      toast.success("Nota de venta eliminada correctamente.");
       navigate("/ventas/notas");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar la venta");
+      toast.error(err.response?.data?.message || "Error al eliminar la venta");
       setDeleting(false);
     }
   };

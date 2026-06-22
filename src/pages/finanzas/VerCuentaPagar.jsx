@@ -5,6 +5,7 @@ import EstadoBadge from "../../components/EstadoBadge";
 import { getCuentaPagarAction } from "./actions/get-cuenta-pagar.action";
 import { registrarPagoCxpAction } from "./actions/registrar-pago-cxp.action";
 import { FaArrowLeft, FaTimes, FaCheckCircle, FaMoneyBillWave } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 function fmt(n) {
   return Number(n).toLocaleString("es-BO", { minimumFractionDigits: 2 });
@@ -22,6 +23,7 @@ function InfoRow({ label, value, valueStyle }) {
 // ── Modal registrar pago ───────────────────────────────────
 
 function RegistrarPagoModal({ saldo, cuentaId, onClose, onRegistrado }) {
+  const toast = useToast();
   const [form, setForm]         = useState({ monto: "", glosa: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -30,17 +32,18 @@ function RegistrarPagoModal({ saldo, cuentaId, onClose, onRegistrado }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const monto = Number(form.monto);
-    if (monto <= 0) { alert("El monto debe ser mayor a 0"); return; }
-    if (monto > Number(saldo)) { alert(`El monto no puede superar el saldo pendiente (Bs. ${fmt(saldo)})`); return; }
+    if (monto <= 0) { toast.error("El monto debe ser mayor a 0"); return; }
+    if (monto > Number(saldo)) { toast.error(`El monto no puede superar el saldo pendiente (Bs. ${fmt(saldo)})`); return; }
     try {
       setSubmitting(true);
       await registrarPagoCxpAction(cuentaId, {
         monto,
         glosa: form.glosa || undefined,
       });
+      toast.success("Pago registrado correctamente.");
       onRegistrado();
     } catch (err) {
-      alert(err.response?.data?.message || "Error al registrar el pago");
+      toast.error(err.response?.data?.message || "Error al registrar el pago");
     } finally {
       setSubmitting(false);
     }

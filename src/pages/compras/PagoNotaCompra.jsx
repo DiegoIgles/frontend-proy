@@ -5,6 +5,7 @@ import { useSaldoCompra } from "./hooks/useSaldoCompra";
 import { registrarPagoCompraAction } from "./actions/registrar-pago-compra.action";
 import { FaArrowLeft, FaTimes, FaCheckCircle } from "react-icons/fa";
 import EstadoBadge from "../../components/EstadoBadge";
+import { useToast } from "../../context/ToastContext";
 
 function MetricaCard({ label, value, color }) {
   return (
@@ -21,6 +22,7 @@ function PagoNotaCompra() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { saldo, loading, error } = useSaldoCompra(id);
+  const toast = useToast();
 
   const [monto, setMonto]     = useState("");
   const [glosa, setGlosa]     = useState("");
@@ -44,9 +46,10 @@ function PagoNotaCompra() {
         monto: montoNum,
         glosa: glosa || undefined,
       });
+      toast.success("Pago registrado correctamente.");
       navigate(`/compras/notas/${id}`);
     } catch (err) {
-      alert(err.response?.data?.message || "Error al registrar el pago");
+      toast.error(err.response?.data?.message || "Error al registrar el pago");
     } finally {
       setSubmitting(false);
     }

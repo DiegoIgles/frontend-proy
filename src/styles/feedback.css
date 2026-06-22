@@ -1,0 +1,98 @@
+/* ===== TOASTS ===== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 360px;
+  width: calc(100vw - 40px);
+}
+
+.toast {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-left: 4px solid transparent;
+  position: relative;
+  overflow: hidden;
+  animation: toast-in 0.25s ease;
+}
+
+.toast-success { border-left-color: #16a34a; }
+.toast-error   { border-left-color: #dc2626; }
+.toast-info    { border-left-color: #2563eb; }
+
+.toast-icon { font-size: 18px; margin-top: 1px; flex-shrink: 0; }
+.toast-success .toast-icon { color: #16a34a; }
+.toast-error   .toast-icon { color: #dc2626; }
+.toast-info    .toast-icon { color: #2563eb; }
+
+.toast-body { flex: 1; min-width: 0; }
+.toast-title   { margin: 0; font-size: 13px; font-weight: 700; color: #111827; }
+.toast-message { margin: 2px 0 0; font-size: 12.5px; color: #4b5563; line-height: 1.4; }
+
+.toast-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.toast-close:hover { color: #374151; }
+
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  animation: toast-shrink linear forwards;
+}
+.toast-success .toast-progress { background: #16a34a; }
+.toast-error   .toast-progress { background: #dc2626; }
+.toast-info    .toast-progress { background: #2563eb; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toast-shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* ===== CONFIRM MODAL ===== */
+.confirm-modal {
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 26px 24px;
+  text-align: center;
+}
+
+.confirm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 22px;
+}
+.confirm-icon.danger  { background: #fee2e2; color: #dc2626; }
+.confirm-icon.default { background: #dbeafe; color: #2563eb; }
+
+.confirm-title   { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: #111827; }
+.confirm-message { margin: 0 0 24px; font-size: 13.5px; color: #6b7280; line-height: 1.55; }
+
+.confirm-actions { display: flex; gap: 10px; justify-content: center; }
+.confirm-actions button { min-width: 110px; padding: 9px 16px; }

@@ -4,9 +4,11 @@ import Layout from "../../components/layout/Layout";
 import { getAlmacenesAction }  from "./actions/get-almacenes.action";
 import { createAlmacenAction } from "./actions/create-almacen.action";
 import { FaWarehouse, FaPlus, FaEye } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 function Almacenes() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [almacenes, setAlmacenes] = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -37,11 +39,14 @@ function Almacenes() {
     try {
       setSaving(true);
       await createAlmacenAction({ nombre: nombre.trim() });
+      toast.success("Almacén creado correctamente.");
       setShowModal(false);
       setNombre("");
       fetchAlmacenes();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al crear el almacén");
+      const msg = err.response?.data?.message || "Error al crear el almacén";
+      setFormErr(msg);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }

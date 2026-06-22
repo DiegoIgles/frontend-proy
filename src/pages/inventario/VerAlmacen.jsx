@@ -5,6 +5,8 @@ import { getAlmacenAction }    from "./actions/get-almacen.action";
 import { updateAlmacenAction } from "./actions/update-almacen.action";
 import { deleteAlmacenAction } from "./actions/delete-almacen.action";
 import { FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaBoxOpen } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
+import { useConfirm } from "../../context/ConfirmContext";
 
 function StockBadge({ stock }) {
   const s = stock === 0 ? { bg: "#fee2e2", c: "#991b1b" }
@@ -21,6 +23,8 @@ function StockBadge({ stock }) {
 function VerAlmacen() {
   const { id }   = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
 
   const [almacen,  setAlmacen]  = useState(null);
   const [loading,  setLoading]  = useState(true);
@@ -54,23 +58,33 @@ function VerAlmacen() {
     try {
       setSaving(true);
       await updateAlmacenAction(id, { nombre: nombre.trim() });
+      toast.success("Almacén actualizado correctamente.");
       setShowEdit(false);
       fetchAlmacen();
     } catch (err) {
-      setEditErr(err.response?.data?.message || "Error al actualizar");
+      const msg = err.response?.data?.message || "Error al actualizar";
+      setEditErr(msg);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!window.confirm(`¿Eliminar "${almacen.nombre}"? Solo es posible si no tiene stock.`)) return;
+    const ok = await confirm({
+      title: "Eliminar almacén",
+      message: `¿Eliminar "${almacen.nombre}"? Solo es posible si no tiene stock.`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (!ok) return;
     try {
       setDeleting(true);
       await deleteAlmacenAction(id);
+      toast.success("Almacén eliminado correctamente.");
       navigate("/inventario/almacenes");
     } catch (err) {
-      alert(err.response?.data?.message || "Error al eliminar");
+      toast.error(err.response?.data?.message || "Error al eliminar");
       setDeleting(false);
     }
   };

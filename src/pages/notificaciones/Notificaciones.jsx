@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { getNotificacionesAction } from "./actions/get-notificaciones.action";
 import { marcarNotificacionLeidaAction } from "./actions/marcar-notificacion-leida.action";
 import { marcarTodasLeidasAction } from "./actions/marcar-todas-leidas.action";
@@ -42,6 +43,7 @@ function IconoNotificacion({ tipo, evento }) {
 
 function Notificaciones() {
   const { user } = useAuth();
+  const toast = useToast();
   const esAdmin = user?.roles?.includes("admin") || user?.roles?.includes("super-user");
 
   const [items, setItems]     = useState([]);
@@ -102,6 +104,9 @@ function Notificaciones() {
     try {
       await marcarTodasLeidasAction();
       fetchNotificaciones();
+      toast.success("Todas las notificaciones fueron marcadas como leídas.");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error al marcar las notificaciones");
     } finally {
       setMarcandoTodas(false);
     }
@@ -156,8 +161,11 @@ function Notificaciones() {
       await enviarNotificacionManualAction(dto);
       setShowModal(false);
       fetchNotificaciones();
+      toast.success("Notificación enviada correctamente.");
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al enviar la notificación");
+      const message = err.response?.data?.message || "Error al enviar la notificación";
+      setFormErr(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }

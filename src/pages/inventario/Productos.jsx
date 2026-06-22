@@ -9,6 +9,7 @@ import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.act
 import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
+import { useToast } from "../../context/ToastContext";
 
 const today = () => new Date().toISOString().split("T")[0];
 
@@ -33,6 +34,7 @@ function StockBadge({ stock }) {
 
 function Productos() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [productos,  setProductos]  = useState([]);
   const [total,      setTotal]      = useState(0);
@@ -100,11 +102,14 @@ function Productos() {
       if (dto.porcentajeGanancia === "") delete dto.porcentajeGanancia;
       else dto.porcentajeGanancia = Number(dto.porcentajeGanancia);
       await createProductoAction(dto);
+      toast.success("Producto creado correctamente.");
       setShowModal(false);
       setForm(FORM_VACIO);
       fetchProductos();
     } catch (err) {
-      setFormErr(err.response?.data?.message || "Error al crear el producto");
+      const msg = err.response?.data?.message || "Error al crear el producto";
+      setFormErr(msg);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }
