@@ -111,9 +111,7 @@ function VerAlmacen() {
           </button>
           <div>
             <h1 style={{ margin: 0, fontSize: 20 }}>{almacen.nombre}</h1>
-            <p style={{ margin: 0, fontSize: 11, color: "#9ca3af", fontFamily: "monospace" }}>
-              {almacen.almacenId}
-            </p>
+            <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>Almacén</p>
           </div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>

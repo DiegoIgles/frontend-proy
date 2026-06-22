@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -21,6 +21,7 @@ import {
   FaHistory,
   FaBell,
   FaAddressBook,
+  FaChevronDown,
 } from "react-icons/fa";
 
 let _navScroll = 0;
@@ -102,6 +103,21 @@ function Sidebar({ onNavigate }) {
     (section) => !section.roles || section.roles.some((r) => user?.roles?.includes(r))
   );
 
+  // Por defecto, abre únicamente el grupo que contiene la ruta activa.
+  const [openSections, setOpenSections] = useState(() => {
+    const initial = {};
+    menu.forEach((section) => {
+      if (section.items.length > 1 && section.items.some((item) => isActive(item.to))) {
+        initial[section.title] = true;
+      }
+    });
+    return initial;
+  });
+
+  const toggleSection = (title) => {
+    setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
+  };
+
   return (
     <>
       {/* Cabecera fija */}
@@ -121,10 +137,11 @@ function Sidebar({ onNavigate }) {
 
       {/* Nav scrolleable */}
       <nav ref={navRef} className="menu sidebar-nav" onScroll={(e) => { _navScroll = e.currentTarget.scrollTop; }}>
-        {menu.map((section) => (
-          <div key={section.title}>
-            <p className="menu-title">{section.title}</p>
-            {section.items.map((item) => (
+        {menu.map((section) => {
+          // Grupos de un solo ítem se muestran como enlace directo, sin desplegable.
+          if (section.items.length === 1) {
+            const item = section.items[0];
+            return (
               <Link
                 key={item.to}
                 to={item.to}
@@ -134,9 +151,39 @@ function Sidebar({ onNavigate }) {
                 <span className="icon">{item.icon}</span>
                 {item.label}
               </Link>
-            ))}
-          </div>
-        ))}
+            );
+          }
+
+          const isOpen = !!openSections[section.title];
+          return (
+            <div key={section.title} className="menu-group">
+              <button
+                type="button"
+                className="menu-group-header"
+                aria-expanded={isOpen}
+                onClick={() => toggleSection(section.title)}
+              >
+                <span>{section.title}</span>
+                <FaChevronDown className={`menu-chevron ${isOpen ? "open" : ""}`} />
+              </button>
+              <div className={`menu-group-items ${isOpen ? "open" : ""}`}>
+                <div>
+                  {section.items.map((item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={isActive(item.to) ? "active" : ""}
+                      onClick={handleClick}
+                    >
+                      <span className="icon">{item.icon}</span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </nav>
     </>
   );
