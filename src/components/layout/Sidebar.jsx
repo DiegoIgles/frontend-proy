@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 import {
   FaTachometerAlt,
@@ -17,6 +18,9 @@ import {
   FaMoneyBillWave,
   FaProjectDiagram,
   FaUserCog,
+  FaHistory,
+  FaBell,
+  FaAddressBook,
 } from "react-icons/fa";
 
 let _navScroll = 0;
@@ -26,6 +30,7 @@ const MENU = [
     title: "GENERAL",
     items: [
       { to: "/dashboard", label: "Dashboard", icon: <FaTachometerAlt /> },
+      { to: "/notificaciones", label: "Notificaciones", icon: <FaBell /> },
     ],
   },
   {
@@ -65,6 +70,14 @@ const MENU = [
       { to: "/compras/proveedores", label: "Proveedores",     icon: <FaTruck /> },
       { to: "/ventas/notas",        label: "Notas de Venta",  icon: <FaShoppingBag /> },
       { to: "/ventas/clientes",     label: "Clientes",        icon: <FaUsers /> },
+      { to: "/leads",               label: "Gestión de Leads", icon: <FaAddressBook /> },
+    ],
+  },
+  {
+    title: "AUDITORÍA",
+    roles: ["admin", "super-user"],
+    items: [
+      { to: "/bitacora", label: "Bitácora", icon: <FaHistory /> },
     ],
   },
 ];
@@ -72,6 +85,7 @@ const MENU = [
 function Sidebar({ onNavigate }) {
   const location = useLocation();
   const navRef   = useRef(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (navRef.current) navRef.current.scrollTop = _navScroll;
@@ -84,6 +98,10 @@ function Sidebar({ onNavigate }) {
     if (window.innerWidth < 768 && onNavigate) onNavigate();
   };
 
+  const menu = MENU.filter(
+    (section) => !section.roles || section.roles.some((r) => user?.roles?.includes(r))
+  );
+
   return (
     <>
       {/* Cabecera fija */}
@@ -95,7 +113,7 @@ function Sidebar({ onNavigate }) {
             className="sidebar-logo-img"
           />
           <div className="sidebar-logo-text">
-            <h2>Mi ERP</h2>
+            <h2>Enerlogic</h2>
             <span>Sistema de gestión</span>
           </div>
         </div>
@@ -103,7 +121,7 @@ function Sidebar({ onNavigate }) {
 
       {/* Nav scrolleable */}
       <nav ref={navRef} className="menu sidebar-nav" onScroll={(e) => { _navScroll = e.currentTarget.scrollTop; }}>
-        {MENU.map((section) => (
+        {menu.map((section) => (
           <div key={section.title}>
             <p className="menu-title">{section.title}</p>
             {section.items.map((item) => (

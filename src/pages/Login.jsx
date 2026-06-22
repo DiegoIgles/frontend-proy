@@ -51,8 +51,8 @@ function Login() {
         {/* Lado izquierdo */}
         <div className="login-left">
           <div className="overlay-text">
-            <h1>Mi ERP</h1>
-            <p>Gestiona tu negocio de forma inteligente</p>
+            <h1>Enerlogic</h1>
+            <p>Energía inteligente para decisiones brillantes</p>
           </div>
         </div>
 

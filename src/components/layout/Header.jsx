@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 function Header({ toggleSidebar }) {
   const navigate         = useNavigate();
@@ -23,8 +24,11 @@ function Header({ toggleSidebar }) {
         <h3 style={{ margin: 0 }}>Panel de Administración</h3>
       </div>
 
-      {/* Derecha: perfil + logout */}
+      {/* Derecha: notificaciones + perfil + logout */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+
+        {/* Notificaciones */}
+        <NotificationBell />
 
         {/* Info del usuario */}
         {user && (

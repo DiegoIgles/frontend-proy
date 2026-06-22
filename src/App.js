@@ -49,6 +49,16 @@ import VerProducto from "./pages/inventario/VerProducto";
 import Usuarios from "./pages/usuarios/Usuarios";
 import VerUsuario from "./pages/usuarios/VerUsuario";
 
+// Bitácora
+import Bitacora from "./pages/bitacora/Bitacora";
+
+// Notificaciones
+import Notificaciones from "./pages/notificaciones/Notificaciones";
+
+// Leads
+import Leads from "./pages/leads/Leads";
+import VerLead from "./pages/leads/VerLead";
+
 // Ventas
 import Clientes from "./pages/ventas/Clientes";
 import VerCliente from "./pages/ventas/VerCliente";
@@ -117,6 +127,16 @@ function App() {
         {/* Usuarios */}
         <Route path="/usuarios"     element={<PrivateRoute><Usuarios /></PrivateRoute>} />
         <Route path="/usuarios/:id" element={<PrivateRoute><VerUsuario /></PrivateRoute>} />
+
+        {/* Bitácora */}
+        <Route path="/bitacora" element={<PrivateRoute><Bitacora /></PrivateRoute>} />
+
+        {/* Notificaciones */}
+        <Route path="/notificaciones" element={<PrivateRoute><Notificaciones /></PrivateRoute>} />
+
+        {/* Leads */}
+        <Route path="/leads"     element={<PrivateRoute><Leads /></PrivateRoute>} />
+        <Route path="/leads/:id" element={<PrivateRoute><VerLead /></PrivateRoute>} />
 
         {/* Perfil */}
         <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
