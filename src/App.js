@@ -36,6 +36,11 @@ import VerProyecto from "./pages/proyectos/VerProyecto";
 import CreateProyecto from "./pages/proyectos/CreateProyecto";
 import CotizacionProyecto from "./pages/proyectos/CotizacionProyecto";
 
+// Cotizaciones Manuales
+import CotizacionesManuales from "./pages/cotizaciones-manuales/CotizacionesManuales";
+import CotizacionManualForm from "./pages/cotizaciones-manuales/CotizacionManualForm";
+import CotizacionManualPrint from "./pages/cotizaciones-manuales/CotizacionManualPrint";
+
 // Ajustes
 import Ajustes from "./pages/ajustes/Ajustes";
 import CreateAjuste from "./pages/ajustes/CreateAjuste";
@@ -114,6 +119,12 @@ function App() {
         <Route path="/proyectos/crear"  element={<PrivateRoute><CreateProyecto /></PrivateRoute>} />
         <Route path="/proyectos/:id"            element={<PrivateRoute><VerProyecto /></PrivateRoute>} />
         <Route path="/proyectos/:id/cotizacion" element={<PrivateRoute><CotizacionProyecto /></PrivateRoute>} />
+
+        {/* Cotizaciones Manuales */}
+        <Route path="/cotizaciones-manuales"               element={<PrivateRoute><CotizacionesManuales /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/crear"         element={<PrivateRoute><CotizacionManualForm /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/:id/editar"    element={<PrivateRoute><CotizacionManualForm /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/:id/imprimir"  element={<PrivateRoute><CotizacionManualPrint /></PrivateRoute>} />
 
         {/* Ajustes */}
         <Route path="/ajustes"        element={<PrivateRoute><Ajustes /></PrivateRoute>} />
