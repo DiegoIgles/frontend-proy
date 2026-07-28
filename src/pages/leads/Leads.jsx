@@ -6,6 +6,7 @@ import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
 import { getLeadsAction } from "./actions/get-leads.action";
 import { deleteLeadAction } from "./actions/delete-lead.action";
+import { formatTipoServicio } from "./leads.constants";
 import { FaEye, FaTrash, FaSearch, FaUserPlus, FaTimes } from "react-icons/fa";
 
 // El backend solo filtra por "search" (nombre) y no pagina. El rango de fechas
@@ -16,9 +17,10 @@ function Leads() {
   const [leads,   setLeads]   = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [search,     setSearch]     = useState("");
-  const [fechaDesde, setFechaDesde] = useState("");
-  const [fechaHasta, setFechaHasta] = useState("");
+  const [search,      setSearch]      = useState("");
+  const [tipoServicio, setTipoServicio] = useState("");
+  const [fechaDesde,  setFechaDesde]  = useState("");
+  const [fechaHasta,  setFechaHasta]  = useState("");
   const [limit,  setLimit]  = useState(10);
   const [offset, setOffset] = useState(0);
 
@@ -35,14 +37,20 @@ function Leads() {
 
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
 
+  const serviciosDisponibles = useMemo(() => {
+    const unicos = [...new Set(leads.map((l) => l.tipoServicio).filter(Boolean))];
+    return unicos.map((v) => ({ value: v, label: formatTipoServicio(v) }));
+  }, [leads]);
+
   const leadsFiltrados = useMemo(() => {
     return leads.filter((l) => {
       const fecha = l.fecha?.slice(0, 10);
       if (fechaDesde && fecha < fechaDesde) return false;
       if (fechaHasta && fecha > fechaHasta) return false;
+      if (tipoServicio && l.tipoServicio !== tipoServicio) return false;
       return true;
     });
-  }, [leads, fechaDesde, fechaHasta]);
+  }, [leads, fechaDesde, fechaHasta, tipoServicio]);
 
   const total = leadsFiltrados.length;
   const leadsPagina = useMemo(
@@ -53,9 +61,9 @@ function Leads() {
   const applyFilter = (setter, value) => { setter(value); setOffset(0); };
 
   const limpiarFiltros = () => {
-    setSearch(""); setFechaDesde(""); setFechaHasta(""); setOffset(0);
+    setSearch(""); setTipoServicio(""); setFechaDesde(""); setFechaHasta(""); setOffset(0);
   };
-  const hayFiltros = search || fechaDesde || fechaHasta;
+  const hayFiltros = search || tipoServicio || fechaDesde || fechaHasta;
 
   const handleDelete = async (id) => {
     const ok = await confirm({
@@ -89,6 +97,15 @@ function Leads() {
           <input placeholder="Buscar por nombre..." value={search}
             onChange={(e) => applyFilter(setSearch, e.target.value)} />
         </div>
+        <div className="filter-field" style={{ flex: "0 1 170px" }}>
+          <label>Servicio</label>
+          <select value={tipoServicio} onChange={(e) => applyFilter(setTipoServicio, e.target.value)}>
+            <option value="">Todos</option>
+            {serviciosDisponibles.map((s) => (
+              <option key={s.value} value={s.value}>{s.label}</option>
+            ))}
+          </select>
+        </div>
         <div className="filter-field" style={{ flex: "0 1 150px" }}>
           <label>Desde</label>
           <input type="date" value={fechaDesde} onChange={(e) => applyFilter(setFechaDesde, e.target.value)} />
@@ -118,28 +135,28 @@ function Leads() {
               <tr>
                 <th>Nombre</th>
                 <th className="col-hide-mobile">Teléfono</th>
+                <th className="col-hide-mobile">Servicio</th>
+                <th className="col-hide-mobile">Suministro</th>
                 <th className="col-hide-mobile">Dirección</th>
-                <th className="col-hide-mobile">Comentario</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
+                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
               ) : leadsPagina.length === 0 ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
+                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
               ) : leadsPagina.map((l) => (
                 <tr key={l.id}>
                   <td><strong>{l.nombre}</strong></td>
                   <td className="col-hide-mobile">
                     {l.telefono ? <a href={`tel:${l.telefono}`} style={{ color: "#2563eb" }}>{l.telefono}</a> : "—"}
                   </td>
+                  <td className="col-hide-mobile">{formatTipoServicio(l.tipoServicio)}</td>
+                  <td className="col-hide-mobile">{l.tipoSuministro || "—"}</td>
                   <td className="col-hide-mobile" style={{ maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {l.direccion || "—"}
-                  </td>
-                  <td className="col-hide-mobile" style={{ maxWidth: 220, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {l.comentario || "—"}
                   </td>
                   <td style={{ whiteSpace: "nowrap" }}>{new Date(l.fecha).toLocaleDateString("es-BO")}</td>
                   <td>
