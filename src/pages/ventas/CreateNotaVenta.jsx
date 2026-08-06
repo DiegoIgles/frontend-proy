@@ -10,6 +10,10 @@ import { useToast } from "../../context/ToastContext";
 
 const today = new Date().toISOString().split("T")[0];
 
+export function resolvePrecioVenta(productos, productoId) {
+  return productos.find((p) => p.productoId === productoId)?.precioActual ?? "";
+}
+
 function DetalleRow({ detalle, index, productos, onChange, onRemove }) {
   const [stockOptions, setStockOptions] = useState([]);
 
@@ -38,6 +42,7 @@ function DetalleRow({ detalle, index, productos, onChange, onRemove }) {
           {productos.map((p) => (
             <option key={p.productoId} value={p.productoId}>
               [{p.codigo}] {p.nombre}
+              {p.precioActual != null ? ` — Bs. ${p.precioActual}` : ""}
             </option>
           ))}
         </select>
@@ -140,7 +145,10 @@ function CreateNotaVenta() {
     setDetalles((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
-      if (field === "productoId") updated[index].productoAlmacenId = "";
+      if (field === "productoId") {
+        updated[index].productoAlmacenId = "";
+        updated[index].precioVenta = resolvePrecioVenta(productos, value);
+      }
       return updated;
     });
   };
