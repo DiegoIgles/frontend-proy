@@ -1,0 +1,52 @@
+schema: spec-driven
+
+context: |
+  Stack: Create React App 5 (react-scripts 5.0.1), React 19.2.4, plain JavaScript (no TypeScript), react-router-dom 7, axios, react-icons.
+  Architecture: feature-based `src/pages/{domain}/` with `actions/` (API calls), `hooks/` (data fetching), `interfaces/` (JSON response fixtures); shared `src/context/` (Auth/Toast/Confirm) and `src/components/` incl. `layout/`; central axios client `src/api/cyborg-api.js` with Bearer token interceptor.
+  API: base URL via `REACT_APP_API_URL` env (default http://localhost:3000/api); UI copy in Spanish.
+  Style: plain co-located CSS (`src/styles/` + component `.css`), no CSS framework, no design system.
+  Testing: Jest 27.5 + React Testing Library (react-scripts test); suite GREEN after fixing react-router-dom v7 resolution (see `testing:` below).
+
+testing:
+  strict_tdd: true
+  test_command: "CI=true npm test -- --watchAll=false"
+  coverage_command: "CI=true npm test -- --watchAll=false --coverage"
+  runner: jest (react-scripts 5.0.1)
+  note: |
+    Suite is GREEN (verified 2026-08-06). Fixes applied: (1) package.json
+    `jest.moduleNameMapper` maps react-router-dom -> node_modules/react-router-dom/dist/index.js,
+    react-router/dom -> node_modules/react-router/dist/development/dom-export.js,
+    react-router -> node_modules/react-router/dist/development/index.js (Jest 27 cannot
+    resolve the v7 `exports` map with "module-sync"/ESM conditions); (2) src/setupTests.js
+    polyfills TextEncoder/TextDecoder (util) and crypto.randomUUID (node webcrypto) for jsdom;
+    (3) src/App.test.js replaced the stale CRA smoke test with a login-screen smoke test.
+    Build: `npm run build` compiles with warnings; `CI=true` build fails only on PRE-EXISTING
+    lint warnings in pages (unused vars, exhaustive-deps) unrelated to this fix.
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - State affected pages/domains explicitly (Spanish UI copy conventions apply to artifacts that touch UI)
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Reference `src/pages/{domain}/interfaces/*.json` fixtures when API shapes are involved
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+    - Follow existing patterns: pages/{domain}/actions + hooks + interfaces, contexts for cross-cutting state
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow existing code patterns (JSX, hooks, actions layer, co-located CSS)
+      - Do not add new dependencies without design approval
+    tdd: true
+    test_command: "CI=true npm test"
+  verify:
+    test_command: "CI=true npm test"
+    build_command: "npm run build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas

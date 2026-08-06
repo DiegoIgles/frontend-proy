@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders the login screen at the root route', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /iniciar sesión/i })).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/correo electrónico/i)).toBeInTheDocument();
+  expect(screen.getByPlaceholderText(/contraseña/i)).toBeInTheDocument();
 });
