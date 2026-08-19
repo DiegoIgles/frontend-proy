@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import "./floatingChatbot.css";
+import LocationPickerModal from "./LocationPickerModal";
 
 const WEBHOOK_URL =
   "http://localhost:5678/webhook-test/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
@@ -37,6 +38,10 @@ function FloatingChatbot() {
 
   // Confirmación visual temporal al copiar el link de ubicación
   const [copyFeedback, setCopyFeedback] = useState(false);
+
+  // Modal para elegir la ubicación en un mapa (disparado por el botón
+  // "Abrir GPS" que manda el bot en su respuesta)
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   const bottomRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -80,6 +85,7 @@ function FloatingChatbot() {
         {
           sender: "bot",
           text: data.reply,
+          buttons: data.buttons || null,
         },
       ]);
 
@@ -98,18 +104,30 @@ function FloatingChatbot() {
     }
   };
 
-  const sendMessage = async (overrideText) => {
-    const textToSend = (overrideText ?? input).trim();
+  // Cuando el usuario hace click en un botón, mandamos el "value" como
+  // mensaje real, pero mostramos el "label" en la burbuja del usuario
+  // para que se vea natural en el historial del chat.
+  const sendMessage = async (overrideValue, overrideLabel) => {
+    const textToSend = (overrideValue ?? input).trim();
+    const textToShow = (overrideLabel ?? overrideValue ?? input).trim();
     const fileToSend = attachedFile;
     const previewToShow = attachedPreview;
 
     if (!textToSend && !fileToSend) return;
 
+    // Una vez que el usuario elige un botón, ocultamos los botones de
+    // ese mensaje del bot para que no los pueda volver a tocar.
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.buttons ? { ...msg, buttons: null } : msg
+      )
+    );
+
     setMessages((prev) => [
       ...prev,
       {
         sender: "user",
-        text: textToSend,
+        text: textToShow,
         imageUrl: previewToShow || undefined,
       },
     ]);
@@ -158,6 +176,7 @@ function FloatingChatbot() {
         {
           sender: "bot",
           text: data.reply,
+          buttons: data.buttons || null,
         },
       ]);
     } catch (error) {
@@ -179,6 +198,30 @@ function FloatingChatbot() {
     if (e.key === "Enter") {
       sendMessage();
     }
+  };
+
+  // ---- Botones de respuesta rápida ----
+
+  const handleButtonClick = (btn) => {
+    // El botón "Abrir GPS" que manda el bot (value: "gps") no se envía
+    // directo: abre el mapa para que el usuario confirme el pin exacto.
+    if (btn.value === "gps") {
+      setShowLocationModal(true);
+      return;
+    }
+
+    sendMessage(btn.value, btn.label);
+  };
+
+  // ---- Modal de selección de ubicación en el mapa ----
+
+  const handleLocationConfirm = (mapsLink) => {
+    setShowLocationModal(false);
+    sendMessage(mapsLink, "📍 Ubicación compartida");
+  };
+
+  const handleLocationModalClose = () => {
+    setShowLocationModal(false);
   };
 
   // ---- Adjuntar foto de la factura ----
@@ -282,7 +325,25 @@ function FloatingChatbot() {
                     className="chat-msg-image"
                   />
                 )}
-                {msg.text && <div>{msg.text}</div>}
+                {msg.text && (
+  <div className="chat-msg-text">
+    {msg.text}
+  </div>
+)}
+
+                {msg.buttons && msg.buttons.length > 0 && (
+                  <div className="chat-msg-buttons">
+                    {msg.buttons.map((btn, i) => (
+                      <button
+                        key={i}
+                        className="chat-quick-reply-btn"
+                        onClick={() => handleButtonClick(btn)}
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
@@ -355,6 +416,13 @@ function FloatingChatbot() {
             </button>
           </div>
         </div>
+      )}
+
+      {showLocationModal && (
+        <LocationPickerModal
+          onConfirm={handleLocationConfirm}
+          onClose={handleLocationModalClose}
+        />
       )}
     </>
   );

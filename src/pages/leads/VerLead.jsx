@@ -8,8 +8,8 @@ import { updateLeadAction } from "./actions/update-lead.action";
 import { deleteLeadAction } from "./actions/delete-lead.action";
 import { TIPOS_SERVICIO, TIPOS_SUMINISTRO, TIPOS_CUBIERTA, formatTipoServicio } from "./leads.constants";
 import {
-  FaUserPlus, FaPhone, FaMapMarkerAlt, FaCommentDots, FaEdit, FaTrash, FaArrowLeft,
-  FaBolt, FaBuilding, FaFileInvoiceDollar, FaHome, FaMapMarkedAlt, FaImage,
+  FaUserPlus, FaPhone, FaEnvelope, FaMapMarkerAlt, FaCommentDots, FaEdit, FaTrash, FaArrowLeft,
+  FaBolt, FaBuilding, FaFileInvoiceDollar, FaHome, FaMapMarkedAlt, FaImage, FaCar, FaChargingStation,
 } from "react-icons/fa";
 
 const fieldLabel = { fontSize: 11, color: "#9ca3af", display: "block", marginBottom: 4 };
@@ -47,6 +47,7 @@ function VerLead() {
     setForm({
       nombre:         lead.nombre,
       telefono:       lead.telefono || "",
+      correo:         lead.correo || "",
       direccion:      lead.direccion || "",
       comentario:     lead.comentario || "",
       tipoServicio:   lead.tipoServicio || "",
@@ -55,6 +56,9 @@ function VerLead() {
       tipoCubierta:   lead.tipoCubierta || "",
       ubicacion:      lead.ubicacion || "",
       facturaImagenUrl: lead.facturaImagenUrl || "",
+      vehiculo:       lead.vehiculo || "",
+      cargador:       lead.cargador || "",
+      imagenCargadorUrl: lead.imagenCargadorUrl || "",
     });
     setFormErr("");
     setShowEdit(true);
@@ -71,6 +75,7 @@ function VerLead() {
     try {
       const dto = { nombre: form.nombre };
       if (form.telefono.trim())        dto.telefono        = form.telefono.trim();
+      if (form.correo.trim())          dto.correo          = form.correo.trim();
       if (form.direccion.trim())       dto.direccion       = form.direccion.trim();
       if (form.comentario.trim())      dto.comentario      = form.comentario.trim();
       if (form.tipoServicio)           dto.tipoServicio    = form.tipoServicio;
@@ -80,6 +85,9 @@ function VerLead() {
       if (form.tipoCubierta)           dto.tipoCubierta    = form.tipoCubierta;
       if (form.ubicacion.trim())       dto.ubicacion       = form.ubicacion.trim();
       if (form.facturaImagenUrl.trim()) dto.facturaImagenUrl = form.facturaImagenUrl.trim();
+      if (form.vehiculo.trim())        dto.vehiculo        = form.vehiculo.trim();
+      if (form.cargador.trim())        dto.cargador        = form.cargador.trim();
+      if (form.imagenCargadorUrl.trim()) dto.imagenCargadorUrl = form.imagenCargadorUrl.trim();
       await updateLeadAction(id, dto);
       setShowEdit(false);
       loadLead();
@@ -156,6 +164,13 @@ function VerLead() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            <FaEnvelope style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 11, color: "#9ca3af" }}>Correo</div>
+              {lead.correo ? <a href={`mailto:${lead.correo}`} style={{ color: "#2563eb" }}>{lead.correo}</a> : <span>—</span>}
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaMapMarkerAlt style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
             <div>
               <div style={{ fontSize: 11, color: "#9ca3af" }}>Dirección</div>
@@ -220,6 +235,32 @@ function VerLead() {
               ) : <span>—</span>}
             </div>
           </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            <FaCar style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 11, color: "#9ca3af" }}>Vehículo</div>
+              <span>{lead.vehiculo || "—"}</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            <FaChargingStation style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 11, color: "#9ca3af" }}>Cargador</div>
+              <span>{lead.cargador || "—"}</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            <FaImage style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 11, color: "#9ca3af" }}>Foto del cargador</div>
+              {lead.imagenCargadorUrl ? (
+                <a href={lead.imagenCargadorUrl} target="_blank" rel="noreferrer">
+                  <img src={lead.imagenCargadorUrl} alt="Cargador"
+                    style={{ maxWidth: 160, maxHeight: 120, borderRadius: 6, display: "block", marginTop: 4, border: "1px solid #e5e7eb" }} />
+                </a>
+              ) : <span>—</span>}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -245,6 +286,11 @@ function VerLead() {
                 <div>
                   <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Teléfono</label>
                   <input value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+                    style={{ width: "100%", boxSizing: "border-box" }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Correo</label>
+                  <input type="email" value={form.correo} onChange={(e) => setForm({ ...form, correo: e.target.value })}
                     style={{ width: "100%", boxSizing: "border-box" }} />
                 </div>
                 <div>
@@ -278,7 +324,7 @@ function VerLead() {
                   </select>
                 </div>
                 <div>
-                  <label style={fieldLabel}>Factura mensual (Bs)</label>
+                  <label style={fieldLabel}>Factura anual (Bs)</label>
                   <input type="number" step="0.01" min="0" value={form.facturaMensual}
                     onChange={(e) => setForm({ ...form, facturaMensual: e.target.value })} style={fieldInput} />
                 </div>
@@ -299,6 +345,18 @@ function VerLead() {
                 <div>
                   <label style={fieldLabel}>URL foto de factura</label>
                   <input value={form.facturaImagenUrl} onChange={(e) => setForm({ ...form, facturaImagenUrl: e.target.value })} style={fieldInput} />
+                </div>
+                <div>
+                  <label style={fieldLabel}>Vehículo</label>
+                  <input value={form.vehiculo} onChange={(e) => setForm({ ...form, vehiculo: e.target.value })} style={fieldInput} />
+                </div>
+                <div>
+                  <label style={fieldLabel}>Cargador</label>
+                  <input value={form.cargador} onChange={(e) => setForm({ ...form, cargador: e.target.value })} style={fieldInput} />
+                </div>
+                <div>
+                  <label style={fieldLabel}>URL foto del cargador</label>
+                  <input value={form.imagenCargadorUrl} onChange={(e) => setForm({ ...form, imagenCargadorUrl: e.target.value })} style={fieldInput} />
                 </div>
               </div>
               <div className="modal-footer">

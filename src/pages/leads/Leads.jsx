@@ -135,6 +135,7 @@ function Leads() {
               <tr>
                 <th>Nombre</th>
                 <th className="col-hide-mobile">Teléfono</th>
+                <th className="col-hide-mobile">Correo</th>
                 <th className="col-hide-mobile">Servicio</th>
                 <th className="col-hide-mobile">Suministro</th>
                 <th className="col-hide-mobile">Dirección</th>
@@ -144,14 +145,17 @@ function Leads() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
+                <tr><td colSpan={8} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
               ) : leadsPagina.length === 0 ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
+                <tr><td colSpan={8} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
               ) : leadsPagina.map((l) => (
                 <tr key={l.id}>
                   <td><strong>{l.nombre}</strong></td>
                   <td className="col-hide-mobile">
                     {l.telefono ? <a href={`tel:${l.telefono}`} style={{ color: "#2563eb" }}>{l.telefono}</a> : "—"}
+                  </td>
+                  <td className="col-hide-mobile">
+                    {l.correo ? <a href={`mailto:${l.correo}`} style={{ color: "#2563eb" }}>{l.correo}</a> : "—"}
                   </td>
                   <td className="col-hide-mobile">{formatTipoServicio(l.tipoServicio)}</td>
                   <td className="col-hide-mobile">{l.tipoSuministro || "—"}</td>
