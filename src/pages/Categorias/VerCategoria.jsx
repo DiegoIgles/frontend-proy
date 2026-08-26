@@ -5,6 +5,7 @@ import { getCategoriaAction }    from "./actions/get-categoria.action";
 import { getCategoriasFlatAction } from "./actions/get-categorias-flat.action";
 import { updateCategoriaAction } from "./actions/update-categoria.action";
 import { deleteCategoriaAction } from "./actions/delete-categoria.action";
+import EsquemaAtributosEditor from "./components/EsquemaAtributosEditor";
 import { FaArrowLeft, FaEdit, FaTrash, FaTags, FaBoxOpen, FaEye } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -21,7 +22,7 @@ function VerCategoria() {
   const [error,    setError]    = useState("");
 
   const [showEdit, setShowEdit] = useState(false);
-  const [form,     setForm]     = useState({ nombre: "", categoriaPadreId: "" });
+  const [form,     setForm]     = useState({ nombre: "", categoriaPadreId: "", esquemaAtributos: [] });
   const [saving,   setSaving]   = useState(false);
   const [formErr,  setFormErr]  = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -40,7 +41,11 @@ function VerCategoria() {
   useEffect(() => { load(); }, [id]);
 
   const openEdit = () => {
-    setForm({ nombre: cat.nombre, categoriaPadreId: cat.categoriaPadre?.categoriaId ?? "" });
+    setForm({
+      nombre: cat.nombre,
+      categoriaPadreId: cat.categoriaPadre?.categoriaId ?? "",
+      esquemaAtributos: cat.esquemaAtributos ?? [],
+    });
     setFormErr("");
     setShowEdit(true);
   };
@@ -51,7 +56,10 @@ function VerCategoria() {
     if (!form.nombre.trim()) { setFormErr("El nombre es requerido."); return; }
     setSaving(true);
     try {
-      const dto = { nombre: form.nombre };
+      const dto = {
+        nombre: form.nombre,
+        esquemaAtributos: (form.esquemaAtributos || []).filter((c) => c.key && c.label),
+      };
       if (form.categoriaPadreId) dto.categoriaPadreId = form.categoriaPadreId;
       await updateCategoriaAction(id, dto);
       toast.success("Categoría actualizada correctamente.");
@@ -169,6 +177,28 @@ function VerCategoria() {
         </div>
       </div>
 
+      {/* Atributos técnicos definidos */}
+      <div className="card" style={{ marginBottom: 16 }}>
+        <h3 style={{ margin: "0 0 16px", fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
+          <FaTags style={{ color: "#0891b2" }} /> Atributos técnicos
+        </h3>
+        {(cat.esquemaAtributos ?? []).length === 0 ? (
+          <p style={{ color: "#9ca3af", fontSize: 13 }}>
+            Sin atributos técnicos definidos. Editá la categoría para agregar campos (ej. potencia, voltaje).
+          </p>
+        ) : (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {cat.esquemaAtributos.map((c) => (
+              <span key={c.key} style={{
+                background: "#ecfeff", color: "#0e7490", padding: "4px 10px", borderRadius: 8, fontSize: 12,
+              }}>
+                {c.label}{c.unidad ? ` [${c.unidad}]` : ""}{c.requerido ? " *" : ""}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Productos en esta categoría */}
       <div className="card">
         <h3 style={{ margin: "0 0 16px", fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
@@ -187,7 +217,6 @@ function VerCategoria() {
                   <th>Código</th>
                   <th>Nombre</th>
                   <th className="col-hide-mobile">SKU</th>
-                  <th className="col-hide-mobile">% Ganancia</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -197,7 +226,6 @@ function VerCategoria() {
                     <td><code style={{ fontSize: 12, background: "#f3f4f6", padding: "2px 6px", borderRadius: 4 }}>{p.codigo}</code></td>
                     <td><strong>{p.nombre}</strong></td>
                     <td className="col-hide-mobile" style={{ color: "#6b7280", fontSize: 13 }}>{p.sku || "—"}</td>
-                    <td className="col-hide-mobile">{p.porcentajeGanancia ? `${Number(p.porcentajeGanancia).toFixed(0)}%` : "—"}</td>
                     <td>
                       <Link to={`/inventario/productos/${p.productoId}`} className="btn-secondary" title="Ver producto">
                         <FaEye />
@@ -214,7 +242,7 @@ function VerCategoria() {
       {/* Modal Editar */}
       {showEdit && (
         <div className="modal-backdrop" onClick={() => setShowEdit(false)}>
-          <div className="modal" style={{ width: "100%", maxWidth: 420 }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal" style={{ width: "100%", maxWidth: 640 }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 style={{ margin: 0, fontSize: 16 }}>Editar Categoría</h3>
               <button onClick={() => setShowEdit(false)}
@@ -241,6 +269,13 @@ function VerCategoria() {
                         </option>
                       ))}
                   </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Atributos técnicos</label>
+                  <EsquemaAtributosEditor
+                    campos={form.esquemaAtributos || []}
+                    onChange={(campos) => setForm({ ...form, esquemaAtributos: campos })}
+                  />
                 </div>
               </div>
               <div className="modal-footer">

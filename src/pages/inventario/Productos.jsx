@@ -4,8 +4,9 @@ import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
 import { getProductosAction }  from "./actions/get-productos.action";
 import { createProductoAction } from "./actions/create-producto.action";
-import { getCategoriasAction }  from "../Categorias/actions/get-categorias.action";
+import { getCategoriasFlatAction }  from "../Categorias/actions/get-categorias-flat.action";
 import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.action";
+import ProductoCategoriasYAtributos from "./components/ProductoCategoriasYAtributos";
 import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
@@ -15,7 +16,7 @@ const today = () => new Date().toISOString().split("T")[0];
 
 const FORM_VACIO = {
   codigo: "", nombre: "", sku: "", descripcion: "",
-  porcentajeGanancia: "", categoriaId: "", marcaModeloId: "",
+  categoriaIds: [], categoriaPrincipalId: "", atributos: {}, marcaModeloId: "",
 };
 
 function StockBadge({ stock }) {
@@ -54,7 +55,7 @@ function Productos() {
   const [formErr,   setFormErr]   = useState("");
 
   useEffect(() => {
-    getCategoriasAction().then(setCategorias).catch(() => {});
+    getCategoriasFlatAction().then((d) => setCategorias(Array.isArray(d) ? d : [])).catch(() => {});
     getMarcaModelosAction().then((d) => setMarcaModelos(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
@@ -93,14 +94,19 @@ function Productos() {
       setFormErr("Código, nombre y SKU son obligatorios.");
       return;
     }
+    if (!form.categoriaIds.length || !form.categoriaPrincipalId) {
+      setFormErr("Elegí al menos una categoría y marcá cuál es la principal.");
+      return;
+    }
     try {
       setSaving(true);
-      const dto = { ...form };
-      if (!dto.categoriaId)       delete dto.categoriaId;
-      if (!dto.marcaModeloId)     delete dto.marcaModeloId;
-      if (!dto.descripcion)       delete dto.descripcion;
-      if (dto.porcentajeGanancia === "") delete dto.porcentajeGanancia;
-      else dto.porcentajeGanancia = Number(dto.porcentajeGanancia);
+      const dto = {
+        codigo: form.codigo, nombre: form.nombre, sku: form.sku,
+        categoriaIds: form.categoriaIds, categoriaPrincipalId: form.categoriaPrincipalId,
+      };
+      if (form.descripcion)   dto.descripcion = form.descripcion;
+      if (form.marcaModeloId) dto.marcaModeloId = form.marcaModeloId;
+      if (Object.keys(form.atributos || {}).length) dto.atributos = form.atributos;
       await createProductoAction(dto);
       toast.success("Producto creado correctamente.");
       setShowModal(false);
@@ -198,7 +204,17 @@ function Productos() {
                     <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{p.nombre}</p>
                     {p.sku && <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{p.sku}</p>}
                   </td>
-                  <td style={{ color: "#6b7280", fontSize: 13 }}>{p.categoria?.nombre ?? "—"}</td>
+                  <td style={{ color: "#6b7280", fontSize: 13 }}>
+                    {p.categoriaPrincipal?.nombre ?? "—"}
+                    {p.categorias?.length > 1 && (
+                      <span style={{
+                        marginLeft: 6, fontSize: 10, fontWeight: 700, color: "#6366f1",
+                        background: "#eef2ff", borderRadius: 8, padding: "1px 6px",
+                      }}>
+                        +{p.categorias.length - 1}
+                      </span>
+                    )}
+                  </td>
                   <td style={{ fontSize: 13, color: "#6b7280" }}>
                     {p.marcaModelo
                       ? `${p.marcaModelo.marca?.nombre} / ${p.marcaModelo.modelo?.nombre}`
@@ -233,7 +249,7 @@ function Productos() {
       {/* Modal Crear Producto */}
       {showModal && (
         <div className="modal-backdrop" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
+          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 640 }}>
             <div className="modal-header">
               <h3>Nuevo Producto</h3>
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
@@ -256,20 +272,6 @@ function Productos() {
                   <label>Descripción</label>
                   <input name="descripcion" value={form.descripcion} onChange={handleFormChange} placeholder="Descripción opcional..." />
                 </div>
-                <div>
-                  <label>% Ganancia</label>
-                  <input name="porcentajeGanancia" type="number" min="0" max="100"
-                    value={form.porcentajeGanancia} onChange={handleFormChange} placeholder="25" />
-                </div>
-                <div>
-                  <label>Categoría</label>
-                  <select name="categoriaId" value={form.categoriaId} onChange={handleFormChange}>
-                    <option value="">Sin categoría</option>
-                    {categorias.map((c) => (
-                      <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
-                    ))}
-                  </select>
-                </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Marca / Modelo</label>
                   <select name="marcaModeloId" value={form.marcaModeloId} onChange={handleFormChange}>
@@ -281,6 +283,15 @@ function Productos() {
                     ))}
                   </select>
                 </div>
+                <ProductoCategoriasYAtributos
+                  categoriasDisponibles={categorias}
+                  categoriaIds={form.categoriaIds}
+                  categoriaPrincipalId={form.categoriaPrincipalId}
+                  atributos={form.atributos}
+                  onChangeCategoriaIds={(ids) => setForm((f) => ({ ...f, categoriaIds: ids }))}
+                  onChangeCategoriaPrincipalId={(id) => setForm((f) => ({ ...f, categoriaPrincipalId: id }))}
+                  onChangeAtributos={(at) => setForm((f) => ({ ...f, atributos: at }))}
+                />
                 {formErr && (
                   <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
                 )}

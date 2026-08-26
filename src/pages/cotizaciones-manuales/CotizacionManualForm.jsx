@@ -6,9 +6,11 @@ import { createCotizacionManualAction } from "./actions/create-cotizacion.action
 import { updateCotizacionManualAction } from "./actions/update-cotizacion.action";
 import { getCotizacionManualAction } from "./actions/get-cotizacion.action";
 import { uploadImagenCotizacionAction } from "./actions/upload-imagen.action";
+import { getCategoriasFlatAction } from "../Categorias/actions/get-categorias-flat.action";
+import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { useToast } from "../../context/ToastContext";
 import {
-  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner,
+  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch,
 } from "react-icons/fa";
 
 const DEFAULT_ROI_BARRAS = [
@@ -311,6 +313,19 @@ function CotizacionManualForm() {
   const [loading, setLoading] = useState(esEdicion);
   const [saving, setSaving] = useState(false);
 
+  // ── Agregar ítem desde el catálogo de productos ──
+  const [showCatalogo, setShowCatalogo] = useState(false);
+  const [categoriasCatalogo, setCategoriasCatalogo] = useState([]);
+  const [catalogoCategoriaId, setCatalogoCategoriaId] = useState("");
+  const [catalogoBusqueda, setCatalogoBusqueda] = useState("");
+  const [catalogoResultados, setCatalogoResultados] = useState([]);
+  const [catalogoSeleccionado, setCatalogoSeleccionado] = useState(null);
+  const [catalogoCantidad, setCatalogoCantidad] = useState(1);
+
+  useEffect(() => {
+    getCategoriasFlatAction().then((d) => setCategoriasCatalogo(Array.isArray(d) ? d : [])).catch(() => {});
+  }, []);
+
   // Al crear una nueva cotización, autocompletar 'realizadoPor' con el usuario logueado
   useEffect(() => {
     if (!esEdicion && user) {
@@ -402,6 +417,43 @@ function CotizacionManualForm() {
     updateItemsAndTotals(newItems);
   };
 
+  // ── Agregar ítem desde catálogo ──
+  const abrirCatalogo = () => {
+    setCatalogoCategoriaId(""); setCatalogoBusqueda(""); setCatalogoResultados([]);
+    setCatalogoSeleccionado(null); setCatalogoCantidad(1);
+    setShowCatalogo(true);
+  };
+
+  const buscarEnCatalogo = async () => {
+    try {
+      const filtros = { limit: 20 };
+      if (catalogoCategoriaId) filtros.categoriaId = catalogoCategoriaId;
+      if (catalogoBusqueda) filtros.search = catalogoBusqueda;
+      const res = await getProductosAction(filtros);
+      setCatalogoResultados(Array.isArray(res) ? res : (res.data ?? []));
+    } catch {
+      setCatalogoResultados([]);
+    }
+  };
+
+  const confirmarAgregarDesdeCatalogo = () => {
+    if (!catalogoSeleccionado) return;
+    const cantidad = Number(catalogoCantidad) || 1;
+    const precioUnitario = catalogoSeleccionado.precioActual ?? 0;
+    const nextNro = form.items.length + 1;
+    const newItems = [
+      ...form.items,
+      {
+        nro: nextNro, cantidad, unidad: "und",
+        descripcion: catalogoSeleccionado.nombre,
+        precioUnitario, totalBs: (cantidad * precioUnitario).toFixed(2),
+        productoId: catalogoSeleccionado.productoId,
+      },
+    ];
+    updateItemsAndTotals(newItems);
+    setShowCatalogo(false);
+  };
+
   // ── ROI barras dinámicas ──
   const addBarra = () => setForm((f) => ({ ...f, roiBarras: [...f.roiBarras, { etiqueta: "", valor: "" }] }));
   const removeBarra = (i) => setForm((f) => ({ ...f, roiBarras: f.roiBarras.filter((_, idx) => idx !== i) }));
@@ -448,6 +500,7 @@ function CotizacionManualForm() {
         descripcion: it.descripcion || "",
         precioUnitario: num(it.precioUnitario),
         totalBs: num(it.totalBs),
+        productoId: it.productoId || undefined,
       })),
       tiempoMontaje: form.tiempoMontaje || undefined,
       notas: form.notas ? form.notas.trim() : undefined,
@@ -563,14 +616,24 @@ function CotizacionManualForm() {
           <div style={{ marginBottom: 18 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <label style={labelStyle}>Cuadro de Productos y Servicios ({form.items.length} ítems)</label>
-              <button
-                type="button"
-                onClick={addItem}
-                className="btn-secondary"
-                style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, padding: "6px 12px" }}
-              >
-                <FaPlus /> Agregar ítem
-              </button>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={abrirCatalogo}
+                  className="btn-primary"
+                  style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, padding: "6px 12px" }}
+                >
+                  <FaBoxOpen /> Agregar desde catálogo
+                </button>
+                <button
+                  type="button"
+                  onClick={addItem}
+                  className="btn-secondary"
+                  style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, padding: "6px 12px" }}
+                >
+                  <FaPlus /> Agregar ítem
+                </button>
+              </div>
             </div>
 
             {form.items.length === 0 ? (
@@ -740,6 +803,80 @@ function CotizacionManualForm() {
           </button>
         </div>
       </form>
+
+      {/* Modal: Agregar ítem desde catálogo */}
+      {showCatalogo && (
+        <div className="modal-backdrop" onClick={() => setShowCatalogo(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
+            <div className="modal-header">
+              <h3>Agregar desde catálogo</h3>
+              <button className="modal-close" onClick={() => setShowCatalogo(false)}>×</button>
+            </div>
+            <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ display: "flex", gap: 8 }}>
+                <select value={catalogoCategoriaId} onChange={(e) => setCatalogoCategoriaId(e.target.value)} style={{ flex: 1 }}>
+                  <option value="">Todas las categorías</option>
+                  {categoriasCatalogo.map((c) => (
+                    <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
+                  ))}
+                </select>
+                <input
+                  value={catalogoBusqueda}
+                  onChange={(e) => setCatalogoBusqueda(e.target.value)}
+                  placeholder="Buscar por nombre, código o SKU..."
+                  style={{ flex: 2 }}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); buscarEnCatalogo(); } }}
+                />
+                <button type="button" className="btn-secondary" onClick={buscarEnCatalogo}>
+                  <FaSearch />
+                </button>
+              </div>
+
+              {catalogoResultados.length > 0 && (
+                <div style={{ maxHeight: 220, overflowY: "auto", border: "1px solid #e5e7eb", borderRadius: 6 }}>
+                  {catalogoResultados.map((p) => (
+                    <div key={p.productoId}
+                      onClick={() => setCatalogoSeleccionado(p)}
+                      style={{
+                        padding: "8px 10px", cursor: "pointer", fontSize: 13,
+                        display: "flex", justifyContent: "space-between", alignItems: "center",
+                        background: catalogoSeleccionado?.productoId === p.productoId ? "#eff6ff" : "#fff",
+                        borderBottom: "1px solid #f3f4f6",
+                      }}>
+                      <div>
+                        <strong>{p.nombre}</strong>
+                        <span style={{ color: "#9ca3af", marginLeft: 6, fontSize: 11 }}>{p.codigo}</span>
+                      </div>
+                      <span style={{ fontWeight: 700, color: "#1d4ed8" }}>
+                        {p.precioActual != null ? `$${Number(p.precioActual).toFixed(2)}` : "—"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {catalogoSeleccionado && (
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={{ fontSize: 12, color: "#059669" }}>
+                    Seleccionado: <strong>{catalogoSeleccionado.nombre}</strong>
+                  </span>
+                  <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6 }}>
+                    <label style={{ fontSize: 12 }}>Cantidad</label>
+                    <input type="number" min="0.01" step="0.01" style={{ width: 80 }}
+                      value={catalogoCantidad} onChange={(e) => setCatalogoCantidad(e.target.value)} />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn-secondary" onClick={() => setShowCatalogo(false)}>Cancelar</button>
+              <button type="button" className="btn-primary" onClick={confirmarAgregarDesdeCatalogo} disabled={!catalogoSeleccionado}>
+                Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
