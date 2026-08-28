@@ -167,6 +167,17 @@ const cajaY = (pyCapTop, capMm) => `${((pyCapTop - 247) * ESCALA_TEXTO + BLOQUE_
 // "ENERGÉTICO" es la línea más larga del arte y termina justo en este límite.
 const TEXTO_MAX_WIDTH_MM = 109.2 - 7.0;
 
+// El nombre del cliente va SIEMPRE en un renglón: si se parte, la segunda línea
+// se come el pie de ciudad/fecha, que está posicionado en absoluto. En Montserrat
+// 700 mayúsculas cada carácter mide ~1.02 veces la altura de mayúscula, así que
+// para nombres largos se baja el cuerpo lo justo para que entre.
+const CAP_CLIENTE = 5.56;
+function capCliente(nombre) {
+  const n = (nombre || "").length;
+  if (!n) return CAP_CLIENTE;
+  return Math.min(CAP_CLIENTE, TEXTO_MAX_WIDTH_MM / (n * 1.02));
+}
+
 export function Pagina1Portada({ cot }) {
   if (!cot) return null;
 
@@ -231,7 +242,7 @@ export function Pagina1Portada({ cot }) {
         {cot.subtituloPropuesta || "Propuesta de Sistema Fotovoltaico On Grid"}
       </p>
 
-      <p style={{ position: "absolute", top: cajaY(693, 5.56), left: X(47), maxWidth: `${TEXTO_MAX_WIDTH_MM}mm`, margin: 0, fontSize: cuerpo(5.56), fontWeight: 700, color: COLORS.verde900, textTransform: "uppercase", lineHeight: 1.15, wordBreak: "break-word", zIndex: 3 }}>
+      <p style={{ position: "absolute", top: cajaY(693, CAP_CLIENTE), left: X(47), maxWidth: `${TEXTO_MAX_WIDTH_MM}mm`, margin: 0, fontSize: cuerpo(capCliente(cot.nombreCliente)), fontWeight: 700, color: COLORS.verde900, textTransform: "uppercase", lineHeight: 1.15, whiteSpace: "nowrap", zIndex: 3 }}>
         {cot.nombreCliente || "CLIENTE GENERAL"}
       </p>
 

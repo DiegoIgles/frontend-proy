@@ -94,20 +94,30 @@ const ATRIBUTOS = [
 // franja se monta encima para que los rótulos se lean sobre la media luna azul.
 export function FranjaAtributos({ atributos = ATRIBUTOS, mostrarBarra = true, escala = "web", fondo = COLORS.navy }) {
   const carta = escala === "carta";
-  const fs = carta ? 9 : 13;
+  // La fila del arte va de x 8.9 a 175.5 mm y los cuatro ítems entran SIEMPRE en
+  // un solo renglón. El arte usa una tipografía más angosta que Montserrat
+  // (0.41 em por carácter contra 0.64), así que con la mayúscula de 2.4 mm del
+  // original los rótulos no entrarían y el cuarto ítem se caería a una segunda
+  // fila encima de la barra tricolor. Estos valores son el máximo que entra:
+  // ícono 7.9 mm y mayúscula 2.0 mm dejan ~17 px de aire en los 166.6 mm.
+  const fs = carta ? 11 : 13;
   const icono = carta ? 30 : 44;
 
   return (
-    <div style={{ background: fondo, padding: carta ? "16px 18px 16px 38px" : "26px 40px", width: "100%", height: "100%", boxSizing: "border-box", position: "relative" }}>
+    <div style={{ background: fondo, padding: carta ? "20px 18px 14px 34px" : "26px 40px", width: "100%", height: "100%", boxSizing: "border-box", position: "relative" }}>
       <ul
         style={{
           listStyle: "none",
           margin: 0,
           padding: 0,
           display: "flex",
-          flexWrap: "wrap",
+          // En carta los cuatro ítems van sí o sí en un renglón: si se envuelven,
+          // el cuarto cae sobre la barra tricolor.
+          flexWrap: carta ? "nowrap" : "wrap",
           justifyContent: "space-between",
-          maxWidth: carta ? 756 : undefined, // 200mm: los 4 items ocupan la izquierda de la banda
+          // 166.6 mm: en el arte los cuatro ítems van de x 8.9 a 175.5 mm, o sea
+          // ocupan solo el tercio izquierdo largo de la banda, no el ancho entero.
+          maxWidth: carta ? 630 : undefined,
           gap: carta ? 0 : "20px 0",
           alignItems: "center",
         }}
@@ -118,8 +128,9 @@ export function FranjaAtributos({ atributos = ATRIBUTOS, mostrarBarra = true, es
             style={{
               display: "flex",
               alignItems: "center",
-              gap: carta ? 12 : 14,
-              padding: i === 0 ? (carta ? "0 14px 0 0" : "0 26px 0 0") : carta ? "0 14px" : "0 26px",
+              flex: "0 0 auto",
+              gap: carta ? 11 : 14,
+              padding: i === 0 ? (carta ? "0 10px 0 0" : "0 26px 0 0") : carta ? "0 10px" : "0 26px",
               borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,.18)",
             }}
           >
