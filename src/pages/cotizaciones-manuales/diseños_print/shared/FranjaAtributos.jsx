@@ -89,13 +89,16 @@ const ATRIBUTOS = [
   { icono: <IconoPosventa />, texto: "Acompañamiento\nPosventa" },
 ];
 
-export function FranjaAtributos({ atributos = ATRIBUTOS, mostrarBarra = true, escala = "web" }) {
+// `fondo`: normalmente el navy de la banda. En la portada se pasa "transparent"
+// porque ahí el navy lo pinta el SVG del arte por debajo de las curvas, y esta
+// franja se monta encima para que los rótulos se lean sobre la media luna azul.
+export function FranjaAtributos({ atributos = ATRIBUTOS, mostrarBarra = true, escala = "web", fondo = COLORS.navy }) {
   const carta = escala === "carta";
   const fs = carta ? 9 : 13;
   const icono = carta ? 30 : 44;
 
   return (
-    <div style={{ background: COLORS.navy, padding: carta ? "16px 18px 16px 38px" : "26px 40px", width: "100%", height: "100%", boxSizing: "border-box", position: "relative" }}>
+    <div style={{ background: fondo, padding: carta ? "16px 18px 16px 38px" : "26px 40px", width: "100%", height: "100%", boxSizing: "border-box", position: "relative" }}>
       <ul
         style={{
           listStyle: "none",
