@@ -103,6 +103,14 @@ function CurvaPortada() {
           <circle cx={FOTO.cx} cy={FOTO.cy} r={FOTO.r} />
         </clipPath>
         <clipPath id="cFotoRecorte">{c(FOTO_RECORTE)}</clipPath>
+        {/* La banda navy muere donde empieza el círculo que contiene la media
+            luna azul. Medido en el arte: en y=890 px el navy corta en 906 px y
+            el azul arranca en 907, que es exactamente esa circunferencia. Por eso
+            la esquina inferior derecha de la hoja queda en hueso y no en navy. */}
+        <mask id="mBanda">
+          <rect x="0" y={FRANJA_Y_MM} width={PAGE_WIDTH_MM} height={PAGE_HEIGHT_MM - FRANJA_Y_MM} fill="#fff" />
+          <g fill="#000">{c(CIRC.azul.contiene)}</g>
+        </mask>
         {/* Los filetes viven sobre el hueso; no deben cruzar la franja */}
         <clipPath id="cSobreFranja">
           <rect x="0" y="0" width={PAGE_WIDTH_MM} height={FRANJA_Y_MM} />
@@ -112,7 +120,7 @@ function CurvaPortada() {
       {/* Fondo navy de la franja: va acá, dentro del arte, para que las curvas
           y la foto se pinten ENCIMA. Los rótulos de la franja se montan después
           en HTML, así "ACOMPAÑAMIENTO POSVENTA" se lee sobre la curva azul. */}
-      <rect x="0" y={FRANJA_Y_MM} width={PAGE_WIDTH_MM} height={PAGE_HEIGHT_MM - FRANJA_Y_MM} fill={COLORS.navy} />
+      <rect x="0" y={FRANJA_Y_MM} width={PAGE_WIDTH_MM} height={PAGE_HEIGHT_MM - FRANJA_Y_MM} fill={COLORS.navy} mask="url(#mBanda)" />
 
       <g clipPath="url(#cSobreFranja)" fill="none" stroke={COLORS.navy} strokeOpacity={0.1} strokeWidth={0.25}>
         {HAIRLINES.map((r) => (
