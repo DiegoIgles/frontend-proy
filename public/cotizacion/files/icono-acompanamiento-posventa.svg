@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none"
+     stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Acompañamiento posventa">
+  <circle cx="24" cy="24" r="20.4" stroke="#2C9826" stroke-width="2.2"/>
+  <!-- diadema -->
+  <path d="M13.6 25.6v-2.2a10.4 10.4 0 0 1 20.8 0v2.2" stroke="#FFFFFF" stroke-width="2.2"/>
+  <!-- auriculares -->
+  <path d="M13.6 22.6h1.6a1.9 1.9 0 0 1 1.9 1.9v4.4a1.9 1.9 0 0 1-1.9 1.9h-1.6a2.6 2.6 0 0 1-2.6-2.6v-3a2.6 2.6 0 0 1 2.6-2.6Z"
+        fill="#2C9826" stroke="#2C9826" stroke-width="1.6"/>
+  <path d="M34.4 22.6h-1.6a1.9 1.9 0 0 0-1.9 1.9v4.4a1.9 1.9 0 0 0 1.9 1.9h1.6a2.6 2.6 0 0 0 2.6-2.6v-3a2.6 2.6 0 0 0-2.6-2.6Z"
+        fill="#2C9826" stroke="#2C9826" stroke-width="1.6"/>
+  <!-- micrófono -->
+  <path d="M34.9 30.8v1.6a3.4 3.4 0 0 1-3.4 3.4H26" stroke="#FFFFFF" stroke-width="2.2"/>
+  <rect x="21.4" y="33.2" width="4.8" height="5" rx="2.4" fill="#FFFFFF"/>
+</svg>

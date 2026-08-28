@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enerlogic — Paleta y franja de atributos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DE MARCA ENERLOGIC
+   Valores muestreados directamente del arte de la propuesta.
+   ============================================================ */
+:root{
+  --enl-navy:        #001B3D;  /* fondo de franja, títulos */
+  --enl-navy-800:    #0A2A52;  /* navy un paso más claro, hovers */
+  --enl-azul:        #0062B7;  /* azul institucional (logo, arcos) */
+  --enl-verde:       #2C9826;  /* verde brillante: íconos y acentos */
+  --enl-verde-900:   #056125;  /* verde bosque: textos y arco superior */
+  --enl-naranja:     #EE9C02;  /* naranja del logo */
+  --enl-hueso:       #F1F1F1;  /* fondo claro de página */
+  --enl-blanco:      #FFFFFF;
+
+  --enl-atributo-fs: 13px;   /* pantalla */
+  --enl-franja-alto: 116px;
+  --enl-radio:       0px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Montserrat',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;
+  background:var(--enl-hueso);
+  color:var(--enl-navy);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:48px 24px 72px}
+h1{font-size:22px;letter-spacing:.02em;margin:0 0 4px;font-weight:800}
+.sub{font-size:14px;color:#5b6472;margin:0 0 36px}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--enl-verde-900);
+   font-weight:700;margin:44px 0 14px;display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:#d6dbe2}
+
+/* ---------- muestras de color ---------- */
+.paleta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.swatch{background:#fff;border:1px solid #e2e6ec;overflow:hidden}
+.swatch .chip{height:88px}
+.swatch .meta{padding:10px 12px 12px}
+.swatch .nom{font-size:12px;font-weight:700;letter-spacing:.03em}
+.swatch .hex{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;color:#5b6472;margin-top:2px}
+.swatch .var{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;color:#8a94a3;margin-top:6px}
+
+/* ============================================================
+   FRANJA DE ATRIBUTOS  (copiar desde aquí)
+   ============================================================ */
+.enl-franja{
+  background:var(--enl-navy);
+  padding:26px 40px;
+  border-radius:var(--enl-radio);
+}
+.enl-franja__lista{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-wrap:wrap;
+  align-items:center;justify-content:space-between;
+}
+.enl-item{
+  display:flex;align-items:center;gap:14px;
+  padding:0 26px;
+  border-left:1px solid rgba(255,255,255,.18);
+}
+.enl-item:first-child{border-left:0;padding-left:0}
+.enl-item__icono{flex:0 0 auto;width:44px;height:44px;display:block}
+.enl-item__texto{
+  color:var(--enl-blanco);
+  font-size:var(--enl-atributo-fs);font-weight:600;line-height:1.2;
+  letter-spacing:.05em;text-transform:uppercase;
+  white-space:nowrap;          /* una sola linea, siempre */
+}
+/* barra tricolor inferior */
+.enl-barra{display:flex;width:290px;height:5px;margin-top:26px}
+.enl-barra span{flex:1}
+.enl-barra span:nth-child(1){background:var(--enl-verde)}
+.enl-barra span:nth-child(2){background:var(--enl-azul)}
+.enl-barra span:nth-child(3){background:var(--enl-naranja)}
+
+@media (max-width:1100px){
+  :root{--enl-atributo-fs:11px}
+  .enl-item{padding:0 16px}
+}
+@media (max-width:820px){
+  .enl-franja{padding:22px 24px}
+  .enl-franja__lista{justify-content:flex-start;gap:18px 0}
+  .enl-item{flex:0 0 50%;padding:0 14px;border-left:0}
+  .enl-item:nth-child(odd){padding-left:0}
+}
+@media (max-width:520px){
+  .enl-item{flex:0 0 100%;padding:0}
+  .enl-barra{width:100%}
+}
+/* Franja dentro de una hoja CARTA HORIZONTAL (279.4mm / 11in): la etiqueta larga
+   "ENERGIA EFICIENTE Y SOSTENIBLE" solo entra en una linea a este tamano. */
+.enl-franja--carta{padding:16px 18px}
+.enl-franja--carta .enl-franja__lista{max-width:756px} /* 200mm: los 4 items ocupan la izquierda de la banda */
+.enl-franja--carta .enl-item{gap:9px;padding:0 12px}
+.enl-franja--carta .enl-item__icono{width:30px;height:30px}
+.enl-franja--carta .enl-item__texto{font-size:8px;letter-spacing:.03em}
+.enl-franja--carta .enl-barra{width:180px;height:4px;margin-top:14px}
+@page{size:letter landscape;margin:0}
+@media print{
+  .enl-franja{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .enl-item__texto{font-size:8px;letter-spacing:.03em}
+  .enl-item__icono{width:30px;height:30px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Enerlogic · sistema de color y franja de atributos</h1>
+  <p class="sub">Colores muestreados píxel a píxel de la propuesta CT-316-2026.</p>
+
+  <h2>Paleta</h2>
+  <div class="paleta">
+    <div class="swatch"><div class="chip" style="background:#001B3D"></div>
+      <div class="meta"><div class="nom">Navy Enerlogic</div><div class="hex">#001B3D</div><div class="var">--enl-navy</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0A2A52"></div>
+      <div class="meta"><div class="nom">Navy 800</div><div class="hex">#0A2A52</div><div class="var">--enl-navy-800</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0062B7"></div>
+      <div class="meta"><div class="nom">Azul institucional</div><div class="hex">#0062B7</div><div class="var">--enl-azul</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#2C9826"></div>
+      <div class="meta"><div class="nom">Verde brillante</div><div class="hex">#2C9826</div><div class="var">--enl-verde</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#056125"></div>
+      <div class="meta"><div class="nom">Verde bosque</div><div class="hex">#056125</div><div class="var">--enl-verde-900</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#EE9C02"></div>
+      <div class="meta"><div class="nom">Naranja logo</div><div class="hex">#EE9C02</div><div class="var">--enl-naranja</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#F1F1F1;border-bottom:1px solid #e2e6ec"></div>
+      <div class="meta"><div class="nom">Hueso / fondo</div><div class="hex">#F1F1F1</div><div class="var">--enl-hueso</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #e2e6ec"></div>
+      <div class="meta"><div class="nom">Blanco</div><div class="hex">#FFFFFF</div><div class="var">--enl-blanco</div></div></div>
+  </div>
+
+  <h2>Franja de atributos</h2>
+
+  <!-- ==================== COMPONENTE ==================== -->
+  <div class="enl-franja">
+    <ul class="enl-franja__lista">
+
+      <li class="enl-item">
+        <svg class="enl-item__icono" viewBox="0 0 48 48" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Ingeniería especializada">
+          <g stroke="#2C9826" stroke-width="2.2">
+            <circle cx="24" cy="12.5" r="4.6"/>
+            <path d="M24 3.4v2.6M24 19v2.6M15.6 12.5h-2.6M35 12.5h-2.6M18.1 6.6 16.3 4.8M31.7 20.2l-1.8-1.8M29.9 6.6l1.8-1.8M18.1 18.4l-1.8 1.8"/>
+          </g>
+          <g stroke="#FFFFFF" stroke-width="2.2">
+            <path d="M13.4 26.2h21.2L38 39.4H10z"/>
+            <path d="M11.7 32.8h24.6M24 26.2v13.2M17.4 39.4l1.6-13.2M30.6 39.4 29 26.2"/>
+            <path d="M24 39.4v4.8M19.6 44.2h8.8"/>
+          </g>
+        </svg>
+        <span class="enl-item__texto">Ingeniería especializada</span>
+      </li>
+
+      <li class="enl-item">
+        <svg class="enl-item__icono" viewBox="0 0 48 48" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Soluciones confiables">
+          <path d="M24 3.6 6.4 11.1v13.1c0 10.4 7.2 17.9 17.6 20.2 10.4-2.3 17.6-9.8 17.6-20.2V11.1z" fill="#2C9826" stroke="#2C9826" stroke-width="2.2"/>
+          <path d="M15.6 23.9 21.7 30l10.7-11.4" stroke="#FFFFFF" stroke-width="3.2"/>
+        </svg>
+        <span class="enl-item__texto">Soluciones confiables</span>
+      </li>
+
+      <li class="enl-item">
+        <svg class="enl-item__icono" viewBox="0 0 48 48" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Energía eficiente y sostenible">
+          <g stroke="#2C9826" stroke-width="2.6">
+            <path d="M8.5 24.4 18 14.9l6.6 6.6L39.5 6.6"/>
+            <path d="M30.4 6.6h9.1v9.1"/>
+          </g>
+          <g stroke="#FFFFFF" stroke-width="2.6">
+            <path d="M11.4 41.4V30.2M21.7 41.4V26.9M32 41.4V21.6"/>
+            <path d="M5.4 41.4h37.2"/>
+          </g>
+        </svg>
+        <span class="enl-item__texto">Energía eficiente y sostenible</span>
+      </li>
+
+      <li class="enl-item">
+        <svg class="enl-item__icono" viewBox="0 0 48 48" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Acompañamiento posventa">
+          <circle cx="24" cy="24" r="20.4" stroke="#2C9826" stroke-width="2.2"/>
+          <path d="M13.6 25.6v-2.2a10.4 10.4 0 0 1 20.8 0v2.2" stroke="#FFFFFF" stroke-width="2.2"/>
+          <path d="M13.6 22.6h1.6a1.9 1.9 0 0 1 1.9 1.9v4.4a1.9 1.9 0 0 1-1.9 1.9h-1.6a2.6 2.6 0 0 1-2.6-2.6v-3a2.6 2.6 0 0 1 2.6-2.6Z" fill="#2C9826" stroke="#2C9826" stroke-width="1.6"/>
+          <path d="M34.4 22.6h-1.6a1.9 1.9 0 0 0-1.9 1.9v4.4a1.9 1.9 0 0 0 1.9 1.9h1.6a2.6 2.6 0 0 0 2.6-2.6v-3a2.6 2.6 0 0 0-2.6-2.6Z" fill="#2C9826" stroke="#2C9826" stroke-width="1.6"/>
+          <path d="M34.9 30.8v1.6a3.4 3.4 0 0 1-3.4 3.4H26" stroke="#FFFFFF" stroke-width="2.2"/>
+          <rect x="21.4" y="33.2" width="4.8" height="5" rx="2.4" fill="#FFFFFF"/>
+        </svg>
+        <span class="enl-item__texto">Acompañamiento posventa</span>
+      </li>
+
+    </ul>
+
+    <div class="enl-barra" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+  <!-- ================== FIN COMPONENTE ================== -->
+
+  <h2>Misma franja en escala A4 (clase .enl-franja--carta)</h2>
+  <div style="width:1056px;max-width:100%;border:1px solid #e2e6ec;background:#fff;padding:0">
+    <div class="enl-franja enl-franja--carta">
+      <ul class="enl-franja__lista" id="a4"></ul>
+      <div class="enl-barra" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+  <script>
+    // clona los 4 items de la franja principal para la demo A4
+    document.getElementById('a4').innerHTML =
+      document.querySelector('.enl-franja__lista').innerHTML;
+  </script>
+
+</div>
+</body>
+</html>

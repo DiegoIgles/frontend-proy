@@ -251,8 +251,8 @@ function CotizacionManualPrint() {
 
         .pagina {
           position: relative;
-          width: 210mm;
-          height: 297mm;
+          width: 279.4mm;
+          height: 215.9mm;
           margin: 0 auto 24px;
           background: #fff;
           overflow: hidden;
@@ -276,7 +276,7 @@ function CotizacionManualPrint() {
         }
         .pagina:last-child { page-break-after: auto; break-after: auto; margin-bottom: 0; }
 
-        @page { size: A4; margin: 0; }
+        @page { size: letter landscape; margin: 0; }
 
         @media print {
           body { background: #fff; }
@@ -285,8 +285,8 @@ function CotizacionManualPrint() {
           .pagina {
             margin: 0;
             box-shadow: none;
-            width: 210mm;
-            height: 297mm;
+            width: 279.4mm;
+            height: 215.9mm;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
           }

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none"
+     stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Ingeniería especializada">
+  <!-- sol -->
+  <g stroke="#2C9826" stroke-width="2.2">
+    <circle cx="24" cy="12.5" r="4.6" fill="none"/>
+    <path d="M24 3.4v2.6M24 19v2.6M15.6 12.5h-2.6M35 12.5h-2.6M18.1 6.6 16.3 4.8M31.7 20.2l-1.8-1.8M29.9 6.6l1.8-1.8M18.1 18.4l-1.8 1.8"/>
+  </g>
+  <!-- panel -->
+  <g stroke="#FFFFFF" stroke-width="2.2">
+    <path d="M13.4 26.2h21.2L38 39.4H10z"/>
+    <path d="M11.7 32.8h24.6M24 26.2v13.2M17.4 39.4l1.6-13.2M30.6 39.4 29 26.2"/>
+    <path d="M24 39.4v4.8M19.6 44.2h8.8"/>
+  </g>
+</svg>
