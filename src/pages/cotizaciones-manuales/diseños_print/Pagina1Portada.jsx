@@ -47,24 +47,31 @@ const FOTO_SRC = "/cotizacion/assets/paneles-solares-portada.png";
 // La foto es la original completa (1424×1876), sin recortar: va en una caja de
 // su mismo aspecto y el círculo hace de máscara. La caja se corrió a la
 // izquierda a propósito para que el sol caiga en (262.6, 117.8) mm — dentro de
-// la hoja — que es donde está en el arte. Su borde derecho (290.2 mm) queda
+// la hoja — que es donde está en el arte. Su borde derecho (290.7 mm) queda
 // fuera de la hoja, así que el hueco que deja a la derecha nunca se ve.
-const FOTO_BOX = { x: 133.6, y: 19.1, w: 156.6, h: 206.4 };
+const FOTO_BOX = { x: 131.89, y: 17.76, w: 158.78, h: 209.17 };
 
 // Círculo de la foto y de cada media luna (mm). "contiene" pinta, "recorta" resta.
-const FOTO = { cx: 232.43, cy: 113.14, r: 92.07 };
+const FOTO = { cx: 238.99, cy: 121.06, r: 102.05 };
 
-// Segundo recorte de la foto, concéntrico con el círculo que recorta la media
-// luna azul y 15.6 mm más chico que él. Es lo que abre la franja de hueso entre
-// la foto y la curva azul, y lo que deja la foto en punta abajo a la izquierda
-// en vez de terminar en un arco. Medido sobre el arte: el radio da 674.9 px con
-// desviación de 2.3 px en seis filas, o sea es un anillo de ancho constante.
-const FOTO_RECORTE = [268.32, 55.79, 142.29];
+// Segundo recorte de la foto: el arco que la separa de la media luna azul.
+// Ajustado sobre 130 filas del arte (residuo máx 1.83 px). Abre los ~18 mm de
+// hueso que hay entre la foto y la curva, y deja la foto terminando en punta
+// abajo a la izquierda en vez de cerrar en su propio arco. También fija el borde
+// inferior de la foto en y=198.4 mm, o sea 17.5 mm arriba del pie de la hoja.
+const FOTO_RECORTE = [272.22, 45.77, 152.61];
 
 const CIRC = {
   navy: { contiene: [258.79, 101.39, 132.32], recorta: [240.68, 131.33, 120.79], recorta2: [264.42, 68.06, 85.98] },
-  azul: { contiene: [247.0, 132.56, 113.66], recorta: [268.32, 55.79, 157.92] },
-  verde: { contiene: [280.57, 78.01, 94.33], recorta: [240.26, 127.75, 108.79] },
+  azul: { contiene: [246.90, 132.89, 114.02], recorta: [277.33, 44.34, 171.56] },
+  // El radio del recorte verde medido es 108.79, pero con ese valor el arco del
+  // verde y el de la foto se separan hasta 1.1 mm en el borde derecho de la hoja
+  // y aparece una línea de hueso donde el arte los tiene pegados. Bajarlo a
+  // 107.60 hace que el verde siga 0.2 mm POR DEBAJO del borde de la foto en todo
+  // el tramo: como la foto se pinta después, lo tapa, y el contacto queda limpio.
+  // Se corrige acá y no agrandando la foto porque agrandarla angostaría el
+  // anillo de hueso contra la media luna navy, que sí está medido.
+  verde: { contiene: [280.57, 78.01, 94.33], recorta: [240.26, 127.75, 107.6] },
 };
 
 // Filetes concéntricos con el círculo que recorta el navy, apenas perceptibles.
