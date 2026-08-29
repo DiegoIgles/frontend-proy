@@ -141,7 +141,7 @@ function AgregarSeguimientoModal({ proyectoId, onClose, onAgregado }) {
 
 function TabInfo({ p }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
       <div className="card">
         <h3 style={{ margin: "0 0 16px", fontSize: 16 }}>Datos Generales</h3>
         <InfoRow label="Nombre" value={p.nombre} />
@@ -375,7 +375,7 @@ function TabAnalisis({ proyectoId }) {
       )}
 
       {/* Métricas */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 16 }}>
         {[
           { label: "Días Totales",       value: presupuesto.diasTotales,       color: "#374151" },
           { label: "Días Transcurridos", value: presupuesto.diasTranscurridos, color: "#0062B7" },
@@ -389,7 +389,7 @@ function TabAnalisis({ proyectoId }) {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
 
         {/* Ejecución */}
         <div className="card">

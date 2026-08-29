@@ -175,50 +175,52 @@ function Usuarios() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Usuario</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
-              ) : usuarios.length === 0 ? (
-                <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
-              ) : usuarios.map((u) => (
-                <tr key={u.id}>
-                  <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <AvatarSmall photo={u.profile?.photo} name={u.name} lastName={u.lastName} />
-                      <span style={{ fontWeight: 600 }}>{u.name} {u.lastName}</span>
-                    </div>
-                  </td>
-                  <td style={{ color: "#6b7280" }}>{u.email}</td>
-                  <td>{u.roles?.map((r) => <RolBadge key={r} rol={r} />)}</td>
-                  <td>
-                    <span style={{
-                      padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-                      background: u.isActive ? "#E6F3E5" : "#FBE9E7",
-                      color:      u.isActive ? "#056125" : "#96291D",
-                    }}>
-                      {u.isActive ? "Activo" : "Inactivo"}
-                    </span>
-                  </td>
-                  <td>
-                    <button className="btn-secondary" onClick={() => navigate(`/usuarios/${u.id}`)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Email</th>
+                  <th>Roles</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
+                ) : usuarios.length === 0 ? (
+                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
+                ) : usuarios.map((u) => (
+                  <tr key={u.id}>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <AvatarSmall photo={u.profile?.photo} name={u.name} lastName={u.lastName} />
+                        <span style={{ fontWeight: 600 }}>{u.name} {u.lastName}</span>
+                      </div>
+                    </td>
+                    <td style={{ color: "#6b7280" }}>{u.email}</td>
+                    <td>{u.roles?.map((r) => <RolBadge key={r} rol={r} />)}</td>
+                    <td>
+                      <span style={{
+                        padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
+                        background: u.isActive ? "#E6F3E5" : "#FBE9E7",
+                        color:      u.isActive ? "#056125" : "#96291D",
+                      }}>
+                        {u.isActive ? "Activo" : "Inactivo"}
+                      </span>
+                    </td>
+                    <td>
+                      <button className="btn-secondary" onClick={() => navigate(`/usuarios/${u.id}`)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination
@@ -239,7 +241,7 @@ function Usuarios() {
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleCreate}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Nombre *</label>
                   <input name="name" value={form.name} onChange={handleFormChange} placeholder="Juan" />

@@ -175,70 +175,72 @@ function Productos() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Marca / Modelo</th>
-                <th style={{ textAlign: "center" }}>Stock Total</th>
-                <th style={{ textAlign: "right" }}>Precio Actual</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
-              ) : productos.length === 0 ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
-              ) : productos.map((p) => (
-                <tr key={p.productoId}>
-                  <td>
-                    <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
-                      padding: "2px 6px", borderRadius: 4 }}>
-                      {p.codigo}
-                    </span>
-                  </td>
-                  <td>
-                    <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{p.nombre}</p>
-                    {p.sku && <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{p.sku}</p>}
-                  </td>
-                  <td style={{ color: "#6b7280", fontSize: 13 }}>
-                    {p.categoriaPrincipal?.nombre ?? "—"}
-                    {p.categorias?.length > 1 && (
-                      <span style={{
-                        marginLeft: 6, fontSize: 10, fontWeight: 700, color: "#6366f1",
-                        background: "#eef2ff", borderRadius: 8, padding: "1px 6px",
-                      }}>
-                        +{p.categorias.length - 1}
-                      </span>
-                    )}
-                  </td>
-                  <td style={{ fontSize: 13, color: "#6b7280" }}>
-                    {p.marcaModelo
-                      ? `${p.marcaModelo.marca?.nombre} / ${p.marcaModelo.modelo?.nombre}`
-                      : "—"}
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <StockBadge stock={p.stockTotal ?? 0} />
-                  </td>
-                  <td style={{ textAlign: "right", fontWeight: 600 }}>
-                    {p.precioActual != null
-                      ? `$${Number(p.precioActual).toLocaleString("es-CO", { minimumFractionDigits: 2 })}`
-                      : <span style={{ color: "#9ca3af" }}>—</span>}
-                  </td>
-                  <td>
-                    <button className="btn-secondary"
-                      onClick={() => navigate(`/inventario/productos/${p.productoId}`)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Marca / Modelo</th>
+                  <th style={{ textAlign: "center" }}>Stock Total</th>
+                  <th style={{ textAlign: "right" }}>Precio Actual</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
+                ) : productos.length === 0 ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
+                ) : productos.map((p) => (
+                  <tr key={p.productoId}>
+                    <td>
+                      <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
+                        padding: "2px 6px", borderRadius: 4 }}>
+                        {p.codigo}
+                      </span>
+                    </td>
+                    <td>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{p.nombre}</p>
+                      {p.sku && <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{p.sku}</p>}
+                    </td>
+                    <td style={{ color: "#6b7280", fontSize: 13 }}>
+                      {p.categoriaPrincipal?.nombre ?? "—"}
+                      {p.categorias?.length > 1 && (
+                        <span style={{
+                          marginLeft: 6, fontSize: 10, fontWeight: 700, color: "#6366f1",
+                          background: "#eef2ff", borderRadius: 8, padding: "1px 6px",
+                        }}>
+                          +{p.categorias.length - 1}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ fontSize: 13, color: "#6b7280" }}>
+                      {p.marcaModelo
+                        ? `${p.marcaModelo.marca?.nombre} / ${p.marcaModelo.modelo?.nombre}`
+                        : "—"}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      <StockBadge stock={p.stockTotal ?? 0} />
+                    </td>
+                    <td style={{ textAlign: "right", fontWeight: 600 }}>
+                      {p.precioActual != null
+                        ? `$${Number(p.precioActual).toLocaleString("es-CO", { minimumFractionDigits: 2 })}`
+                        : <span style={{ color: "#9ca3af" }}>—</span>}
+                    </td>
+                    <td>
+                      <button className="btn-secondary"
+                        onClick={() => navigate(`/inventario/productos/${p.productoId}`)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination total={total} limit={limit} offset={offset}
@@ -255,7 +257,7 @@ function Productos() {
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleCreate}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Código *</label>
                   <input name="codigo" value={form.codigo} onChange={handleFormChange} placeholder="PS-400M" />

@@ -130,7 +130,7 @@ function VerAlmacen() {
       </div>
 
       {/* Métricas */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 20 }}>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Productos</p>
@@ -181,54 +181,56 @@ function VerAlmacen() {
           </p>
         ) : (
           <div style={{ overflowX: "auto" }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Producto</th>
-                  <th>Categoría</th>
-                  <th>Marca / Modelo</th>
-                  <th style={{ textAlign: "center" }}>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtrados.length === 0 ? (
-                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
-                ) : filtrados.map((pa) => (
-                  <tr key={pa.productoAlmacenId}>
-                    <td>
-                      <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
-                        padding: "2px 6px", borderRadius: 4 }}>
-                        {pa.producto?.codigo}
-                      </span>
-                    </td>
-                    <td>
-                      <p style={{ margin: 0, fontWeight: 600 }}>{pa.producto?.nombre}</p>
-                      <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{pa.producto?.sku}</p>
-                    </td>
-                    <td style={{ color: "#6b7280", fontSize: 13 }}>
-                      {pa.producto?.categoria?.nombre ?? "—"}
-                    </td>
-                    <td style={{ fontSize: 13, color: "#6b7280" }}>
-                      {pa.producto?.marcaModelo
-                        ? `${pa.producto.marcaModelo.marca?.nombre} / ${pa.producto.marcaModelo.modelo?.nombre}`
-                        : "—"}
-                    </td>
-                    <td style={{ textAlign: "center" }}>
-                      <StockBadge stock={pa.stock ?? 0} />
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Marca / Modelo</th>
+                    <th style={{ textAlign: "center" }}>Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtrados.length === 0 ? (
+                    <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
+                  ) : filtrados.map((pa) => (
+                    <tr key={pa.productoAlmacenId}>
+                      <td>
+                        <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
+                          padding: "2px 6px", borderRadius: 4 }}>
+                          {pa.producto?.codigo}
+                        </span>
+                      </td>
+                      <td>
+                        <p style={{ margin: 0, fontWeight: 600 }}>{pa.producto?.nombre}</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{pa.producto?.sku}</p>
+                      </td>
+                      <td style={{ color: "#6b7280", fontSize: 13 }}>
+                        {pa.producto?.categoria?.nombre ?? "—"}
+                      </td>
+                      <td style={{ fontSize: 13, color: "#6b7280" }}>
+                        {pa.producto?.marcaModelo
+                          ? `${pa.producto.marcaModelo.marca?.nombre} / ${pa.producto.marcaModelo.modelo?.nombre}`
+                          : "—"}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <StockBadge stock={pa.stock ?? 0} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr style={{ background: "#f8fafc" }}>
+                    <td colSpan={4} style={{ fontWeight: 700, padding: "10px 12px" }}>TOTAL</td>
+                    <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>
+                      {filtrados.reduce((s, pa) => s + (pa.stock ?? 0), 0)}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr style={{ background: "#f8fafc" }}>
-                  <td colSpan={4} style={{ fontWeight: 700, padding: "10px 12px" }}>TOTAL</td>
-                  <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>
-                    {filtrados.reduce((s, pa) => s + (pa.stock ?? 0), 0)}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                </tfoot>
+              </table>
+            </div>
           </div>
         )}
       </div>

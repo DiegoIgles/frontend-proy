@@ -64,7 +64,7 @@ function VerNotaCompra() {
           <h1 style={{ marginTop: 4 }}>Nota de Compra</h1>
           <span style={{ fontSize: 13, color: "#9ca3af" }}>#{nota.notaCompraId}</span>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <Link to={`/compras/notas/${nota.notaCompraId}/recibo`} className="btn-secondary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <FaPrint /> Imprimir Recibo
           </Link>
@@ -79,7 +79,7 @@ function VerNotaCompra() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 16 }}>
 
         {/* Información general */}
         <div className="card">
@@ -120,75 +120,79 @@ function VerNotaCompra() {
       {/* Detalle de productos */}
       <div className="card" style={{ marginBottom: 16 }}>
         <h3 style={{ marginBottom: 12 }}>Detalle de Productos</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Almacén</th>
-              <th>Stock Actual</th>
-              <th>Cantidad</th>
-              <th>Precio Compra</th>
-              <th>Subtotal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {nota.detallesCompra.map((detalle) => {
-              const prod = detalle.productoAlmacen.producto;
-              const almacen = detalle.productoAlmacen.almacen;
-              const subtotal = detalle.cantidad * parseFloat(detalle.precioCompra);
-              return (
-                <tr key={detalle.detalleCompraId}>
-                  <td><code>{prod.codigo}</code></td>
-                  <td>
-                    <strong>{prod.nombre}</strong>
-                    <br />
-                    <small style={{ color: "#6b7280" }}>{prod.descripcion}</small>
-                  </td>
-                  <td>{almacen.nombre}</td>
-                  <td>{detalle.productoAlmacen.stock}</td>
-                  <td><strong>{detalle.cantidad}</strong></td>
-                  <td>Bs. {Number(detalle.precioCompra).toFixed(2)}</td>
-                  <td><strong>Bs. {subtotal.toFixed(2)}</strong></td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={6} style={{ textAlign: "right", fontWeight: 600, paddingTop: 10 }}>Total</td>
-              <td style={{ fontWeight: 700, fontSize: 15 }}>Bs. {subtotalDetalle.toFixed(2)}</td>
-            </tr>
-          </tfoot>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Almacén</th>
+                <th>Stock Actual</th>
+                <th>Cantidad</th>
+                <th>Precio Compra</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nota.detallesCompra.map((detalle) => {
+                const prod = detalle.productoAlmacen.producto;
+                const almacen = detalle.productoAlmacen.almacen;
+                const subtotal = detalle.cantidad * parseFloat(detalle.precioCompra);
+                return (
+                  <tr key={detalle.detalleCompraId}>
+                    <td><code>{prod.codigo}</code></td>
+                    <td>
+                      <strong>{prod.nombre}</strong>
+                      <br />
+                      <small style={{ color: "#6b7280" }}>{prod.descripcion}</small>
+                    </td>
+                    <td>{almacen.nombre}</td>
+                    <td>{detalle.productoAlmacen.stock}</td>
+                    <td><strong>{detalle.cantidad}</strong></td>
+                    <td>Bs. {Number(detalle.precioCompra).toFixed(2)}</td>
+                    <td><strong>Bs. {subtotal.toFixed(2)}</strong></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={6} style={{ textAlign: "right", fontWeight: 600, paddingTop: 10 }}>Total</td>
+                <td style={{ fontWeight: 700, fontSize: 15 }}>Bs. {subtotalDetalle.toFixed(2)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
       {/* Pago al contado */}
       {!nota.esCredito && nota.movimientoCaja && (
         <div className="card">
           <h3 style={{ marginBottom: 12 }}>Pago al Contado</h3>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Glosa</th>
-                <th>Tipo</th>
-                <th>Monto</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{new Date(nota.movimientoCaja.fecha).toLocaleDateString("es-BO")}</td>
-                <td>{nota.movimientoCaja.glosa}</td>
-                <td>
-                  <span style={{ color: "#C0392B", fontWeight: 600 }}>
-                    {nota.movimientoCaja.tipoMovimiento}
-                  </span>
-                </td>
-                <td><strong>Bs. {Number(nota.movimientoCaja.monto).toFixed(2)}</strong></td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Glosa</th>
+                  <th>Tipo</th>
+                  <th>Monto</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{new Date(nota.movimientoCaja.fecha).toLocaleDateString("es-BO")}</td>
+                  <td>{nota.movimientoCaja.glosa}</td>
+                  <td>
+                    <span style={{ color: "#C0392B", fontWeight: 600 }}>
+                      {nota.movimientoCaja.tipoMovimiento}
+                    </span>
+                  </td>
+                  <td><strong>Bs. {Number(nota.movimientoCaja.monto).toFixed(2)}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
@@ -200,7 +204,7 @@ function VerNotaCompra() {
             <EstadoBadge estado={nota.cuentaPorPagar.estado} />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 16 }}>
             {[
               { label: "Monto Total",   value: `Bs. ${Number(nota.cuentaPorPagar.montoTotal).toFixed(2)}` },
               { label: "Monto Pagado",  value: `Bs. ${Number(nota.cuentaPorPagar.montoPagado).toFixed(2)}`, color: "#2C9826" },
@@ -220,30 +224,32 @@ function VerNotaCompra() {
           {nota.cuentaPorPagar.movimientosCaja.length === 0 ? (
             <p style={{ color: "#6b7280", fontSize: 14 }}>Sin pagos registrados aún.</p>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Glosa</th>
-                  <th>Tipo</th>
-                  <th>Monto</th>
-                </tr>
-              </thead>
-              <tbody>
-                {nota.cuentaPorPagar.movimientosCaja.map((mov) => (
-                  <tr key={mov.movimientoCajaId}>
-                    <td>{new Date(mov.fecha).toLocaleDateString("es-BO")}</td>
-                    <td>{mov.glosa}</td>
-                    <td>
-                      <span style={{ color: "#C0392B", fontWeight: 600 }}>
-                        {mov.tipoMovimiento}
-                      </span>
-                    </td>
-                    <td><strong>Bs. {Number(mov.monto).toFixed(2)}</strong></td>
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Glosa</th>
+                    <th>Tipo</th>
+                    <th>Monto</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {nota.cuentaPorPagar.movimientosCaja.map((mov) => (
+                    <tr key={mov.movimientoCajaId}>
+                      <td>{new Date(mov.fecha).toLocaleDateString("es-BO")}</td>
+                      <td>{mov.glosa}</td>
+                      <td>
+                        <span style={{ color: "#C0392B", fontWeight: 600 }}>
+                          {mov.tipoMovimiento}
+                        </span>
+                      </td>
+                      <td><strong>Bs. {Number(mov.monto).toFixed(2)}</strong></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       )}

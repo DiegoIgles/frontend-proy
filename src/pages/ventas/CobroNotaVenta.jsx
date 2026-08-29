@@ -69,7 +69,7 @@ function CobroNotaVenta() {
       </div>
 
       {/* Métricas de la deuda */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 12, marginBottom: 16 }}>
         <MetricaCard
           label="Monto Total Venta"
           value={`Bs. ${Number(saldo.montoTotalVenta).toFixed(2)}`}
@@ -101,7 +101,7 @@ function CobroNotaVenta() {
         <h3 style={{ marginBottom: 16 }}>Nuevo Abono</h3>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 16 }}>
 
             <div className="form-group">
               <label>Monto a Cobrar (Bs.) *</label>
@@ -135,7 +135,7 @@ function CobroNotaVenta() {
 
           {/* Preview saldo resultante */}
           {montoNum > 0 && !montoInvalido && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 20, padding: 14, background: "#f0fdf4", borderRadius: 8 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, marginBottom: 20, padding: 14, background: "#f0fdf4", borderRadius: 8 }}>
               <div>
                 <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>Saldo actual</p>
                 <p style={{ fontSize: 15, fontWeight: 700, color: "#C0392B", margin: "4px 0 0" }}>

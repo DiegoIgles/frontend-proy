@@ -219,7 +219,7 @@ function CreateProyecto() {
         {/* Datos principales */}
         <div className="card" style={{ marginBottom: 20 }}>
           <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Datos del Proyecto</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             <div className="form-group" style={{ gridColumn: "1 / -1" }}>
               <label>Nombre *</label>
               <input type="text" placeholder="Ej: Instalación Solar 10kW - Casa García"
@@ -307,7 +307,7 @@ function CreateProyecto() {
         {/* Presupuesto — ahora debajo de productos para que el cálculo tenga sentido */}
         <div className="card" style={{ marginBottom: 20 }}>
           <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Presupuesto</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
 
             <div className="form-group">
               <label>Mano de Obra (Bs.) <span style={{ color: "#9ca3af", fontWeight: 400 }}>(opcional)</span></label>

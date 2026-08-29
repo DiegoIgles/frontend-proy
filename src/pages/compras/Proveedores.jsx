@@ -110,72 +110,74 @@ function Proveedores() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Contacto</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Ciudad / País</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
-              ) : proveedores.length === 0 ? (
-                <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
-              ) : proveedores.map((p) => (
-                <tr key={p.proveedorId}>
-                  <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{
-                        width: 36, height: 36, borderRadius: 8, background: "#E3EEF9",
-                        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                      }}>
-                        <FaTruck style={{ color: "#0062B7", fontSize: 15 }} />
-                      </div>
-                      <span style={{ fontWeight: 700 }}>{p.nombre}</span>
-                    </div>
-                  </td>
-                  <td style={{ color: "#6b7280", fontSize: 13 }}>{p.contacto ?? "—"}</td>
-                  <td>
-                    {p.email
-                      ? <a href={`mailto:${p.email}`}
-                          style={{ color: "#0062B7", textDecoration: "none", fontSize: 13,
-                            display: "flex", alignItems: "center", gap: 4 }}>
-                          <FaEnvelope style={{ fontSize: 11 }} />{p.email}
-                        </a>
-                      : <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
-                  </td>
-                  <td>
-                    {p.telefono
-                      ? <span style={{ display: "flex", alignItems: "center", gap: 4,
-                          color: "#374151", fontSize: 13 }}>
-                          <FaPhone style={{ fontSize: 11 }} />{p.telefono}
-                        </span>
-                      : <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
-                  </td>
-                  <td style={{ fontSize: 13, color: "#6b7280" }}>
-                    {p.ciudad || p.pais
-                      ? <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                          <FaMapMarkerAlt style={{ fontSize: 11 }} />
-                          {[p.ciudad, p.pais].filter(Boolean).join(", ")}
-                        </span>
-                      : "—"}
-                  </td>
-                  <td>
-                    <button className="btn-secondary"
-                      onClick={() => navigate(`/compras/proveedores/${p.proveedorId}`)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Contacto</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Ciudad / País</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
+                ) : proveedores.length === 0 ? (
+                  <tr><td colSpan={6} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
+                ) : proveedores.map((p) => (
+                  <tr key={p.proveedorId}>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{
+                          width: 36, height: 36, borderRadius: 8, background: "#E3EEF9",
+                          display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                        }}>
+                          <FaTruck style={{ color: "#0062B7", fontSize: 15 }} />
+                        </div>
+                        <span style={{ fontWeight: 700 }}>{p.nombre}</span>
+                      </div>
+                    </td>
+                    <td style={{ color: "#6b7280", fontSize: 13 }}>{p.contacto ?? "—"}</td>
+                    <td>
+                      {p.email
+                        ? <a href={`mailto:${p.email}`}
+                            style={{ color: "#0062B7", textDecoration: "none", fontSize: 13,
+                              display: "flex", alignItems: "center", gap: 4 }}>
+                            <FaEnvelope style={{ fontSize: 11 }} />{p.email}
+                          </a>
+                        : <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
+                    </td>
+                    <td>
+                      {p.telefono
+                        ? <span style={{ display: "flex", alignItems: "center", gap: 4,
+                            color: "#374151", fontSize: 13 }}>
+                            <FaPhone style={{ fontSize: 11 }} />{p.telefono}
+                          </span>
+                        : <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
+                    </td>
+                    <td style={{ fontSize: 13, color: "#6b7280" }}>
+                      {p.ciudad || p.pais
+                        ? <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                            <FaMapMarkerAlt style={{ fontSize: 11 }} />
+                            {[p.ciudad, p.pais].filter(Boolean).join(", ")}
+                          </span>
+                        : "—"}
+                    </td>
+                    <td>
+                      <button className="btn-secondary"
+                        onClick={() => navigate(`/compras/proveedores/${p.proveedorId}`)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination total={total} limit={limit} offset={offset}
@@ -192,7 +194,7 @@ function Proveedores() {
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleCreate}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Nombre *</label>
                   <input name="nombre" value={form.nombre} onChange={handleFormChange}

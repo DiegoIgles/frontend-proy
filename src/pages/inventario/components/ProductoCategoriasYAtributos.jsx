@@ -134,7 +134,7 @@ function ProductoCategoriasYAtributos({
             Esta categoría no tiene atributos técnicos definidos.
           </p>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
             {esquema.map((campo) => (
               <div key={campo.key}>
                 <label style={{ ...labelStyle, fontWeight: campo.requerido ? 700 : 500 }}>

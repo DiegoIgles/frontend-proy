@@ -219,28 +219,30 @@ function CreateAjuste() {
           </div>
 
           <div style={{ overflowX: "auto" }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Almacén</th>
-                  <th>Cantidad</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {detalles.map((detalle, index) => (
-                  <DetalleRow
-                    key={index}
-                    detalle={detalle}
-                    index={index}
-                    productos={productos}
-                    onChange={handleDetalleChange}
-                    onRemove={removeDetalle}
-                  />
-                ))}
-              </tbody>
-            </table>
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Almacén</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detalles.map((detalle, index) => (
+                    <DetalleRow
+                      key={index}
+                      detalle={detalle}
+                      index={index}
+                      productos={productos}
+                      onChange={handleDetalleChange}
+                      onRemove={removeDetalle}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

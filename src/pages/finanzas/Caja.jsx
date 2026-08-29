@@ -73,7 +73,7 @@ function NuevoMovimientoModal({ onClose, onCreated }) {
       position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)",
       zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center",
     }}>
-      <div style={{ background: "#fff", borderRadius: 10, padding: 28, width: 420, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+      <div style={{ background: "#fff", borderRadius: 10, padding: 28, width: "100%", maxWidth: 420, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <h3 style={{ margin: 0 }}>Nuevo Movimiento Manual</h3>
           <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "#6b7280" }}>
@@ -204,7 +204,7 @@ function Caja() {
 
       {/* Métricas */}
       {resumen && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 16, marginBottom: 20 }}>
           <MetricCard label="Total Ingresos"  value={resumen.ingresos} color="#2C9826" />
           <MetricCard label="Total Egresos"   value={resumen.egresos}  color="#C0392B" />
           <MetricCard

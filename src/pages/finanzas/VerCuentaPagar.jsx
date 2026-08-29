@@ -164,7 +164,7 @@ function VerCuentaPagar() {
       {error   && <p style={{ color: "#C0392B", textAlign: "center", padding: 40 }}>Error al cargar la cuenta.</p>}
 
       {!loading && cxp && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
 
           {/* Datos generales */}
           <div className="card">

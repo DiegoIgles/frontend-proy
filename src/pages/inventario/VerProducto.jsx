@@ -351,7 +351,7 @@ function VerProducto() {
       </div>
 
       {/* Métricas rápidas */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14, marginBottom: 20 }}>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280", textTransform: "uppercase",
             fontWeight: 600 }}>Stock Total</p>
@@ -391,7 +391,7 @@ function VerProducto() {
         {/* Tab: Información */}
         {tab === "info" && (
           <div style={{ padding: 20 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 18 }}>
               <Campo label="Código"   value={producto.codigo} />
               <Campo label="SKU"      value={producto.sku} />
               <Campo label="Nombre"   value={producto.nombre} />
@@ -439,20 +439,22 @@ function VerProducto() {
                 <div style={{ gridColumn: "1 / -1" }}>
                   <p style={{ margin: "0 0 6px", fontSize: 11, color: "#6b7280", textTransform: "uppercase",
                     letterSpacing: "0.5px", fontWeight: 600 }}>Especificaciones técnicas</p>
-                  <table className="table">
-                    <tbody>
-                      {producto.categoriaPrincipal.esquemaAtributos.map((campo) => (
-                        <tr key={campo.key}>
-                          <td style={{ fontWeight: 600, width: "50%" }}>{campo.label}</td>
-                          <td>
-                            {producto.atributos?.[campo.key] != null && producto.atributos?.[campo.key] !== ""
-                              ? `${producto.atributos[campo.key]}${campo.unidad ? ` ${campo.unidad}` : ""}`
-                              : <span style={{ color: "#9ca3af" }}>—</span>}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="table-responsive">
+                    <table className="table">
+                      <tbody>
+                        {producto.categoriaPrincipal.esquemaAtributos.map((campo) => (
+                          <tr key={campo.key}>
+                            <td style={{ fontWeight: 600, width: "50%" }}>{campo.label}</td>
+                            <td>
+                              {producto.atributos?.[campo.key] != null && producto.atributos?.[campo.key] !== ""
+                                ? `${producto.atributos[campo.key]}${campo.unidad ? ` ${campo.unidad}` : ""}`
+                                : <span style={{ color: "#9ca3af" }}>—</span>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>
@@ -472,34 +474,36 @@ function VerProducto() {
             {producto.productoAlmacenes?.length === 0 ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Sin almacenes asignados.</p>
             ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Almacén</th>
-                    <th style={{ textAlign: "center" }}>Stock</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {producto.productoAlmacenes?.map((pa) => (
-                    <tr key={pa.productoAlmacenId}>
-                      <td style={{ fontWeight: 600 }}>{pa.almacen?.nombre}</td>
-                      <td style={{ textAlign: "center" }}>
-                        <span style={{
-                          padding: "2px 12px", borderRadius: 10, fontSize: 13, fontWeight: 700,
-                          background: pa.stock === 0 ? "#FBE9E7" : pa.stock <= 10 ? "#fef9c3" : "#E6F3E5",
-                          color:      pa.stock === 0 ? "#96291D" : pa.stock <= 10 ? "#8A5A02" : "#056125",
-                        }}>
-                          {pa.stock}
-                        </span>
-                      </td>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Almacén</th>
+                      <th style={{ textAlign: "center" }}>Stock</th>
                     </tr>
-                  ))}
-                  <tr style={{ background: "#f8fafc" }}>
-                    <td style={{ fontWeight: 700 }}>TOTAL</td>
-                    <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>{stockTotal}</td>
-                  </tr>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {producto.productoAlmacenes?.map((pa) => (
+                      <tr key={pa.productoAlmacenId}>
+                        <td style={{ fontWeight: 600 }}>{pa.almacen?.nombre}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <span style={{
+                            padding: "2px 12px", borderRadius: 10, fontSize: 13, fontWeight: 700,
+                            background: pa.stock === 0 ? "#FBE9E7" : pa.stock <= 10 ? "#fef9c3" : "#E6F3E5",
+                            color:      pa.stock === 0 ? "#96291D" : pa.stock <= 10 ? "#8A5A02" : "#056125",
+                          }}>
+                            {pa.stock}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                    <tr style={{ background: "#f8fafc" }}>
+                      <td style={{ fontWeight: 700 }}>TOTAL</td>
+                      <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>{stockTotal}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}
@@ -517,33 +521,35 @@ function VerProducto() {
             {!producto.precios?.length ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Sin historial de precios.</p>
             ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th style={{ textAlign: "right" }}>Precio</th>
-                    <th style={{ textAlign: "center" }}>Actual</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {producto.precios.map((pr, i) => (
-                    <tr key={pr.precioId}>
-                      <td>{pr.fecha}</td>
-                      <td style={{ textAlign: "right", fontWeight: 600 }}>
-                        ${Number(pr.precio).toLocaleString("es-CO", { minimumFractionDigits: 2 })}
-                      </td>
-                      <td style={{ textAlign: "center" }}>
-                        {i === 0 && (
-                          <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 11,
-                            fontWeight: 700, background: "#E6F3E5", color: "#056125" }}>
-                            Vigente
-                          </span>
-                        )}
-                      </td>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th style={{ textAlign: "right" }}>Precio</th>
+                      <th style={{ textAlign: "center" }}>Actual</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {producto.precios.map((pr, i) => (
+                      <tr key={pr.precioId}>
+                        <td>{pr.fecha}</td>
+                        <td style={{ textAlign: "right", fontWeight: 600 }}>
+                          ${Number(pr.precio).toLocaleString("es-CO", { minimumFractionDigits: 2 })}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {i === 0 && (
+                            <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 11,
+                              fontWeight: 700, background: "#E6F3E5", color: "#056125" }}>
+                              Vigente
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}
@@ -560,32 +566,34 @@ function VerProducto() {
             {!producto.componentes?.length ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Este producto no tiene componentes.</p>
             ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th style={{ textAlign: "center" }}>Cantidad</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {producto.componentes.map((c) => (
-                    <tr key={c.productoComponenteRegistroId}>
-                      <td style={{ fontFamily: "monospace", fontSize: 12 }}>{c.producto?.codigo}</td>
-                      <td style={{ fontWeight: 600 }}>{c.producto?.nombre}</td>
-                      <td style={{ textAlign: "center" }}>{c.cantidad}</td>
-                      <td style={{ textAlign: "right" }}>
-                        <button type="button" onClick={() => handleRemoveComponente(c.producto?.productoId)}
-                          title="Quitar componente"
-                          style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
-                          <FaTrash />
-                        </button>
-                      </td>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th style={{ textAlign: "center" }}>Cantidad</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {producto.componentes.map((c) => (
+                      <tr key={c.productoComponenteRegistroId}>
+                        <td style={{ fontFamily: "monospace", fontSize: 12 }}>{c.producto?.codigo}</td>
+                        <td style={{ fontWeight: 600 }}>{c.producto?.nombre}</td>
+                        <td style={{ textAlign: "center" }}>{c.cantidad}</td>
+                        <td style={{ textAlign: "right" }}>
+                          <button type="button" onClick={() => handleRemoveComponente(c.producto?.productoId)}
+                            title="Quitar componente"
+                            style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
+                            <FaTrash />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}
@@ -600,7 +608,7 @@ function VerProducto() {
               <button className="modal-close" onClick={() => setShowEdit(false)}>×</button>
             </div>
             <form onSubmit={handleSaveEdit}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Código</label>
                   <input name="codigo" value={editForm.codigo} onChange={handleEditChange} />

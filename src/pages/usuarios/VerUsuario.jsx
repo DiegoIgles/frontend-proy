@@ -224,7 +224,7 @@ function VerUsuario() {
 
           <div className="card">
             <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Información de la Cuenta</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
               <div>
                 <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6b7280", textTransform: "uppercase",
                   letterSpacing: "0.5px", fontWeight: 600 }}>Nombre</p>
@@ -264,7 +264,7 @@ function VerUsuario() {
           {usuario.profile && (
             <div className="card">
               <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Perfil</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
                 <div>
                   <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6b7280", textTransform: "uppercase",
                     letterSpacing: "0.5px", fontWeight: 600 }}>Género</p>
@@ -294,7 +294,7 @@ function VerUsuario() {
               <button className="modal-close" onClick={() => setShowEditModal(false)}>×</button>
             </div>
             <form onSubmit={handleSaveEdit}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Nombre</label>
                   <input name="name" value={editForm.name} onChange={handleEditChange} />

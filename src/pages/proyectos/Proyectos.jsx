@@ -57,7 +57,7 @@ function ProyectoCard({ p, onClick }) {
         </p>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", fontSize: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "6px 12px", fontSize: 12 }}>
         <MetaItem icon={<FaCalendarAlt />} label="Inicio" value={fmtDate(p.fechaInicio)} />
         <MetaItem icon={<FaCalendarAlt />} label="Final"  value={fmtDate(p.fechaFinal)} />
         <MetaItem icon={<FaUser />}        label="Resp."  value={`${p.usuario.name} ${p.usuario.lastName}`} />
@@ -169,7 +169,7 @@ function Proyectos() {
 
       {/* Métricas rápidas */}
       {result && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 20 }}>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total (filtro actual)</p>
             <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#111827" }}>{result.total}</p>
