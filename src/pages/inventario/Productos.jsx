@@ -7,6 +7,7 @@ import { createProductoAction } from "./actions/create-producto.action";
 import { getCategoriasFlatAction }  from "../Categorias/actions/get-categorias-flat.action";
 import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.action";
 import ProductoCategoriasYAtributos from "./components/ProductoCategoriasYAtributos";
+import SelectorMarcaModelo from "./components/SelectorMarcaModelo";
 import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
@@ -276,14 +277,12 @@ function Productos() {
                 </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Marca / Modelo</label>
-                  <select name="marcaModeloId" value={form.marcaModeloId} onChange={handleFormChange}>
-                    <option value="">Sin marca-modelo</option>
-                    {marcaModelos.map((mm) => (
-                      <option key={mm.marcaModeloId} value={mm.marcaModeloId}>
-                        {mm.marca?.nombre} / {mm.modelo?.nombre}
-                      </option>
-                    ))}
-                  </select>
+                  <SelectorMarcaModelo
+                    value={form.marcaModeloId}
+                    onChange={(id) => setForm((f) => ({ ...f, marcaModeloId: id }))}
+                    opciones={marcaModelos}
+                    onCreada={(mm) => setMarcaModelos((prev) => [...prev, mm])}
+                  />
                 </div>
                 <ProductoCategoriasYAtributos
                   categoriasDisponibles={categorias}

@@ -133,10 +133,10 @@ function Perfil() {
         <h1>Mi Perfil</h1>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 20, maxWidth: 820 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 20, maxWidth: 820 }}>
 
         {/* ── Tarjeta foto ── */}
-        <div className="card" style={{ textAlign: "center" }}>
+        <div className="card" style={{ textAlign: "center", flex: "1 1 280px" }}>
           <div style={{ position: "relative", display: "inline-block", marginBottom: 16 }}>
             <Avatar photoUrl={photoUrl} initiales={initiales} size={100} />
 
@@ -226,7 +226,7 @@ function Perfil() {
         </div>
 
         {/* ── Datos de la cuenta ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, flex: "999 1 320px", minWidth: 0 }}>
 
           {/* Información personal */}
           <div className="card">
@@ -282,7 +282,7 @@ function Perfil() {
                 ? GENEROS.find((g) => g.value === user.profile.gender)?.label ?? user.profile.gender
                 : "Sin especificar"}</strong>
             </p>
-            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}

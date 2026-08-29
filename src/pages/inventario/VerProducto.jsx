@@ -21,6 +21,7 @@ import {
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
+import SelectorMarcaModelo from "./components/SelectorMarcaModelo";
 
 const today = () => new Date().toISOString().split("T")[0];
 
@@ -627,14 +628,12 @@ function VerProducto() {
                 </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Marca / Modelo</label>
-                  <select name="marcaModeloId" value={editForm.marcaModeloId} onChange={handleEditChange}>
-                    <option value="">Sin marca-modelo</option>
-                    {marcaModelos.map((mm) => (
-                      <option key={mm.marcaModeloId} value={mm.marcaModeloId}>
-                        {mm.marca?.nombre} / {mm.modelo?.nombre}
-                      </option>
-                    ))}
-                  </select>
+                  <SelectorMarcaModelo
+                    value={editForm.marcaModeloId}
+                    onChange={(id) => setEditForm((f) => ({ ...f, marcaModeloId: id }))}
+                    opciones={marcaModelos}
+                    onCreada={(mm) => setMarcaModelos((prev) => [...prev, mm])}
+                  />
                 </div>
                 <ProductoCategoriasYAtributos
                   categoriasDisponibles={categorias}
