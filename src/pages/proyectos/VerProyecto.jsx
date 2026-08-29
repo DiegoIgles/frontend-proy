@@ -26,10 +26,10 @@ function fmtDate(d) {
 }
 
 const TIPO_COLORS = {
-  MATERIAL:   { bg: "#dbeafe", color: "#1e40af" },
-  MANO_OBRA:  { bg: "#d1fae5", color: "#065f46" },
-  TRANSPORTE: { bg: "#fef3c7", color: "#92400e" },
-  GASTO_EXTRA:{ bg: "#fee2e2", color: "#991b1b" },
+  MATERIAL:   { bg: "#E3EEF9", color: "#00509A" },
+  MANO_OBRA:  { bg: "#E6F3E5", color: "#056125" },
+  TRANSPORTE: { bg: "#fef3c7", color: "#8A5A02" },
+  GASTO_EXTRA:{ bg: "#FBE9E7", color: "#96291D" },
 };
 
 function TipoBadge({ tipo }) {
@@ -58,8 +58,8 @@ function Tab({ label, active, onClick, icon }) {
       style={{
         padding: "10px 20px", border: "none", background: "none", cursor: "pointer",
         fontWeight: active ? 700 : 400, fontSize: 14,
-        color: active ? "#1d4ed8" : "#6b7280",
-        borderBottom: active ? "3px solid #1d4ed8" : "3px solid transparent",
+        color: active ? "#0062B7" : "#6b7280",
+        borderBottom: active ? "3px solid #0062B7" : "3px solid transparent",
         display: "flex", alignItems: "center", gap: 6,
         transition: "color 0.15s",
       }}
@@ -196,7 +196,7 @@ function TabInfo({ p }) {
                       <td className="col-hide-mobile" style={{ fontSize: 13, color: "#6b7280" }}>
                         {item.productoAlmacen.almacen.nombre}
                       </td>
-                      <td style={{ textAlign: "right", color: stockBajo ? "#dc2626" : "#059669", fontWeight: 600 }}>
+                      <td style={{ textAlign: "right", color: stockBajo ? "#C0392B" : "#2C9826", fontWeight: 600 }}>
                         {item.productoAlmacen.stock}
                         {stockBajo && <FaExclamationTriangle style={{ marginLeft: 5, fontSize: 11 }} />}
                       </td>
@@ -277,7 +277,7 @@ function TabSeguimiento({ p, onRefresh }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
         <div>
           <span style={{ fontSize: 13, color: "#6b7280" }}>Total gastado registrado: </span>
-          <strong style={{ color: "#dc2626", fontSize: 16 }}>Bs. {fmt(totalGastado)}</strong>
+          <strong style={{ color: "#C0392B", fontSize: 16 }}>Bs. {fmt(totalGastado)}</strong>
           {p.montoFinal && (
             <span style={{ marginLeft: 8, fontSize: 12, color: "#9ca3af" }}>
               de Bs. {fmt(p.montoFinal)} presupuestados
@@ -316,14 +316,14 @@ function TabSeguimiento({ p, onRefresh }) {
                       <td style={{ whiteSpace: "nowrap" }}>{fmtDate(seg.fechaGasto)}</td>
                       <td><TipoBadge tipo={seg.tipo} /></td>
                       <td style={{ maxWidth: 260 }}>{seg.descripcion || "—"}</td>
-                      <td style={{ textAlign: "right", fontWeight: 700, color: "#dc2626", whiteSpace: "nowrap" }}>
+                      <td style={{ textAlign: "right", fontWeight: 700, color: "#C0392B", whiteSpace: "nowrap" }}>
                         Bs. {fmt(seg.monto)}
                       </td>
                       <td style={{ textAlign: "center" }}>
                         <button
                           onClick={() => handleDelete(seg.seguimientoId)}
                           disabled={deleting === seg.seguimientoId}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "#dc2626", fontSize: 14, padding: "4px 8px" }}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "#C0392B", fontSize: 14, padding: "4px 8px" }}
                         >
                           <FaTrash />
                         </button>
@@ -355,7 +355,7 @@ function TabAnalisis({ proyectoId }) {
   }, [proyectoId]);
 
   if (loading) return <p style={{ color: "#6b7280", padding: 24, textAlign: "center" }}>Cargando análisis...</p>;
-  if (error)   return <p style={{ color: "#dc2626", padding: 24, textAlign: "center" }}>Error al cargar el análisis.</p>;
+  if (error)   return <p style={{ color: "#C0392B", padding: 24, textAlign: "center" }}>Error al cargar el análisis.</p>;
   if (!analisis) return null;
 
   const { presupuesto, ejecucion, gastosPorDia, alertas } = analisis;
@@ -366,9 +366,9 @@ function TabAnalisis({ proyectoId }) {
 
       {/* Alerta de proyección */}
       {ejecucion.alertaProyeccion && (
-        <div style={{ background: "#fef3c7", border: "1px solid #f59e0b", borderRadius: 8, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
-          <FaExclamationTriangle style={{ color: "#d97706", fontSize: 18, flexShrink: 0 }} />
-          <span style={{ color: "#92400e", fontWeight: 600 }}>
+        <div style={{ background: "#fef3c7", border: "1px solid #EE9C02", borderRadius: 8, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+          <FaExclamationTriangle style={{ color: "#EE9C02", fontSize: 18, flexShrink: 0 }} />
+          <span style={{ color: "#8A5A02", fontWeight: 600 }}>
             Alerta: la proyección al cierre supera el presupuesto. Gasto proyectado: <strong>Bs. {fmt(ejecucion.proyeccionAlFinal)}</strong>
           </span>
         </div>
@@ -378,9 +378,9 @@ function TabAnalisis({ proyectoId }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
         {[
           { label: "Días Totales",       value: presupuesto.diasTotales,       color: "#374151" },
-          { label: "Días Transcurridos", value: presupuesto.diasTranscurridos, color: "#1d4ed8" },
-          { label: "Días Restantes",     value: presupuesto.diasRestantes,      color: presupuesto.diasRestantes <= 0 ? "#dc2626" : "#059669" },
-          { label: "Días con Alerta",    value: alertas.totalDiasConAlerta,    color: alertas.totalDiasConAlerta > 0 ? "#dc2626" : "#059669" },
+          { label: "Días Transcurridos", value: presupuesto.diasTranscurridos, color: "#0062B7" },
+          { label: "Días Restantes",     value: presupuesto.diasRestantes,      color: presupuesto.diasRestantes <= 0 ? "#C0392B" : "#2C9826" },
+          { label: "Días con Alerta",    value: alertas.totalDiasConAlerta,    color: alertas.totalDiasConAlerta > 0 ? "#C0392B" : "#2C9826" },
         ].map((m) => (
           <div key={m.label} className="card" style={{ textAlign: "center", padding: "14px 10px" }}>
             <p style={{ fontSize: 11, color: "#6b7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>{m.label}</p>
@@ -396,10 +396,10 @@ function TabAnalisis({ proyectoId }) {
           <h3 style={{ margin: "0 0 16px", fontSize: 16 }}>Ejecución Presupuestal</h3>
           <InfoRow label="Presupuesto total" value={`Bs. ${fmt(presupuesto.montoFinal)}`} />
           <InfoRow label="Límite diario" value={`Bs. ${fmt(presupuesto.limiteDiario)}`} />
-          <InfoRow label="Gastado total" value={`Bs. ${fmt(ejecucion.gastadoTotal)}`} valueStyle={{ color: "#dc2626" }} />
-          <InfoRow label="Saldo disponible" value={`Bs. ${fmt(ejecucion.saldoDisponible)}`} valueStyle={{ color: "#059669" }} />
+          <InfoRow label="Gastado total" value={`Bs. ${fmt(ejecucion.gastadoTotal)}`} valueStyle={{ color: "#C0392B" }} />
+          <InfoRow label="Saldo disponible" value={`Bs. ${fmt(ejecucion.saldoDisponible)}`} valueStyle={{ color: "#2C9826" }} />
           <InfoRow label="Proyección al cierre" value={`Bs. ${fmt(ejecucion.proyeccionAlFinal)}`}
-            valueStyle={{ color: ejecucion.alertaProyeccion ? "#dc2626" : "#059669" }} />
+            valueStyle={{ color: ejecucion.alertaProyeccion ? "#C0392B" : "#2C9826" }} />
 
           <div style={{ marginTop: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#6b7280", marginBottom: 4 }}>
@@ -409,7 +409,7 @@ function TabAnalisis({ proyectoId }) {
             <div style={{ height: 10, background: "#e5e7eb", borderRadius: 5, overflow: "hidden" }}>
               <div style={{
                 height: "100%", width: `${pct}%`,
-                background: pct >= 90 ? "#dc2626" : pct >= 70 ? "#d97706" : "#1d4ed8",
+                background: pct >= 90 ? "#C0392B" : pct >= 70 ? "#EE9C02" : "#0062B7",
                 borderRadius: 5, transition: "width 0.4s",
               }} />
             </div>
@@ -470,15 +470,15 @@ function TabAnalisis({ proyectoId }) {
                   <tr key={dia.fecha} style={{ background: dia.superaLimite ? "#fff5f5" : undefined }}>
                     <td style={{ whiteSpace: "nowrap", fontWeight: 600 }}>
                       {fmtDate(dia.fecha)}
-                      {dia.superaLimite && <FaExclamationTriangle style={{ marginLeft: 6, color: "#dc2626", fontSize: 11 }} />}
+                      {dia.superaLimite && <FaExclamationTriangle style={{ marginLeft: 6, color: "#C0392B", fontSize: 11 }} />}
                     </td>
-                    <td style={{ textAlign: "right", fontWeight: 700, color: dia.superaLimite ? "#dc2626" : "#059669", whiteSpace: "nowrap" }}>
+                    <td style={{ textAlign: "right", fontWeight: 700, color: dia.superaLimite ? "#C0392B" : "#2C9826", whiteSpace: "nowrap" }}>
                       Bs. {fmt(dia.total)}
                     </td>
                     <td style={{ textAlign: "right", whiteSpace: "nowrap", color: "#6b7280" }}>
                       Bs. {fmt(dia.limiteDiario)}
                     </td>
-                    <td style={{ textAlign: "right", whiteSpace: "nowrap", color: dia.exceso > 0 ? "#dc2626" : "#9ca3af", fontWeight: dia.exceso > 0 ? 700 : 400 }}>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap", color: dia.exceso > 0 ? "#C0392B" : "#9ca3af", fontWeight: dia.exceso > 0 ? 700 : 400 }}>
                       {dia.exceso > 0 ? `+ Bs. ${fmt(dia.exceso)}` : "—"}
                     </td>
                     <td style={{ fontSize: 12, color: "#6b7280", maxWidth: 300 }}>
@@ -494,8 +494,8 @@ function TabAnalisis({ proyectoId }) {
 
       {/* Resumen alertas */}
       {alertas.totalDiasConAlerta > 0 && (
-        <div className="card" style={{ borderLeft: "4px solid #dc2626" }}>
-          <h3 style={{ margin: "0 0 12px", fontSize: 16, color: "#dc2626" }}>
+        <div className="card" style={{ borderLeft: "4px solid #C0392B" }}>
+          <h3 style={{ margin: "0 0 12px", fontSize: 16, color: "#C0392B" }}>
             <FaExclamationTriangle style={{ marginRight: 8 }} />
             Días que superaron el límite ({alertas.totalDiasConAlerta})
           </h3>
@@ -503,9 +503,9 @@ function TabAnalisis({ proyectoId }) {
             {alertas.dias.map((alerta) => (
               <div key={alerta.fecha} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid #f3f4f6" }}>
                 <span style={{ fontWeight: 600 }}>{fmtDate(alerta.fecha)}</span>
-                <span>Gastado: <strong style={{ color: "#dc2626" }}>Bs. {fmt(alerta.gastado)}</strong></span>
+                <span>Gastado: <strong style={{ color: "#C0392B" }}>Bs. {fmt(alerta.gastado)}</strong></span>
                 <span>Límite: <strong>Bs. {fmt(alerta.limite)}</strong></span>
-                <span>Exceso: <strong style={{ color: "#dc2626" }}>+ Bs. {fmt(alerta.exceso)}</strong></span>
+                <span>Exceso: <strong style={{ color: "#C0392B" }}>+ Bs. {fmt(alerta.exceso)}</strong></span>
               </div>
             ))}
           </div>
@@ -595,8 +595,8 @@ function VerProyecto() {
             <h1 style={{ margin: 0, fontSize: 20 }}>{p?.nombre ?? "Cargando..."}</h1>
             {p && (
               <span style={{
-                background: esCotizacion ? "#fef3c7" : "#dbeafe",
-                color: esCotizacion ? "#92400e" : "#1e40af",
+                background: esCotizacion ? "#fef3c7" : "#E3EEF9",
+                color: esCotizacion ? "#8A5A02" : "#00509A",
                 padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 700,
               }}>
                 {esCotizacion ? "Cotización" : "Proyecto en Ejecución"}
@@ -621,7 +621,7 @@ function VerProyecto() {
               className="btn-primary"
               onClick={handleAprobar}
               disabled={aprobando}
-              style={{ display: "flex", alignItems: "center", gap: 6, background: "#059669" }}
+              style={{ display: "flex", alignItems: "center", gap: 6, background: "#2C9826" }}
             >
               <FaCheckCircle /> {aprobando ? "Aprobando..." : "Aprobar → Proyecto"}
             </button>
@@ -630,7 +630,7 @@ function VerProyecto() {
             className="btn-secondary"
             onClick={handleEliminar}
             disabled={eliminando}
-            style={{ display: "flex", alignItems: "center", gap: 6, color: "#dc2626", borderColor: "#dc2626" }}
+            style={{ display: "flex", alignItems: "center", gap: 6, color: "#C0392B", borderColor: "#C0392B" }}
           >
             <FaTrash /> {eliminando ? "Eliminando..." : "Eliminar"}
           </button>
@@ -638,7 +638,7 @@ function VerProyecto() {
       </div>
 
       {loading && <p style={{ color: "#6b7280", textAlign: "center", padding: 40 }}>Cargando...</p>}
-      {error   && <p style={{ color: "#dc2626", textAlign: "center", padding: 40 }}>Error al cargar el proyecto.</p>}
+      {error   && <p style={{ color: "#C0392B", textAlign: "center", padding: 40 }}>Error al cargar el proyecto.</p>}
 
       {!loading && p && (
         <>

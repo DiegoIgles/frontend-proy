@@ -10,8 +10,8 @@ import { useConfirm } from "../../context/ConfirmContext";
 
 function TipoBadge({ tipo }) {
   return tipo === "ENTRADA"
-    ? <span style={{ background: "#d1fae5", color: "#065f46", padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>ENTRADA</span>
-    : <span style={{ background: "#fee2e2", color: "#991b1b", padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>SALIDA</span>;
+    ? <span style={{ background: "#E6F3E5", color: "#056125", padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>ENTRADA</span>
+    : <span style={{ background: "#FBE9E7", color: "#96291D", padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>SALIDA</span>;
 }
 
 function Ajustes() {
@@ -98,9 +98,9 @@ function Ajustes() {
           <label>Fechas</label>
           <button onClick={() => setShowFechas((v) => !v)}
             style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px",
-              borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#dbeafe" : "#fff",
-              color: showFechas ? "#1d4ed8" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
-            <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#1d4ed8", color: "#fff",
+              borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#E3EEF9" : "#fff",
+              color: showFechas ? "#0062B7" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
+            <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#0062B7", color: "#fff",
               borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 11 }}>{activeFechas}</span>}
           </button>

@@ -81,17 +81,17 @@ function CobroNotaVenta() {
         <MetricaCard
           label="Ya Cobrado"
           value={`Bs. ${Number(saldo.montoCobrado).toFixed(2)}`}
-          color="#059669"
+          color="#2C9826"
         />
         <MetricaCard
           label="Saldo Pendiente"
           value={`Bs. ${Number(saldo.saldoPendiente).toFixed(2)}`}
-          color="#dc2626"
+          color="#C0392B"
         />
       </div>
 
       {saldo.fechaVencimiento && (
-        <div style={{ marginBottom: 16, padding: "8px 14px", background: "#fffbeb", borderLeft: "4px solid #f59e0b", borderRadius: 4, fontSize: 13 }}>
+        <div style={{ marginBottom: 16, padding: "8px 14px", background: "#fffbeb", borderLeft: "4px solid #EE9C02", borderRadius: 4, fontSize: 13 }}>
           Fecha de vencimiento: <strong>{new Date(saldo.fechaVencimiento).toLocaleDateString("es-BO")}</strong>
         </div>
       )}
@@ -116,7 +116,7 @@ function CobroNotaVenta() {
                 required
               />
               {montoNum > saldo.saldoPendiente && (
-                <small style={{ color: "#dc2626" }}>
+                <small style={{ color: "#C0392B" }}>
                   El monto no puede superar el saldo pendiente (Bs. {Number(saldo.saldoPendiente).toFixed(2)})
                 </small>
               )}
@@ -138,19 +138,19 @@ function CobroNotaVenta() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 20, padding: 14, background: "#f0fdf4", borderRadius: 8 }}>
               <div>
                 <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>Saldo actual</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#dc2626", margin: "4px 0 0" }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#C0392B", margin: "4px 0 0" }}>
                   Bs. {Number(saldo.saldoPendiente).toFixed(2)}
                 </p>
               </div>
               <div>
                 <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>Este cobro</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: "#059669", margin: "4px 0 0" }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#2C9826", margin: "4px 0 0" }}>
                   − Bs. {montoNum.toFixed(2)}
                 </p>
               </div>
               <div>
                 <p style={{ fontSize: 12, color: "#6b7280", margin: 0 }}>Saldo tras cobro</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: saldoTrasAbono === 0 ? "#059669" : "#d97706", margin: "4px 0 0" }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: saldoTrasAbono === 0 ? "#2C9826" : "#EE9C02", margin: "4px 0 0" }}>
                   Bs. {saldoTrasAbono.toFixed(2)}
                   {saldoTrasAbono === 0 && <span style={{ marginLeft: 6 }}>✓ Cobrado</span>}
                 </p>

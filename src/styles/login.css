@@ -1,117 +1,245 @@
-/* Contenedor principal */
+/* ============================================================================
+   Login — misma paleta y mismo lenguaje visual que la portada de cotización:
+   navy de fondo, filete verde y azul de marca en la acción principal.
+   ========================================================================== */
+
 .login-wrapper {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-/* Lado izquierdo (visual) */
+/* ===== Lado visual ======================================================= */
+
 .login-left {
-  flex: 1;
-  background: linear-gradient(135deg, #3498db, #2c3e50);
+  flex: 1.1;
+  background: linear-gradient(150deg, var(--brand-navy) 0%, var(--brand-navy-800) 55%, var(--brand-blue) 140%);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--text-invert);
   position: relative;
   overflow: hidden;
+  padding: 40px;
 }
 
-/* Animación suave */
+/* Trama tenue de puntos, con la misma deriva lenta de siempre. */
 .login-left::before {
   content: "";
   position: absolute;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10%);
-  background-size: 50px 50px;
-  animation: moveBackground 20s linear infinite;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 10%, transparent 10%);
+  background-size: 46px 46px;
+  animation: moveBackground 22s linear infinite;
 }
 
 @keyframes moveBackground {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(-50px, -50px);
-  }
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-46px, -46px); }
 }
 
-/* Texto encima */
+@media (prefers-reduced-motion: reduce) {
+  .login-left::before { animation: none; }
+}
+
 .overlay-text {
   position: relative;
   text-align: center;
+  max-width: 460px;
+}
+
+.login-brand {
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  margin: 0 auto 30px;
+  display: block;
 }
 
 .overlay-text h1 {
-  font-size: 40px;
-  margin-bottom: 10px;
+  font-size: 30px;
+  line-height: 1.25;
+  margin: 0 0 14px;
+  color: var(--text-invert);
+  font-weight: 700;
+}
+
+/* El acento verde es el mismo recurso que separa título y bajada en la
+   portada: un filete corto, no un subrayado completo. */
+.overlay-text h1::after {
+  content: "";
+  display: block;
+  width: 54px;
+  height: 3px;
+  background: var(--brand-green);
+  margin: 16px auto 0;
+  border-radius: var(--radius-pill);
 }
 
 .overlay-text p {
-  font-size: 16px;
-  opacity: 0.9;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.78);
 }
 
-/* Lado derecho (formulario) */
+/* ===== Lado del formulario =============================================== */
+
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f4f6f9;
+  background: var(--bg-app);
+  padding: 32px 20px;
 }
 
-/* Formulario */
 .login-form {
-  background: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  width: 320px;
-  text-align: center;
+  background: var(--bg-surface);
+  padding: 36px 32px 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 380px;
+}
+
+/* Logo a color: acá el fondo es claro, así que va el lockup con el wordmark
+   navy. El de wordmark blanco solo sirve sobre el navy del panel izquierdo. */
+.login-form-logo {
+  width: 100%;
+  max-width: 210px;
+  height: auto;
+  margin: 0 auto 22px;
+  display: block;
 }
 
 .login-form h2 {
-  margin-bottom: 20px;
+  margin: 0 0 4px;
+  font-size: 21px;
+  color: var(--text-strong);
+  text-align: center;
 }
 
-/* Inputs */
+.login-form-hint {
+  margin: 0 0 22px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .login-input {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 12px 13px;
+  margin: 0 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-body);
+  background: var(--bg-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.login-input::placeholder {
+  color: var(--text-faint);
 }
 
 .login-input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--blue-ring);
 }
 
-/* Botón */
 .login-button {
   width: 100%;
   padding: 12px;
-  background: #3498db;
-  color: #fff;
+  background: var(--brand-blue);
+  color: var(--text-invert);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  margin-top: 6px;
+  transition: background 0.15s;
 }
 
-.login-button:hover {
-  background: #2980b9;
+.login-button:hover:not(:disabled) {
+  background: var(--blue-hover);
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-footer {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+/* ===== Responsive ======================================================== */
+
+/* Debajo de 900px el panel visual deja de tener ancho útil: en vez de
+   esconderlo y perder la marca, se convierte en una banda superior compacta. */
+@media (max-width: 900px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
   .login-left {
-    display: none;
+    flex: none;
+    padding: 26px 20px;
+  }
+
+  .login-brand {
+    max-width: 240px;
+    margin-bottom: 16px;
+  }
+
+  .overlay-text h1 {
+    font-size: 20px;
+  }
+
+  .overlay-text h1::after {
+    margin-top: 12px;
+  }
+
+  .overlay-text p {
+    font-size: 13.5px;
+    margin-top: 12px;
   }
 
   .login-right {
     flex: 1;
+    align-items: flex-start;
+    padding: 26px 18px 40px;
+  }
+
+  /* Con la marca ya presente arriba, repetir el logo en la tarjeta es ruido. */
+  .login-form-logo {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-left {
+    padding: 20px 16px;
+  }
+
+  .login-brand {
+    max-width: 200px;
+  }
+
+  .overlay-text p {
+    display: none; /* el eslogan no entra sin empujar el formulario fuera */
+  }
+
+  .login-form {
+    padding: 24px 20px;
+    box-shadow: var(--shadow-sm);
   }
 }

@@ -10,13 +10,13 @@ import { useConfirm } from "../../context/ConfirmContext";
 function TipoBadge({ tipo }) {
   if (tipo === "ENTRADA") {
     return (
-      <span style={{ background: "#d1fae5", color: "#065f46", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
+      <span style={{ background: "#E6F3E5", color: "#056125", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
         ENTRADA
       </span>
     );
   }
   return (
-    <span style={{ background: "#fee2e2", color: "#991b1b", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
+    <span style={{ background: "#FBE9E7", color: "#96291D", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
       SALIDA
     </span>
   );
@@ -134,7 +134,7 @@ function VerAjuste() {
                   <td><strong>{stockActual}</strong></td>
                   <td>
                     <span style={{
-                      color: ajuste.tipo === "ENTRADA" ? "#065f46" : "#991b1b",
+                      color: ajuste.tipo === "ENTRADA" ? "#056125" : "#96291D",
                       fontWeight: 700,
                     }}>
                       {ajuste.tipo === "ENTRADA" ? "+" : "−"}{detalle.cantidad}

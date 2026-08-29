@@ -52,7 +52,7 @@ function EsquemaAtributosEditor({ campos = [], onChange }) {
                 Requerido
               </label>
               <button type="button" onClick={() => removeCampo(idx)} title="Quitar campo"
-                style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer" }}>
+                style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
                 <FaTrash />
               </button>
               {campo.tipo === "select" && (

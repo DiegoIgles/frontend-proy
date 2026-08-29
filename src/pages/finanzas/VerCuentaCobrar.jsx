@@ -63,7 +63,7 @@ function RegistrarCobroModal({ saldo, cuentaId, onClose, onRegistrado }) {
         </div>
 
         <p style={{ margin: "0 0 18px", fontSize: 14, color: "#6b7280" }}>
-          Saldo pendiente: <strong style={{ color: "#d97706" }}>Bs. {fmt(saldo)}</strong>
+          Saldo pendiente: <strong style={{ color: "#EE9C02" }}>Bs. {fmt(saldo)}</strong>
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -161,7 +161,7 @@ function VerCuentaCobrar() {
       </div>
 
       {loading && <p style={{ color: "#6b7280", textAlign: "center", padding: 40 }}>Cargando...</p>}
-      {error   && <p style={{ color: "#dc2626", textAlign: "center", padding: 40 }}>Error al cargar la cuenta.</p>}
+      {error   && <p style={{ color: "#C0392B", textAlign: "center", padding: 40 }}>Error al cargar la cuenta.</p>}
 
       {!loading && cxc && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
@@ -179,14 +179,14 @@ function VerCuentaCobrar() {
               value={cxc.fechaVencimiento
                 ? new Date(cxc.fechaVencimiento + "T00:00:00").toLocaleDateString("es-BO")
                 : "Sin vencimiento"}
-              valueStyle={cxc.estado === "VENCIDO" ? { color: "#dc2626" } : {}}
+              valueStyle={cxc.estado === "VENCIDO" ? { color: "#C0392B" } : {}}
             />
             <InfoRow label="Monto Total"  value={`Bs. ${fmt(cxc.montoTotal)}`} />
-            <InfoRow label="Monto Cobrado" value={`Bs. ${fmt(cxc.montoCobrado)}`} valueStyle={{ color: "#059669" }} />
+            <InfoRow label="Monto Cobrado" value={`Bs. ${fmt(cxc.montoCobrado)}`} valueStyle={{ color: "#2C9826" }} />
             <InfoRow
               label="Saldo Pendiente"
               value={`Bs. ${fmt(cxc.saldo)}`}
-              valueStyle={{ color: Number(cxc.saldo) > 0 ? "#d97706" : "#059669", fontSize: 16 }}
+              valueStyle={{ color: Number(cxc.saldo) > 0 ? "#EE9C02" : "#2C9826", fontSize: 16 }}
             />
 
             {/* Barra de progreso */}
@@ -199,7 +199,7 @@ function VerCuentaCobrar() {
                     <span>{pct.toFixed(1)}%</span>
                   </div>
                   <div style={{ height: 8, background: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${pct}%`, background: pct >= 100 ? "#059669" : "#1d4ed8", borderRadius: 4, transition: "width 0.4s" }} />
+                    <div style={{ height: "100%", width: `${pct}%`, background: pct >= 100 ? "#2C9826" : "#0062B7", borderRadius: 4, transition: "width 0.4s" }} />
                   </div>
                 </div>
               );
@@ -262,7 +262,7 @@ function VerCuentaCobrar() {
                         <td className="col-hide-mobile" style={{ fontSize: 13, color: "#6b7280" }}>
                           {mov.usuario.name} {mov.usuario.lastName}
                         </td>
-                        <td style={{ textAlign: "right", fontWeight: 700, color: "#059669", whiteSpace: "nowrap" }}>
+                        <td style={{ textAlign: "right", fontWeight: 700, color: "#2C9826", whiteSpace: "nowrap" }}>
                           + Bs. {fmt(mov.monto)}
                         </td>
                       </tr>

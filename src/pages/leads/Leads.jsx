@@ -152,10 +152,10 @@ function Leads() {
                 <tr key={l.id}>
                   <td><strong>{l.nombre}</strong></td>
                   <td className="col-hide-mobile">
-                    {l.telefono ? <a href={`tel:${l.telefono}`} style={{ color: "#2563eb" }}>{l.telefono}</a> : "—"}
+                    {l.telefono ? <a href={`tel:${l.telefono}`} style={{ color: "#0062B7" }}>{l.telefono}</a> : "—"}
                   </td>
                   <td className="col-hide-mobile">
-                    {l.correo ? <a href={`mailto:${l.correo}`} style={{ color: "#2563eb" }}>{l.correo}</a> : "—"}
+                    {l.correo ? <a href={`mailto:${l.correo}`} style={{ color: "#0062B7" }}>{l.correo}</a> : "—"}
                   </td>
                   <td className="col-hide-mobile">{formatTipoServicio(l.tipoServicio)}</td>
                   <td className="col-hide-mobile">{l.tipoSuministro || "—"}</td>

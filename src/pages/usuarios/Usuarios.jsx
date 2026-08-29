@@ -27,8 +27,8 @@ function RolBadge({ rol }) {
   return (
     <span style={{
       padding: "2px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
-      background: esAdmin ? "#dbeafe" : "#f3f4f6",
-      color:      esAdmin ? "#1e40af" : "#374151",
+      background: esAdmin ? "#E3EEF9" : "#f3f4f6",
+      color:      esAdmin ? "#00509A" : "#374151",
       marginRight: 4,
     }}>
       {rol}
@@ -44,7 +44,7 @@ function AvatarSmall({ photo, name, lastName }) {
         border: "2px solid #e5e7eb", flexShrink: 0 }} />
   ) : (
     <div style={{
-      width: 34, height: 34, borderRadius: "50%", background: "#1d4ed8",
+      width: 34, height: 34, borderRadius: "50%", background: "#0062B7",
       color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
       fontWeight: 700, fontSize: 13, flexShrink: 0,
     }}>
@@ -203,8 +203,8 @@ function Usuarios() {
                   <td>
                     <span style={{
                       padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-                      background: u.isActive ? "#d1fae5" : "#fee2e2",
-                      color:      u.isActive ? "#065f46" : "#991b1b",
+                      background: u.isActive ? "#E6F3E5" : "#FBE9E7",
+                      color:      u.isActive ? "#056125" : "#96291D",
                     }}>
                       {u.isActive ? "Activo" : "Inactivo"}
                     </span>
@@ -267,7 +267,7 @@ function Usuarios() {
                   </select>
                 </div>
                 {formErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>
                 )}
               </div>
               <div className="modal-footer">

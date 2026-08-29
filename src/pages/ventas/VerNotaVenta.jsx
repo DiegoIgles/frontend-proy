@@ -88,8 +88,8 @@ function VerNotaVenta() {
           <InfoRow label="Fecha"       value={new Date(nota.fecha).toLocaleDateString("es-BO")} />
           <InfoRow label="Glosa"       value={nota.glosa || "—"} />
           <InfoRow label="Tipo"        value={nota.esCredito
-            ? <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
-            : <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>}
+            ? <span style={{ color: "#EE9C02", fontWeight: 600 }}>Crédito</span>
+            : <span style={{ color: "#2C9826", fontWeight: 600 }}>Contado</span>}
           />
           {Number(nota.descuento) > 0 && (
             <InfoRow label="Descuento" value={`${Number(nota.descuento).toFixed(2)}%`} />
@@ -99,7 +99,7 @@ function VerNotaVenta() {
             <InfoRow
               label="Saldo Pendiente"
               value={
-                <span style={{ color: nota.saldoPendiente > 0 ? "#dc2626" : "#059669", fontWeight: 600 }}>
+                <span style={{ color: nota.saldoPendiente > 0 ? "#C0392B" : "#2C9826", fontWeight: 600 }}>
                   Bs. {Number(nota.saldoPendiente).toFixed(2)}
                 </span>
               }
@@ -191,7 +191,7 @@ function VerNotaVenta() {
                 <td>{new Date(nota.movimientoCaja.fecha).toLocaleDateString("es-BO")}</td>
                 <td>{nota.movimientoCaja.glosa}</td>
                 <td>
-                  <span style={{ color: "#059669", fontWeight: 600 }}>
+                  <span style={{ color: "#2C9826", fontWeight: 600 }}>
                     {nota.movimientoCaja.tipoMovimiento}
                   </span>
                 </td>
@@ -213,8 +213,8 @@ function VerNotaVenta() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 16 }}>
             {[
               { label: "Monto Total",   value: `Bs. ${Number(nota.cuentaPorCobrar.montoTotal).toFixed(2)}` },
-              { label: "Monto Cobrado", value: `Bs. ${Number(nota.cuentaPorCobrar.montoCobrado).toFixed(2)}`, color: "#059669" },
-              { label: "Saldo",         value: `Bs. ${Number(nota.cuentaPorCobrar.saldo).toFixed(2)}`, color: Number(nota.cuentaPorCobrar.saldo) > 0 ? "#dc2626" : "#059669" },
+              { label: "Monto Cobrado", value: `Bs. ${Number(nota.cuentaPorCobrar.montoCobrado).toFixed(2)}`, color: "#2C9826" },
+              { label: "Saldo",         value: `Bs. ${Number(nota.cuentaPorCobrar.saldo).toFixed(2)}`, color: Number(nota.cuentaPorCobrar.saldo) > 0 ? "#C0392B" : "#2C9826" },
               { label: "Vencimiento",   value: nota.cuentaPorCobrar.fechaVencimiento ? new Date(nota.cuentaPorCobrar.fechaVencimiento).toLocaleDateString("es-BO") : "—" },
             ].map((item) => (
               <div key={item.label} style={{ background: "#f9fafb", borderRadius: 8, padding: "10px 14px" }}>
@@ -245,7 +245,7 @@ function VerNotaVenta() {
                     <td>{new Date(mov.fecha).toLocaleDateString("es-BO")}</td>
                     <td>{mov.glosa}</td>
                     <td>
-                      <span style={{ color: "#059669", fontWeight: 600 }}>
+                      <span style={{ color: "#2C9826", fontWeight: 600 }}>
                         {mov.tipoMovimiento}
                       </span>
                     </td>

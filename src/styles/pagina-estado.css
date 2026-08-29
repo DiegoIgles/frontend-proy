@@ -1,0 +1,210 @@
+/* ============================================================================
+   Páginas de estado — 404, sin permiso, error inesperado.
+   Una sola hoja para todas: cambian el ícono, el número y el texto, no el
+   armado. Misma paleta que el resto del sistema.
+   ========================================================================== */
+
+.estado-pagina {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(0, 98, 183, 0.30), transparent 45%),
+    radial-gradient(circle at 85% 88%, rgba(44, 152, 38, 0.22), transparent 45%),
+    linear-gradient(150deg, var(--brand-navy) 0%, var(--brand-navy-800) 100%);
+  color: var(--text-invert);
+  text-align: center;
+}
+
+.estado-caja {
+  max-width: 560px;
+  width: 100%;
+}
+
+.estado-logo {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  margin: 0 auto 34px;
+  display: block;
+}
+
+/* El panel dice lo mismo que el texto pero sin palabras: una celda apagada. */
+.estado-grafico {
+  width: 156px;
+  height: auto;
+  margin: 0 auto 26px;
+  display: block;
+}
+
+.estado-celda-apagada {
+  animation: estado-parpadeo 2.6s ease-in-out infinite;
+}
+
+@keyframes estado-parpadeo {
+  0%, 72%, 100% { opacity: 0.20; }
+  80%, 88%      { opacity: 0.70; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estado-celda-apagada { animation: none; }
+}
+
+.estado-codigo {
+  font-size: 70px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+  margin: 0 0 6px;
+  color: var(--text-invert);
+}
+
+.estado-codigo span {
+  color: var(--brand-orange);
+}
+
+.estado-titulo {
+  margin: 0 0 12px;
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--text-invert);
+}
+
+.estado-titulo::after {
+  content: "";
+  display: block;
+  width: 52px;
+  height: 3px;
+  background: var(--brand-green);
+  border-radius: var(--radius-pill);
+  margin: 16px auto 0;
+}
+
+.estado-texto {
+  margin: 16px auto 30px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.76);
+  max-width: 430px;
+}
+
+.estado-acciones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.estado-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.estado-btn-primario {
+  background: var(--brand-blue);
+  color: var(--text-invert);
+}
+
+.estado-btn-primario:hover {
+  background: var(--blue-hover);
+}
+
+.estado-btn-secundario {
+  background: transparent;
+  color: var(--text-invert);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.estado-btn-secundario:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.estado-ruta {
+  margin: 28px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.42);
+  word-break: break-all;
+}
+
+.estado-ruta code {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 480px) {
+  .estado-pagina {
+    padding: 32px 16px;
+  }
+
+  .estado-logo {
+    max-width: 200px;
+    margin-bottom: 26px;
+  }
+
+  .estado-codigo {
+    font-size: 54px;
+  }
+
+  .estado-titulo {
+    font-size: 19px;
+  }
+
+  .estado-texto {
+    font-size: 14px;
+  }
+
+  /* Botones apilados: en fila quedan de menos de 140px y se erran al tocar. */
+  .estado-acciones {
+    flex-direction: column;
+  }
+
+  .estado-btn {
+    width: 100%;
+  }
+}
+
+/* ===== Verificando sesión ================================================
+   Se ve por un instante entre que carga la app y responde el backend. Sobre
+   el fondo de la app, no sobre el navy: no es un error, es una espera. */
+
+.ruta-cargando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg-app);
+  color: var(--text-muted);
+  font-size: 14.5px;
+}
+
+.ruta-cargando-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid var(--border-strong);
+  border-top-color: var(--brand-blue);
+  border-radius: 50%;
+  animation: ruta-girar 0.7s linear infinite;
+}
+
+@keyframes ruta-girar {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ruta-cargando-spinner { animation-duration: 2.5s; }
+}

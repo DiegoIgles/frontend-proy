@@ -1,13 +1,66 @@
+@import "./styles/theme.css";
+
+/* Base del sistema. Todo lo visual sale de los tokens de theme.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Evita que iOS agrande el texto al girar el teléfono a horizontal. */
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-ui);
+  background: var(--bg-app);
+  color: var(--text-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* En móvil el cajón del sidebar se posiciona contra el viewport; sin esto,
+     al abrirlo el contenido de atrás sigue scrolleando por detrás. */
+  overscroll-behavior-y: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Los formularios no heredan la familia por defecto en ningún navegador. */
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+
+/* En iOS, un input con cuerpo menor a 16px hace que el navegador haga zoom al
+   enfocarlo y descuadra toda la pantalla. Se fuerza el mínimo solo en táctil. */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+h1, h2, h3, h4 {
+  color: var(--text-strong);
+}
+
+a {
+  color: var(--brand-blue);
+}
+
+/* Foco visible y consistente para teclado. */
+:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

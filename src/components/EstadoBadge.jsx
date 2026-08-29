@@ -1,8 +1,8 @@
 const ESTADO_STYLES = {
-  PAGADO:         { background: "#d1fae5", color: "#065f46", label: "Pagado" },
-  PAGADO_PARCIAL: { background: "#dbeafe", color: "#1e40af", label: "Pagado Parcial" },
-  PENDIENTE:      { background: "#fef3c7", color: "#92400e", label: "Pendiente" },
-  VENCIDO:        { background: "#fee2e2", color: "#991b1b", label: "Vencido" },
+  PAGADO:         { background: "#E6F3E5", color: "#056125", label: "Pagado" },
+  PAGADO_PARCIAL: { background: "#E3EEF9", color: "#00509A", label: "Pagado Parcial" },
+  PENDIENTE:      { background: "#fef3c7", color: "#8A5A02", label: "Pendiente" },
+  VENCIDO:        { background: "#FBE9E7", color: "#96291D", label: "Vencido" },
 };
 
 function EstadoBadge({ estado, fallback = "—" }) {

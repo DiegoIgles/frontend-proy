@@ -316,8 +316,8 @@ function VerProducto() {
 
   const TAB_STYLE = (t) => ({
     padding: "8px 18px", border: "none", cursor: "pointer", fontWeight: 600,
-    fontSize: 13, borderBottom: tab === t ? "2px solid #3b82f6" : "2px solid transparent",
-    background: "none", color: tab === t ? "#3b82f6" : "#6b7280",
+    fontSize: 13, borderBottom: tab === t ? "2px solid #0062B7" : "2px solid transparent",
+    background: "none", color: tab === t ? "#0062B7" : "#6b7280",
   });
 
   return (
@@ -344,7 +344,7 @@ function VerProducto() {
           <button onClick={handleDelete} disabled={deleting}
             style={{ display: "flex", alignItems: "center", gap: 5,
               padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: 13, background: "#fee2e2", color: "#991b1b" }}>
+              fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
             <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
@@ -356,14 +356,14 @@ function VerProducto() {
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280", textTransform: "uppercase",
             fontWeight: 600 }}>Stock Total</p>
           <p style={{ margin: 0, fontSize: 26, fontWeight: 800,
-            color: stockTotal === 0 ? "#dc2626" : stockTotal <= 10 ? "#d97706" : "#059669" }}>
+            color: stockTotal === 0 ? "#C0392B" : stockTotal <= 10 ? "#EE9C02" : "#2C9826" }}>
             {stockTotal}
           </p>
         </div>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280", textTransform: "uppercase",
             fontWeight: 600 }}>Precio Actual</p>
-          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#1d4ed8" }}>
+          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#0062B7" }}>
             {precioActual != null
               ? `$${Number(precioActual).toLocaleString("es-CO", { minimumFractionDigits: 2 })}`
               : "—"}
@@ -411,8 +411,8 @@ function VerProducto() {
                       <span key={c.categoriaId} style={{
                         display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 600,
                         padding: "4px 10px", borderRadius: 999,
-                        background: esPrincipal ? "#dbeafe" : "#f3f4f6",
-                        color: esPrincipal ? "#1d4ed8" : "#374151",
+                        background: esPrincipal ? "#E3EEF9" : "#f3f4f6",
+                        color: esPrincipal ? "#0062B7" : "#374151",
                         border: esPrincipal ? "1px solid #93c5fd" : "1px solid #e5e7eb",
                       }}>
                         {esPrincipal && <FaTag size={10} />}
@@ -486,8 +486,8 @@ function VerProducto() {
                       <td style={{ textAlign: "center" }}>
                         <span style={{
                           padding: "2px 12px", borderRadius: 10, fontSize: 13, fontWeight: 700,
-                          background: pa.stock === 0 ? "#fee2e2" : pa.stock <= 10 ? "#fef9c3" : "#d1fae5",
-                          color:      pa.stock === 0 ? "#991b1b" : pa.stock <= 10 ? "#92400e" : "#065f46",
+                          background: pa.stock === 0 ? "#FBE9E7" : pa.stock <= 10 ? "#fef9c3" : "#E6F3E5",
+                          color:      pa.stock === 0 ? "#96291D" : pa.stock <= 10 ? "#8A5A02" : "#056125",
                         }}>
                           {pa.stock}
                         </span>
@@ -535,7 +535,7 @@ function VerProducto() {
                       <td style={{ textAlign: "center" }}>
                         {i === 0 && (
                           <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 11,
-                            fontWeight: 700, background: "#d1fae5", color: "#065f46" }}>
+                            fontWeight: 700, background: "#E6F3E5", color: "#056125" }}>
                             Vigente
                           </span>
                         )}
@@ -578,7 +578,7 @@ function VerProducto() {
                       <td style={{ textAlign: "right" }}>
                         <button type="button" onClick={() => handleRemoveComponente(c.producto?.productoId)}
                           title="Quitar componente"
-                          style={{ background: "none", border: "none", color: "#dc2626", cursor: "pointer" }}>
+                          style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
                           <FaTrash />
                         </button>
                       </td>
@@ -638,7 +638,7 @@ function VerProducto() {
                   onChangeAtributos={(at) => setEditForm((f) => ({ ...f, atributos: at }))}
                 />
                 {editErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{editErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{editErr}</p>
                 )}
               </div>
               <div className="modal-footer">
@@ -678,7 +678,7 @@ function VerProducto() {
                     onChange={(e) => setNuevaCategoriaPrincipal(e.target.checked)} />
                   Marcar como categoría principal
                 </label>
-                {categoriaErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{categoriaErr}</p>}
+                {categoriaErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{categoriaErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowAddCategoria(false)}>Cancelar</button>
@@ -733,7 +733,7 @@ function VerProducto() {
                   </div>
                 )}
                 {componenteSeleccionado && (
-                  <div style={{ fontSize: 12, color: "#059669" }}>
+                  <div style={{ fontSize: 12, color: "#2C9826" }}>
                     Seleccionado: <strong>{componenteSeleccionado.nombre}</strong>
                   </div>
                 )}
@@ -742,7 +742,7 @@ function VerProducto() {
                   <input type="number" min="0.01" step="0.01" value={componenteCantidad}
                     onChange={(e) => setComponenteCantidad(e.target.value)} />
                 </div>
-                {componenteErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{componenteErr}</p>}
+                {componenteErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{componenteErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowAddComponente(false)}>Cancelar</button>
@@ -781,7 +781,7 @@ function VerProducto() {
                   <input type="number" min="0" value={almacenForm.stockInicial}
                     onChange={(e) => setAlmacenForm((f) => ({ ...f, stockInicial: e.target.value }))} />
                 </div>
-                {almacenErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{almacenErr}</p>}
+                {almacenErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{almacenErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowAlmacen(false)}>Cancelar</button>
@@ -815,7 +815,7 @@ function VerProducto() {
                   <input type="date" value={precioForm.fecha}
                     onChange={(e) => setPrecioForm((f) => ({ ...f, fecha: e.target.value }))} />
                 </div>
-                {precioErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{precioErr}</p>}
+                {precioErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{precioErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowPrecio(false)}>Cancelar</button>

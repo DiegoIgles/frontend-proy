@@ -19,8 +19,8 @@ function fmtDate(d) {
 
 function EstadoBadge({ estado }) {
   const s = estado === "COTIZACION"
-    ? { background: "#fef3c7", color: "#92400e" }
-    : { background: "#dbeafe", color: "#1e40af" };
+    ? { background: "#fef3c7", color: "#8A5A02" }
+    : { background: "#E3EEF9", color: "#00509A" };
   return (
     <span style={{ ...s, padding: "3px 10px", borderRadius: 12, fontSize: 11, fontWeight: 700 }}>
       {estado === "COTIZACION" ? "Cotización" : "Proyecto"}
@@ -37,7 +37,7 @@ function ProyectoCard({ p, onClick }) {
       onClick={onClick}
       style={{
         cursor: "pointer", transition: "box-shadow 0.2s",
-        borderLeft: `4px solid ${p.estado === "PROYECTO" ? "#1d4ed8" : "#d97706"}`,
+        borderLeft: `4px solid ${p.estado === "PROYECTO" ? "#0062B7" : "#EE9C02"}`,
       }}
       onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.12)"}
       onMouseLeave={(e) => e.currentTarget.style.boxShadow = ""}
@@ -176,12 +176,12 @@ function Proyectos() {
           </div>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Cotizaciones</p>
-            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#d97706" }}>{cotizaciones.length}</p>
+            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#EE9C02" }}>{cotizaciones.length}</p>
             <p style={{ fontSize: 11, color: "#9ca3af", margin: "2px 0 0" }}>en esta página</p>
           </div>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>En Ejecución</p>
-            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#1d4ed8" }}>{enEjecucion.length}</p>
+            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#0062B7" }}>{enEjecucion.length}</p>
             <p style={{ fontSize: 11, color: "#9ca3af", margin: "2px 0 0" }}>en esta página</p>
           </div>
         </div>
@@ -217,11 +217,11 @@ function Proyectos() {
           onClick={() => setShowAdvanced((v) => !v)}
           className="btn-secondary"
           style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 1,
-            color: hasAdvanced ? "#1d4ed8" : undefined,
-            borderColor: hasAdvanced ? "#1d4ed8" : undefined }}
+            color: hasAdvanced ? "#0062B7" : undefined,
+            borderColor: hasAdvanced ? "#0062B7" : undefined }}
         >
           <FaFilter /> Fechas {showAdvanced ? <FaChevronUp /> : <FaChevronDown />}
-          {hasAdvanced && <span style={{ background: "#1d4ed8", color: "#fff", borderRadius: "50%",
+          {hasAdvanced && <span style={{ background: "#0062B7", color: "#fff", borderRadius: "50%",
             width: 16, height: 16, fontSize: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
             {[fechaInicioDesde, fechaInicioHasta, fechaFinalDesde, fechaFinalHasta].filter(Boolean).length}
           </span>}
@@ -262,7 +262,7 @@ function Proyectos() {
 
       {/* Contenido */}
       {loading && <p style={{ color: "#6b7280", textAlign: "center", padding: 40 }}>Cargando...</p>}
-      {error   && <p style={{ color: "#dc2626", textAlign: "center", padding: 40 }}>Error al cargar los proyectos.</p>}
+      {error   && <p style={{ color: "#C0392B", textAlign: "center", padding: 40 }}>Error al cargar los proyectos.</p>}
 
       {!loading && !error && (
         <>
@@ -275,7 +275,7 @@ function Proyectos() {
               {/* Cotizaciones */}
               {cotizaciones.length > 0 && (
                 <section style={{ marginBottom: 28 }}>
-                  <h2 style={{ fontSize: 13, color: "#92400e", fontWeight: 700, textTransform: "uppercase",
+                  <h2 style={{ fontSize: 13, color: "#8A5A02", fontWeight: 700, textTransform: "uppercase",
                     letterSpacing: "0.5px", margin: "0 0 14px", display: "flex", alignItems: "center", gap: 8 }}>
                     <FaFileAlt /> Cotizaciones ({cotizaciones.length})
                   </h2>
@@ -290,7 +290,7 @@ function Proyectos() {
               {/* Proyectos en ejecución */}
               {enEjecucion.length > 0 && (
                 <section style={{ marginBottom: 20 }}>
-                  <h2 style={{ fontSize: 13, color: "#1e40af", fontWeight: 700, textTransform: "uppercase",
+                  <h2 style={{ fontSize: 13, color: "#00509A", fontWeight: 700, textTransform: "uppercase",
                     letterSpacing: "0.5px", margin: "0 0 14px", display: "flex", alignItems: "center", gap: 8 }}>
                     <FaProjectDiagram /> En Ejecución ({enEjecucion.length})
                   </h2>

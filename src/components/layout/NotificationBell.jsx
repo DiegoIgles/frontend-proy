@@ -9,9 +9,9 @@ import { marcarTodasLeidasAction } from "../../pages/notificaciones/actions/marc
 const POLL_MS = 30000;
 
 function IconoNotificacion({ tipo, evento }) {
-  if (tipo === "MANUAL") return <FaBullhorn style={{ color: "#1d4ed8" }} />;
-  if (evento === "STOCK_AGOTADO") return <FaTimesCircle style={{ color: "#dc2626" }} />;
-  return <FaExclamationTriangle style={{ color: "#d97706" }} />;
+  if (tipo === "MANUAL") return <FaBullhorn style={{ color: "#0062B7" }} />;
+  if (evento === "STOCK_AGOTADO") return <FaTimesCircle style={{ color: "#C0392B" }} />;
+  return <FaExclamationTriangle style={{ color: "#EE9C02" }} />;
 }
 
 function NotificationBell() {
@@ -104,7 +104,7 @@ function NotificationBell() {
         {unread > 0 && (
           <span style={{
             position: "absolute", top: 2, right: 2, minWidth: 16, height: 16,
-            borderRadius: 8, background: "#dc2626", color: "#fff",
+            borderRadius: 8, background: "#C0392B", color: "#fff",
             fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center",
             justifyContent: "center", padding: "0 3px",
           }}>
@@ -126,7 +126,7 @@ function NotificationBell() {
             <strong style={{ fontSize: 14, color: "#111827" }}>Notificaciones</strong>
             {unread > 0 && (
               <button onClick={handleMarcarTodas} style={{
-                background: "none", border: "none", cursor: "pointer", color: "#1d4ed8",
+                background: "none", border: "none", cursor: "pointer", color: "#0062B7",
                 fontSize: 12, display: "flex", alignItems: "center", gap: 4,
               }}>
                 <FaCheckDouble /> Marcar todas
@@ -173,7 +173,7 @@ function NotificationBell() {
 
           <button onClick={verTodas} style={{
             background: "none", border: "none", borderTop: "1px solid #e5e7eb",
-            padding: "10px 0", color: "#1d4ed8", fontSize: 13, fontWeight: 600, cursor: "pointer",
+            padding: "10px 0", color: "#0062B7", fontSize: 13, fontWeight: 600, cursor: "pointer",
           }}>
             Ver todas
           </button>

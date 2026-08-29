@@ -131,10 +131,10 @@ function Proveedores() {
                   <td>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <div style={{
-                        width: 36, height: 36, borderRadius: 8, background: "#dbeafe",
+                        width: 36, height: 36, borderRadius: 8, background: "#E3EEF9",
                         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                       }}>
-                        <FaTruck style={{ color: "#1d4ed8", fontSize: 15 }} />
+                        <FaTruck style={{ color: "#0062B7", fontSize: 15 }} />
                       </div>
                       <span style={{ fontWeight: 700 }}>{p.nombre}</span>
                     </div>
@@ -143,7 +143,7 @@ function Proveedores() {
                   <td>
                     {p.email
                       ? <a href={`mailto:${p.email}`}
-                          style={{ color: "#3b82f6", textDecoration: "none", fontSize: 13,
+                          style={{ color: "#0062B7", textDecoration: "none", fontSize: 13,
                             display: "flex", alignItems: "center", gap: 4 }}>
                           <FaEnvelope style={{ fontSize: 11 }} />{p.email}
                         </a>
@@ -229,7 +229,7 @@ function Proveedores() {
                     placeholder="Av. Montes 234" />
                 </div>
                 {formErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>
                 )}
               </div>
               <div className="modal-footer">

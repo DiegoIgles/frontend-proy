@@ -20,9 +20,9 @@ const FORM_VACIO = {
 };
 
 function StockBadge({ stock }) {
-  const color  = stock === 0 ? { bg: "#fee2e2", text: "#991b1b" }
-               : stock <= 10 ? { bg: "#fef9c3", text: "#92400e" }
-               :               { bg: "#d1fae5", text: "#065f46" };
+  const color  = stock === 0 ? { bg: "#FBE9E7", text: "#96291D" }
+               : stock <= 10 ? { bg: "#fef9c3", text: "#8A5A02" }
+               :               { bg: "#E6F3E5", text: "#056125" };
   return (
     <span style={{
       padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
@@ -293,7 +293,7 @@ function Productos() {
                   onChangeAtributos={(at) => setForm((f) => ({ ...f, atributos: at }))}
                 />
                 {formErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>
                 )}
               </div>
               <div className="modal-footer">

@@ -92,7 +92,7 @@ function VerCategoria() {
   };
 
   if (loading) return <Layout><div style={{ padding: 40, textAlign: "center", color: "#9ca3af" }}>Cargando...</div></Layout>;
-  if (error)   return <Layout><div style={{ padding: 40, textAlign: "center", color: "#dc2626" }}>{error}</div></Layout>;
+  if (error)   return <Layout><div style={{ padding: 40, textAlign: "center", color: "#C0392B" }}>{error}</div></Layout>;
   if (!cat)    return null;
 
   const productos    = cat.productos    ?? [];
@@ -146,7 +146,7 @@ function VerCategoria() {
               <div>
                 {cat.categoriaPadre
                   ? <Link to={`/inventario/categorias/${cat.categoriaPadre.categoriaId}`}
-                      style={{ color: "#2563eb" }}>{cat.categoriaPadre.nombre}</Link>
+                      style={{ color: "#0062B7" }}>{cat.categoriaPadre.nombre}</Link>
                   : <span style={{ color: "#9ca3af" }}>Raíz (sin padre)</span>}
               </div>
             </div>
@@ -202,8 +202,8 @@ function VerCategoria() {
       {/* Productos en esta categoría */}
       <div className="card">
         <h3 style={{ margin: "0 0 16px", fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
-          <FaBoxOpen style={{ color: "#2563eb" }} /> Productos
-          <span style={{ background: "#dbeafe", color: "#1d4ed8", borderRadius: 10, padding: "1px 8px", fontSize: 12 }}>
+          <FaBoxOpen style={{ color: "#0062B7" }} /> Productos
+          <span style={{ background: "#E3EEF9", color: "#0062B7", borderRadius: 10, padding: "1px 8px", fontSize: 12 }}>
             {productos.length}
           </span>
         </h3>
@@ -250,7 +250,7 @@ function VerCategoria() {
             </div>
             <form onSubmit={handleSave}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {formErr && <div style={{ background: "#fee2e2", color: "#991b1b", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formErr}</div>}
+                {formErr && <div style={{ background: "#FBE9E7", color: "#96291D", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formErr}</div>}
                 <div>
                   <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Nombre *</label>
                   <input value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })}

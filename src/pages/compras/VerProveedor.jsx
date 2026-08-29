@@ -137,7 +137,7 @@ function VerProveedor() {
           <button onClick={handleDelete} disabled={deleting}
             style={{ display: "flex", alignItems: "center", gap: 5,
               padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: 13, background: "#fee2e2", color: "#991b1b" }}>
+              fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
             <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
@@ -148,12 +148,12 @@ function VerProveedor() {
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Notas de Compra</p>
-          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#1d4ed8" }}>{compras.length}</p>
+          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#0062B7" }}>{compras.length}</p>
         </div>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Total Comprado</p>
-          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#059669" }}>
+          <p style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#2C9826" }}>
             ${totalCompras.toLocaleString("es-CO", { minimumFractionDigits: 2 })}
           </p>
         </div>
@@ -171,9 +171,9 @@ function VerProveedor() {
         {/* Datos de contacto */}
         <div className="card" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-            <div style={{ width: 48, height: 48, borderRadius: 10, background: "#dbeafe",
+            <div style={{ width: 48, height: 48, borderRadius: 10, background: "#E3EEF9",
               display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <FaTruck style={{ color: "#1d4ed8", fontSize: 22 }} />
+              <FaTruck style={{ color: "#0062B7", fontSize: 22 }} />
             </div>
             <div>
               <p style={{ margin: 0, fontWeight: 700, fontSize: 15 }}>{proveedor.nombre}</p>
@@ -288,7 +288,7 @@ function VerProveedor() {
                     onChange={(e) => setEditForm((f) => ({ ...f, direccion: e.target.value }))} />
                 </div>
                 {editErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{editErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{editErr}</p>
                 )}
               </div>
               <div className="modal-footer">

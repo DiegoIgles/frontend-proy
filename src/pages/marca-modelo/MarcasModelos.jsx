@@ -20,8 +20,8 @@ function TabBtn({ label, icon, active, onClick }) {
     <button onClick={onClick} style={{
       padding: "8px 20px", border: "none", cursor: "pointer", fontWeight: 600,
       fontSize: 13, background: "none",
-      borderBottom: active ? "2px solid #3b82f6" : "2px solid transparent",
-      color: active ? "#3b82f6" : "#6b7280",
+      borderBottom: active ? "2px solid #0062B7" : "2px solid transparent",
+      color: active ? "#0062B7" : "#6b7280",
     }}>
       {icon} {label}
     </button>
@@ -56,7 +56,7 @@ function NombreModal({ title, value, onChange, onSave, onClose, saving, error })
             <label>Nombre *</label>
             <input value={value} onChange={(e) => onChange(e.target.value)}
               placeholder="Ej: Victron Energy" autoFocus />
-            {error && <p style={{ margin: "8px 0 0", color: "#dc2626", fontSize: 13 }}>{error}</p>}
+            {error && <p style={{ margin: "8px 0 0", color: "#C0392B", fontSize: 13 }}>{error}</p>}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancelar</button>
@@ -246,9 +246,9 @@ function MarcasModelos() {
       {/* Métricas */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 20 }}>
         {[
-          { label: "Marcas",        value: marcas.length,        color: "#1d4ed8" },
+          { label: "Marcas",        value: marcas.length,        color: "#0062B7" },
           { label: "Modelos",       value: modelos.length,       color: "#7c3aed" },
-          { label: "Combinaciones", value: combinaciones.length, color: "#059669" },
+          { label: "Combinaciones", value: combinaciones.length, color: "#2C9826" },
         ].map((m) => (
           <div key={m.label} className="card" style={{ textAlign: "center" }}>
             <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
@@ -307,11 +307,11 @@ function MarcasModelos() {
                           </td>
                           <td>
                             <div style={{ display: "flex", gap: 6 }}>
-                              <ActionBtn onClick={() => openEdit("marca", m)} bg="#dbeafe" color="#1e40af">
+                              <ActionBtn onClick={() => openEdit("marca", m)} bg="#E3EEF9" color="#00509A">
                                 <FaEdit /> Editar
                               </ActionBtn>
                               <ActionBtn onClick={() => handleDelete("marca", m.marcaId, m.nombre)}
-                                bg="#fee2e2" color="#991b1b">
+                                bg="#FBE9E7" color="#96291D">
                                 <FaTrash /> Eliminar
                               </ActionBtn>
                             </div>
@@ -344,7 +344,7 @@ function MarcasModelos() {
                               {m.marcaModelos?.map((mm) => (
                                 <span key={mm.marcaModeloId} style={{
                                   padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                                  background: "#dbeafe", color: "#1e40af", fontWeight: 600,
+                                  background: "#E3EEF9", color: "#00509A", fontWeight: 600,
                                 }}>
                                   {mm.marca?.nombre}
                                 </span>
@@ -354,11 +354,11 @@ function MarcasModelos() {
                           </td>
                           <td>
                             <div style={{ display: "flex", gap: 6 }}>
-                              <ActionBtn onClick={() => openEdit("modelo", m)} bg="#dbeafe" color="#1e40af">
+                              <ActionBtn onClick={() => openEdit("modelo", m)} bg="#E3EEF9" color="#00509A">
                                 <FaEdit /> Editar
                               </ActionBtn>
                               <ActionBtn onClick={() => handleDelete("modelo", m.modeloId, m.nombre)}
-                                bg="#fee2e2" color="#991b1b">
+                                bg="#FBE9E7" color="#96291D">
                                 <FaTrash /> Eliminar
                               </ActionBtn>
                             </div>
@@ -387,7 +387,7 @@ function MarcasModelos() {
                         <tr key={c.marcaModeloId}>
                           <td>
                             <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                              background: "#dbeafe", color: "#1e40af", fontWeight: 600 }}>
+                              background: "#E3EEF9", color: "#00509A", fontWeight: 600 }}>
                               {c.marca?.nombre}
                             </span>
                           </td>
@@ -400,7 +400,7 @@ function MarcasModelos() {
                           <td>
                             <ActionBtn
                               onClick={() => handleDeleteCombo(c.marcaModeloId, `${c.marca?.nombre} / ${c.modelo?.nombre}`)}
-                              bg="#fee2e2" color="#991b1b">
+                              bg="#FBE9E7" color="#96291D">
                               <FaUnlink /> Desvincular
                             </ActionBtn>
                           </td>
@@ -457,7 +457,7 @@ function MarcasModelos() {
                     ))}
                   </select>
                 </div>
-                {comboErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{comboErr}</p>}
+                {comboErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{comboErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowCombo(false)}>Cancelar</button>

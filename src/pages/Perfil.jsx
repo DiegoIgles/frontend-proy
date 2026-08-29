@@ -28,7 +28,7 @@ function Avatar({ photoUrl, initiales, size = 100 }) {
   ) : (
     <div style={{
       width: size, height: size, borderRadius: "50%",
-      background: "#1d4ed8", color: "#fff",
+      background: "#0062B7", color: "#fff",
       display: "flex", alignItems: "center", justifyContent: "center",
       fontWeight: 800, fontSize: size * 0.32,
     }}>
@@ -147,7 +147,7 @@ function Perfil() {
               style={{
                 position: "absolute", bottom: 0, right: 0,
                 width: 30, height: 30, borderRadius: "50%",
-                background: "#1d4ed8", color: "#fff", border: "2px solid #fff",
+                background: "#0062B7", color: "#fff", border: "2px solid #fff",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 13,
               }}
@@ -164,8 +164,8 @@ function Perfil() {
 
           <span style={{
             display: "inline-block", padding: "3px 12px", borderRadius: 12, fontSize: 12,
-            fontWeight: 700, background: user.roles?.includes("admin") ? "#dbeafe" : "#f3f4f6",
-            color: user.roles?.includes("admin") ? "#1e40af" : "#374151",
+            fontWeight: 700, background: user.roles?.includes("admin") ? "#E3EEF9" : "#f3f4f6",
+            color: user.roles?.includes("admin") ? "#00509A" : "#374151",
           }}>
             {user.roles?.includes("admin") ? "Administrador" : "Usuario"}
           </span>
@@ -183,7 +183,7 @@ function Perfil() {
           {selectedFile && (
             <div style={{ marginTop: 14, padding: "10px", background: "#f0fdf4",
               borderRadius: 8, border: "1px solid #bbf7d0" }}>
-              <p style={{ margin: "0 0 8px", fontSize: 12, color: "#166534" }}>
+              <p style={{ margin: "0 0 8px", fontSize: 12, color: "#056125" }}>
                 Nueva foto seleccionada
               </p>
               <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
@@ -216,7 +216,7 @@ function Perfil() {
               disabled={deletingPhoto}
               style={{
                 marginTop: 12, background: "none", border: "none", cursor: "pointer",
-                color: "#dc2626", fontSize: 12, display: "flex", alignItems: "center",
+                color: "#C0392B", fontSize: 12, display: "flex", alignItems: "center",
                 gap: 5, margin: "12px auto 0",
               }}
             >
@@ -253,8 +253,8 @@ function Perfil() {
                   letterSpacing: "0.5px", fontWeight: 600 }}>Estado</p>
                 <span style={{
                   padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-                  background: user.isActive ? "#d1fae5" : "#fee2e2",
-                  color: user.isActive ? "#065f46" : "#991b1b",
+                  background: user.isActive ? "#E6F3E5" : "#FBE9E7",
+                  color: user.isActive ? "#056125" : "#96291D",
                 }}>
                   {user.isActive ? "Activo" : "Inactivo"}
                 </span>
@@ -265,7 +265,7 @@ function Perfil() {
                 <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
                   {user.roles?.map((r) => (
                     <span key={r} style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                      fontWeight: 600, background: "#dbeafe", color: "#1e40af" }}>
+                      fontWeight: 600, background: "#E3EEF9", color: "#00509A" }}>
                       {r}
                     </span>
                   ))}

@@ -266,7 +266,7 @@ function CreateNotaCompra() {
                 onChange={() => handleFormChange("esCredito", false)}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>
+              <span style={{ color: "#2C9826", fontWeight: 600 }}>Contado</span>
             </label>
             <label style={{ cursor: "pointer" }}>
               <input
@@ -277,15 +277,15 @@ function CreateNotaCompra() {
                 onChange={() => handleFormChange("esCredito", true)}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
+              <span style={{ color: "#EE9C02", fontWeight: 600 }}>Crédito</span>
             </label>
           </div>
         </div>
 
         {/* Sección crédito */}
         {form.esCredito && (
-          <div className="card" style={{ marginBottom: 16, borderLeft: "4px solid #d97706" }}>
-            <h3 style={{ marginBottom: 14, color: "#d97706" }}>Condiciones de Crédito</h3>
+          <div className="card" style={{ marginBottom: 16, borderLeft: "4px solid #EE9C02" }}>
+            <h3 style={{ marginBottom: 14, color: "#EE9C02" }}>Condiciones de Crédito</h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               <div className="form-group">
                 <label>Fecha de Vencimiento <span style={{ color: "#9ca3af", fontWeight: 400 }}>(opcional)</span></label>
@@ -360,7 +360,7 @@ function CreateNotaCompra() {
                     <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
                       Pago inicial
                     </td>
-                    <td style={{ fontSize: 13, color: "#059669", fontWeight: 600, textAlign: "right" }}>
+                    <td style={{ fontSize: 13, color: "#2C9826", fontWeight: 600, textAlign: "right" }}>
                       − Bs. {Number(form.credito.montoPagadoInicial).toFixed(2)}
                     </td>
                     <td />
@@ -371,7 +371,7 @@ function CreateNotaCompra() {
                     <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
                       Saldo pendiente
                     </td>
-                    <td style={{ fontSize: 14, color: "#dc2626", fontWeight: 700, textAlign: "right" }}>
+                    <td style={{ fontSize: 14, color: "#C0392B", fontWeight: 700, textAlign: "right" }}>
                       Bs. {Math.max(0, total - Number(form.credito.montoPagadoInicial)).toFixed(2)}
                     </td>
                     <td />

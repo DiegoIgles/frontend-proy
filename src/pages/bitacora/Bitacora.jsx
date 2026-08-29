@@ -8,9 +8,9 @@ import { exportBitacoraAction } from "./actions/export-bitacora.action";
 import { FaHistory, FaSearch, FaFileExcel, FaTimes, FaEye } from "react-icons/fa";
 
 const ACCION_COLORS = {
-  CREAR:             { bg: "#d1fae5", color: "#065f46" },
-  ACTUALIZAR:        { bg: "#dbeafe", color: "#1e40af" },
-  ELIMINAR:          { bg: "#fee2e2", color: "#991b1b" },
+  CREAR:             { bg: "#E6F3E5", color: "#056125" },
+  ACTUALIZAR:        { bg: "#E3EEF9", color: "#00509A" },
+  ELIMINAR:          { bg: "#FBE9E7", color: "#96291D" },
   APROBAR:           { bg: "#ede9fe", color: "#5b21b6" },
   REGISTRAR_PAGO:    { bg: "#cffafe", color: "#0e7490" },
   REGISTRAR_COBRO:   { bg: "#cffafe", color: "#0e7490" },
