@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getCotizacionManualAction } from "./actions/get-cotizacion.action";
 import { FaPrint, FaArrowLeft, FaBolt } from "react-icons/fa";
 import { Pagina1Portada } from "./diseños_print/Pagina1Portada";
+import { Pagina2QuienesSomos } from "./diseños_print/Pagina2QuienesSomos";
 import { Pagina4Diseno } from "./diseños_print/Pagina4Diseno";
 import { Pagina5Cotizacion } from "./diseños_print/Pagina5Cotizacion";
 import { Pagina6Roi } from "./diseños_print/Pagina6Roi";
@@ -185,10 +186,8 @@ function CotizacionManualPrint() {
         {/* ═══════════ PÁGINA 1: PORTADA (CLONADA DINÁMICA) ═══════════ */}
         <Pagina1Portada cot={cot} />
 
-        {/* ═══════════ PÁGINA 2: PRESENTACIÓN (ESTÁTICA) ═══════════ */}
-        <section className="pagina pagina-estatica">
-          <img src="/cotizacion/cotizacion2_A4.png" alt="Portada 2" />
-        </section>
+        {/* ═══════════ PÁGINA 2: ¿QUIÉNES SOMOS? (CLONADA) ═══════════ */}
+        <Pagina2QuienesSomos />
 
         {/* ═══════════ PÁGINA 3: INTRODUCCIÓN (ESTÁTICA) ═══════════ */}
         <section className="pagina pagina-estatica">

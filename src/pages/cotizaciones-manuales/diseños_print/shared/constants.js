@@ -14,6 +14,14 @@ export const COLORS = {
   naranja: "#EE9C02",
   hueso: "#F1F1F1",
   blanco: "#FFFFFF",
+
+  // Tokens que estrena la página 2 ("¿Quiénes somos?"). Medidos sobre el arte
+  // aprobado: los tintes son el disco claro detrás de cada icono de solución y
+  // la regla es el hilo que separa la grilla 3×2. No inventar más grises.
+  tinta: "#2C3440",       // cuerpo de párrafo y primera línea de cada etiqueta
+  tinteAzul: "#E9F0FA",   // disco de iconos "fríos"
+  tinteVerde: "#E9F5EC",  // disco de iconos verdes
+  regla: "#DCE0E4",       // divisores de la grilla de soluciones
 };
 
 // El arte aprobado usa Montserrat — cargada en public/index.html. El
