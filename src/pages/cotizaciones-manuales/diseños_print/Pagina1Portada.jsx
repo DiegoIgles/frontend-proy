@@ -42,14 +42,28 @@ function fmtFechaCorta(d) {
 // Si hay que reencuadrar, se recalculan TODOS los círculos con la misma escala.
 // Mover un centro suelto deforma la media luna.
 
-const FOTO_SRC = "/cotizacion/assets/paneles-solares-portada.png";
+const FOTO_SRC = "/cotizacion/assets/portada-foto-arte.png";
 
-// La foto es la original completa (1424×1876), sin recortar: va en una caja de
-// su mismo aspecto y el círculo hace de máscara. La caja se corrió a la
-// izquierda a propósito para que el sol caiga en (262.6, 117.8) mm — dentro de
-// la hoja — que es donde está en el arte. Su borde derecho (290.7 mm) queda
-// fuera de la hoja, así que el hueco que deja a la derecha nunca se ve.
-const FOTO_BOX = { x: 131.89, y: 17.76, w: 158.78, h: 209.17 };
+// La foto sale RECORTADA DEL ARTE APROBADO, no de un archivo suelto. El
+// paneles-solares-portada.png que se usaba antes era otra toma —o la misma muy
+// reprocesada—: cielo dorado lavado, paneles empastados y un halo de sol que
+// quemaba medio disco. Reencuadrarlo no arreglaba nada porque el problema era
+// el bitmap, no la caja.
+//
+// El recorte se sacó del arte apaisado (1536×1024) con la conversión de arriba
+// (mm = px·0.21084, con −44.4 en X), tomando el rectángulo que envuelve al
+// disco dentro de la hoja: píxeles 860..1536 × 90..1024. Lo de afuera del
+// disco se rellenó extendiendo el borde, así que si algún día la máscara se
+// mueve medio milímetro asoma foto estirada y nunca el anillo de hueso ni la
+// cuña verde del arte.
+//
+// Por eso la caja es EXACTAMENTE ese rectángulo llevado a mm y su aspecto
+// coincide con el del archivo (676:934): no hay recorte ni deformación, cada
+// píxel cae donde cae en el arte.
+//
+// Al reemplazar el archivo por una versión de más resolución hay que respetar
+// la proporción 676:934; el nombre y esta caja no se tocan.
+const FOTO_BOX = { x: 136.92, y: 18.98, w: 142.53, h: 196.92 };
 
 // Círculo de la foto y de cada media luna (mm). "contiene" pinta, "recorta" resta.
 const FOTO = { cx: 238.99, cy: 121.06, r: 102.05 };
