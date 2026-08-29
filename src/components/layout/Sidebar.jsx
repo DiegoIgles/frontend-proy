@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import logoBlanco from "../../assets/brand/enerlogic-blanco.png";
+import logoBlanco from "../../assets/brand/enerlogic_v2_transparent.png";
 
 import {
   FaTachometerAlt,

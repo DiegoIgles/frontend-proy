@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import logoBlanco from "../assets/brand/enerlogic-blanco.png";
+import logoBlanco from "../assets/brand/enerlogic_v2_transparent.png";
 import "../styles/pagina-estado.css";
 
 /**

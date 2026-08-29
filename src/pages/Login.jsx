@@ -10,7 +10,7 @@ import FloatingChatbot from "../components/FloatingChatbot";
 
 /* Dos versiones del mismo lockup: la de wordmark blanco solo lee sobre el navy
    del panel izquierdo; la de color, solo sobre el fondo claro del formulario. */
-import logoBlanco from "../assets/brand/enerlogic-blanco.png";
+import logoBlanco from "../assets/brand/enerlogic_v2_transparent.png";
 import logoColor from "../assets/brand/enerlogic-color.png";
 
 function Login() {
