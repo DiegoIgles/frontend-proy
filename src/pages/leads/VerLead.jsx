@@ -15,6 +15,66 @@ import {
 const fieldLabel = { fontSize: 11, color: "#9ca3af", display: "block", marginBottom: 4 };
 const fieldInput = { width: "100%", boxSizing: "border-box" };
 
+// Vista de una lista de URLs de imágenes (facturaImagenUrl / imagenCargadorUrl
+// son arreglos en el backend: puede llegar más de una foto por lead).
+function ImageGallery({ label, urls }) {
+  const lista = Array.isArray(urls) ? urls.filter(Boolean) : [];
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: "#9ca3af" }}>
+        {label}{lista.length > 0 ? ` (${lista.length})` : ""}
+      </div>
+      {lista.length > 0 ? (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 4 }}>
+          {lista.map((url, i) => (
+            <a key={i} href={url} target="_blank" rel="noreferrer">
+              <img src={url} alt={`${label} ${i + 1}`}
+                style={{ width: 90, height: 90, objectFit: "cover", borderRadius: 6, display: "block", border: "1px solid #e5e7eb" }} />
+            </a>
+          ))}
+        </div>
+      ) : <span>—</span>}
+    </div>
+  );
+}
+
+// Editor de una lista de URLs (agregar/quitar/editar), usado en el formulario
+// para los mismos campos array.
+function ImageUrlListField({ label, values, onChange }) {
+  return (
+    <div>
+      <label style={fieldLabel}>{label}</label>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {values.map((url, i) => (
+          <div key={i} style={{ display: "flex", gap: 6 }}>
+            <input value={url} style={fieldInput}
+              onChange={(e) => {
+                const nuevas = [...values];
+                nuevas[i] = e.target.value;
+                onChange(nuevas);
+              }} />
+            <button type="button"
+              onClick={() => {
+                const nuevas = values.filter((_, idx) => idx !== i);
+                onChange(nuevas.length > 0 ? nuevas : [""]);
+              }}
+              style={{ background: "none", border: "1px solid #d1d5db", borderRadius: 6, cursor: "pointer", color: "#6b7280", padding: "0 10px" }}>
+              ✖
+            </button>
+          </div>
+        ))}
+        <button type="button"
+          onClick={() => onChange([...values, ""])}
+          style={{ alignSelf: "flex-start", background: "none", border: "1px dashed #adb5bd", borderRadius: 6, cursor: "pointer", color: "#6b7280", padding: "4px 10px", fontSize: 12 }}>
+          + Agregar foto
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const asUrlList = (value) => (Array.isArray(value) && value.length > 0 ? value : [""]);
+
 function VerLead() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -50,15 +110,18 @@ function VerLead() {
       correo:         lead.correo || "",
       direccion:      lead.direccion || "",
       comentario:     lead.comentario || "",
+      comentario2:    lead.comentario2 || "",
+      comentario3:    lead.comentario3 || "",
+      comentario4:    lead.comentario4 || "",
       tipoServicio:   lead.tipoServicio || "",
       tipoSuministro: lead.tipoSuministro || "",
       facturaMensual: lead.facturaMensual ?? "",
       tipoCubierta:   lead.tipoCubierta || "",
       ubicacion:      lead.ubicacion || "",
-      facturaImagenUrl: lead.facturaImagenUrl || "",
+      facturaImagenUrl: asUrlList(lead.facturaImagenUrl),
       vehiculo:       lead.vehiculo || "",
       cargador:       lead.cargador || "",
-      imagenCargadorUrl: lead.imagenCargadorUrl || "",
+      imagenCargadorUrl: asUrlList(lead.imagenCargadorUrl),
     });
     setFormErr("");
     setShowEdit(true);
@@ -78,16 +141,21 @@ function VerLead() {
       if (form.correo.trim())          dto.correo          = form.correo.trim();
       if (form.direccion.trim())       dto.direccion       = form.direccion.trim();
       if (form.comentario.trim())      dto.comentario      = form.comentario.trim();
+      if (form.comentario2.trim())     dto.comentario2     = form.comentario2.trim();
+      if (form.comentario3.trim())     dto.comentario3     = form.comentario3.trim();
+      if (form.comentario4.trim())     dto.comentario4     = form.comentario4.trim();
       if (form.tipoServicio)           dto.tipoServicio    = form.tipoServicio;
       if (form.tipoSuministro)         dto.tipoSuministro  = form.tipoSuministro;
       if (form.facturaMensual !== "" && form.facturaMensual !== null)
         dto.facturaMensual = Number(form.facturaMensual);
       if (form.tipoCubierta)           dto.tipoCubierta    = form.tipoCubierta;
       if (form.ubicacion.trim())       dto.ubicacion       = form.ubicacion.trim();
-      if (form.facturaImagenUrl.trim()) dto.facturaImagenUrl = form.facturaImagenUrl.trim();
+      const imagenesFactura = form.facturaImagenUrl.map((u) => u.trim()).filter(Boolean);
+      if (imagenesFactura.length > 0)  dto.facturaImagenUrl = imagenesFactura;
       if (form.vehiculo.trim())        dto.vehiculo        = form.vehiculo.trim();
       if (form.cargador.trim())        dto.cargador        = form.cargador.trim();
-      if (form.imagenCargadorUrl.trim()) dto.imagenCargadorUrl = form.imagenCargadorUrl.trim();
+      const imagenesCargador = form.imagenCargadorUrl.map((u) => u.trim()).filter(Boolean);
+      if (imagenesCargador.length > 0) dto.imagenCargadorUrl = imagenesCargador;
       await updateLeadAction(id, dto);
       setShowEdit(false);
       loadLead();
@@ -184,6 +252,33 @@ function VerLead() {
               <span>{lead.comentario || "—"}</span>
             </div>
           </div>
+          {lead.comentario2 && (
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <FaCommentDots style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: 11, color: "#9ca3af" }}>Comentario 2</div>
+                <span>{lead.comentario2}</span>
+              </div>
+            </div>
+          )}
+          {lead.comentario3 && (
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <FaCommentDots style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: 11, color: "#9ca3af" }}>Comentario 3</div>
+                <span>{lead.comentario3}</span>
+              </div>
+            </div>
+          )}
+          {lead.comentario4 && (
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <FaCommentDots style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: 11, color: "#9ca3af" }}>Comentario 4</div>
+                <span>{lead.comentario4}</span>
+              </div>
+            </div>
+          )}
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaBolt style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
             <div>
@@ -225,15 +320,7 @@ function VerLead() {
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaImage style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
-            <div>
-              <div style={{ fontSize: 11, color: "#9ca3af" }}>Foto de factura</div>
-              {lead.facturaImagenUrl ? (
-                <a href={lead.facturaImagenUrl} target="_blank" rel="noreferrer">
-                  <img src={lead.facturaImagenUrl} alt="Factura"
-                    style={{ maxWidth: 160, maxHeight: 120, borderRadius: 6, display: "block", marginTop: 4, border: "1px solid #e5e7eb" }} />
-                </a>
-              ) : <span>—</span>}
-            </div>
+            <ImageGallery label="Fotos de factura" urls={lead.facturaImagenUrl} />
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaCar style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
@@ -251,15 +338,7 @@ function VerLead() {
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaImage style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
-            <div>
-              <div style={{ fontSize: 11, color: "#9ca3af" }}>Foto del cargador</div>
-              {lead.imagenCargadorUrl ? (
-                <a href={lead.imagenCargadorUrl} target="_blank" rel="noreferrer">
-                  <img src={lead.imagenCargadorUrl} alt="Cargador"
-                    style={{ maxWidth: 160, maxHeight: 120, borderRadius: 6, display: "block", marginTop: 4, border: "1px solid #e5e7eb" }} />
-                </a>
-              ) : <span>—</span>}
-            </div>
+            <ImageGallery label="Fotos del cargador" urls={lead.imagenCargadorUrl} />
           </div>
         </div>
       </div>
@@ -304,6 +383,21 @@ function VerLead() {
                     style={{ width: "100%", boxSizing: "border-box" }} />
                 </div>
                 <div>
+                  <label style={fieldLabel}>Comentario 2</label>
+                  <textarea rows={2} value={form.comentario2} onChange={(e) => setForm({ ...form, comentario2: e.target.value })}
+                    style={fieldInput} />
+                </div>
+                <div>
+                  <label style={fieldLabel}>Comentario 3</label>
+                  <textarea rows={2} value={form.comentario3} onChange={(e) => setForm({ ...form, comentario3: e.target.value })}
+                    style={fieldInput} />
+                </div>
+                <div>
+                  <label style={fieldLabel}>Comentario 4</label>
+                  <textarea rows={2} value={form.comentario4} onChange={(e) => setForm({ ...form, comentario4: e.target.value })}
+                    style={fieldInput} />
+                </div>
+                <div>
                   <label style={fieldLabel}>Tipo de servicio</label>
                   <select value={form.tipoServicio} onChange={(e) => setForm({ ...form, tipoServicio: e.target.value })} style={fieldInput}>
                     <option value="">Sin especificar</option>
@@ -324,7 +418,7 @@ function VerLead() {
                   </select>
                 </div>
                 <div>
-                  <label style={fieldLabel}>Factura anual (Bs)</label>
+                  <label style={fieldLabel}>Factura mensual (Bs)</label>
                   <input type="number" step="0.01" min="0" value={form.facturaMensual}
                     onChange={(e) => setForm({ ...form, facturaMensual: e.target.value })} style={fieldInput} />
                 </div>
@@ -342,10 +436,8 @@ function VerLead() {
                   <label style={fieldLabel}>Ubicación (link de Google Maps)</label>
                   <input value={form.ubicacion} onChange={(e) => setForm({ ...form, ubicacion: e.target.value })} style={fieldInput} />
                 </div>
-                <div>
-                  <label style={fieldLabel}>URL foto de factura</label>
-                  <input value={form.facturaImagenUrl} onChange={(e) => setForm({ ...form, facturaImagenUrl: e.target.value })} style={fieldInput} />
-                </div>
+                <ImageUrlListField label="Fotos de factura (URLs)" values={form.facturaImagenUrl}
+                  onChange={(nuevas) => setForm({ ...form, facturaImagenUrl: nuevas })} />
                 <div>
                   <label style={fieldLabel}>Vehículo</label>
                   <input value={form.vehiculo} onChange={(e) => setForm({ ...form, vehiculo: e.target.value })} style={fieldInput} />
@@ -354,10 +446,8 @@ function VerLead() {
                   <label style={fieldLabel}>Cargador</label>
                   <input value={form.cargador} onChange={(e) => setForm({ ...form, cargador: e.target.value })} style={fieldInput} />
                 </div>
-                <div>
-                  <label style={fieldLabel}>URL foto del cargador</label>
-                  <input value={form.imagenCargadorUrl} onChange={(e) => setForm({ ...form, imagenCargadorUrl: e.target.value })} style={fieldInput} />
-                </div>
+                <ImageUrlListField label="Fotos del cargador (URLs)" values={form.imagenCargadorUrl}
+                  onChange={(nuevas) => setForm({ ...form, imagenCargadorUrl: nuevas })} />
               </div>
               <div className="modal-footer">
                 <button type="button" onClick={() => setShowEdit(false)}

@@ -5,39 +5,29 @@ import "./floatingChatbot.css";
 import LocationPickerModal from "./LocationPickerModal";
 
 const WEBHOOK_URL =
-  "http://localhost:5678/webhook-test/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
+  "http://localhost:5678/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
 
 // Webhook aparte en n8n para recibir la foto de la factura (multipart/form-data)
 const UPLOAD_WEBHOOK_URL =
-  "http://localhost:5678/webhook-test/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
+  "http://localhost:5678/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
 
 function FloatingChatbot() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  // Crear una sesión única para el usuario
-  const [sessionId] = useState(() => {
-    let id = localStorage.getItem("enerlogic_session");
-
-    if (!id) {
-      id = crypto.randomUUID();
-      localStorage.setItem("enerlogic_session", id);
-    }
-
-    return id;
-  });
+  // Sesión nueva en cada carga de la página: no se persiste en localStorage
+  // a propósito, así al recargar el navegador el chat arranca de cero.
+  const [sessionId] = useState(() => crypto.randomUUID());
 
   const [messages, setMessages] = useState([]);
 
   const [input, setInput] = useState("");
 
-  // Imagen seleccionada pero aún no enviada (se adjunta al próximo mensaje)
-  const [attachedFile, setAttachedFile] = useState(null);
-  const [attachedPreview, setAttachedPreview] = useState(null);
-
-  // Confirmación visual temporal al copiar el link de ubicación
-  const [copyFeedback, setCopyFeedback] = useState(false);
+  // Imágenes seleccionadas pero aún no enviadas (se adjuntan al próximo
+  // mensaje). Puede ser más de una: el backend ahora guarda las fotos del
+  // cargador como arreglo (dato_lead.imagenCargadorUrl).
+  const [attachments, setAttachments] = useState([]); // [{ file, previewUrl }]
 
   // Modal para elegir la ubicación en un mapa (disparado por el botón
   // "Abrir GPS" que manda el bot en su respuesta)
@@ -110,10 +100,10 @@ function FloatingChatbot() {
   const sendMessage = async (overrideValue, overrideLabel) => {
     const textToSend = (overrideValue ?? input).trim();
     const textToShow = (overrideLabel ?? overrideValue ?? input).trim();
-    const fileToSend = attachedFile;
-    const previewToShow = attachedPreview;
+    const filesToSend = attachments.map((a) => a.file);
+    const previewsToShow = attachments.map((a) => a.previewUrl);
 
-    if (!textToSend && !fileToSend) return;
+    if (!textToSend && filesToSend.length === 0) return;
 
     // Una vez que el usuario elige un botón, ocultamos los botones de
     // ese mensaje del bot para que no los pueda volver a tocar.
@@ -128,23 +118,24 @@ function FloatingChatbot() {
       {
         sender: "user",
         text: textToShow,
-        imageUrl: previewToShow || undefined,
+        imageUrls: previewsToShow.length > 0 ? previewsToShow : undefined,
       },
     ]);
 
     setInput("");
-    setAttachedFile(null);
-    setAttachedPreview(null);
+    setAttachments([]);
     setLoading(true);
 
     try {
       let res;
 
-      if (fileToSend) {
+      if (filesToSend.length > 0) {
         const formData = new FormData();
         formData.append("sessionId", sessionId);
         formData.append("message", textToSend);
-        formData.append("file", fileToSend);
+        // Mismo nombre de campo repetido por archivo: así n8n/multer lo
+        // recibe como arreglo (coincide con dato_lead.imagenCargadorUrl).
+        filesToSend.forEach((file) => formData.append("file", file));
 
         res = await fetch(UPLOAD_WEBHOOK_URL, {
           method: "POST",
@@ -210,6 +201,13 @@ function FloatingChatbot() {
       return;
     }
 
+    // El botón "Abrir Imagen" que manda el bot (value: "imagen") abre el
+    // selector de archivos en vez de enviarse como mensaje.
+    if (btn.value === "imagen") {
+      handleAttachClick();
+      return;
+    }
+
     sendMessage(btn.value, btn.label);
   };
 
@@ -231,64 +229,27 @@ function FloatingChatbot() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    if (attachedPreview) {
-      URL.revokeObjectURL(attachedPreview);
-    }
+    const nuevos = files.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
 
-    setAttachedFile(file);
-    setAttachedPreview(URL.createObjectURL(file));
+    // Se acumulan: el usuario puede abrir el selector varias veces para
+    // ir juntando fotos antes de mandarlas todas juntas.
+    setAttachments((prev) => [...prev, ...nuevos]);
 
     e.target.value = ""; // permite volver a seleccionar el mismo archivo si hace falta
   };
 
-  const handleRemoveAttachment = () => {
-    if (attachedPreview) {
-      URL.revokeObjectURL(attachedPreview);
-    }
-
-    setAttachedFile(null);
-    setAttachedPreview(null);
-  };
-
-  // ---- Compartir ubicación ----
-
-  const handleShareLocation = () => {
-    if (!navigator.geolocation) {
-      alert("Tu navegador no soporta geolocalización.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-        const appendLink = (prev) =>
-          prev.trim() ? `${prev.trim()} ${mapsLink}` : mapsLink;
-
-        try {
-          await navigator.clipboard.writeText(mapsLink);
-          setInput(appendLink);
-          setCopyFeedback(true);
-          setTimeout(() => setCopyFeedback(false), 2000);
-        } catch (error) {
-          console.error(error);
-          setInput(appendLink);
-          alert(
-            "No se pudo copiar automáticamente. El link quedó en el campo de texto para copiarlo manualmente."
-          );
-        }
-      },
-      (error) => {
-        console.error(error);
-        alert(
-          "No se pudo obtener tu ubicación. Puedes pegar el link de Google Maps manualmente."
-        );
-      }
-    );
+  const handleRemoveAttachment = (index) => {
+    setAttachments((prev) => {
+      const target = prev[index];
+      if (target) URL.revokeObjectURL(target.previewUrl);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   return (
@@ -318,13 +279,14 @@ function FloatingChatbot() {
                 key={index}
                 className={`chat-msg ${msg.sender}`}
               >
-                {msg.imageUrl && (
+                {msg.imageUrls && msg.imageUrls.map((url, i) => (
                   <img
-                    src={msg.imageUrl}
+                    key={i}
+                    src={url}
                     alt="Imagen adjunta"
                     className="chat-msg-image"
                   />
-                )}
+                ))}
                 {msg.text && (
   <div className="chat-msg-text">
     {msg.text}
@@ -356,53 +318,47 @@ function FloatingChatbot() {
             <div ref={bottomRef}></div>
           </div>
 
-          {attachedFile && (
+          {attachments.length > 0 && (
             <div className="chatbot-attachment-preview">
-              <img src={attachedPreview} alt="Vista previa" />
-              <span className="chatbot-attachment-name">
-                {attachedFile.name}
-              </span>
+              {attachments.map((att, i) => (
+                <div key={i} className="chatbot-attachment-item">
+                  <img src={att.previewUrl} alt="Vista previa" />
+                  <button
+                    onClick={() => handleRemoveAttachment(i)}
+                    className="chatbot-attachment-remove"
+                    title="Quitar imagen"
+                  >
+                    ✖
+                  </button>
+                </div>
+              ))}
               <button
-                onClick={handleRemoveAttachment}
-                className="chatbot-attachment-remove"
-                title="Quitar imagen"
+                onClick={handleAttachClick}
+                className="chatbot-attachment-add"
+                title="Agregar otra imagen"
               >
-                ✖
+                +
               </button>
             </div>
           )}
 
           <div className="chatbot-footer">
-            {/* Input de archivo oculto, disparado por el botón 📎 */}
+            {/* Input de archivo oculto: lo dispara el botón "Abrir Imagen"
+                que manda el bot (value: "imagen"), ya no hay ícono fijo */}
             <input
               type="file"
               ref={fileInputRef}
               style={{ display: "none" }}
               accept="image/*"
+              multiple
               onChange={handleFileChange}
             />
-
-            <button
-              onClick={handleAttachClick}
-              title="Adjuntar foto de la factura"
-              className="chatbot-icon-btn"
-            >
-              📎
-            </button>
-
-            <button
-              onClick={handleShareLocation}
-              title="Copiar link de mi ubicación"
-              className="chatbot-icon-btn"
-            >
-              {copyFeedback ? "✅" : "📍"}
-            </button>
 
             <input
               type="text"
               placeholder={
-                attachedFile
-                  ? "Escribe un mensaje para tu imagen..."
+                attachments.length > 0
+                  ? "Escribe un mensaje para tus imágenes..."
                   : "Escribe aquí..."
               }
               value={input}
