@@ -296,7 +296,7 @@ function VerLead() {
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaFileInvoiceDollar style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
             <div>
-              <div style={{ fontSize: 11, color: "#9ca3af" }}>Factura mensual</div>
+              <div style={{ fontSize: 11, color: "#9ca3af" }}>Factura anual</div>
               <span>{lead.facturaMensual != null ? `Bs. ${Number(lead.facturaMensual).toFixed(2)}` : "—"}</span>
             </div>
           </div>
@@ -320,7 +320,7 @@ function VerLead() {
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaImage style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
-            <ImageGallery label="Fotos de factura" urls={lead.facturaImagenUrl} />
+            <ImageGallery label="Imagen 1" urls={lead.facturaImagenUrl} />
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaCar style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
@@ -338,7 +338,7 @@ function VerLead() {
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <FaImage style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
-            <ImageGallery label="Fotos del cargador" urls={lead.imagenCargadorUrl} />
+            <ImageGallery label="Imagen 2" urls={lead.imagenCargadorUrl} />
           </div>
         </div>
       </div>
@@ -418,7 +418,7 @@ function VerLead() {
                   </select>
                 </div>
                 <div>
-                  <label style={fieldLabel}>Factura mensual (Bs)</label>
+                  <label style={fieldLabel}>Factura anual (Bs)</label>
                   <input type="number" step="0.01" min="0" value={form.facturaMensual}
                     onChange={(e) => setForm({ ...form, facturaMensual: e.target.value })} style={fieldInput} />
                 </div>
@@ -436,7 +436,7 @@ function VerLead() {
                   <label style={fieldLabel}>Ubicación (link de Google Maps)</label>
                   <input value={form.ubicacion} onChange={(e) => setForm({ ...form, ubicacion: e.target.value })} style={fieldInput} />
                 </div>
-                <ImageUrlListField label="Fotos de factura (URLs)" values={form.facturaImagenUrl}
+                <ImageUrlListField label="Imagen 1" values={form.facturaImagenUrl}
                   onChange={(nuevas) => setForm({ ...form, facturaImagenUrl: nuevas })} />
                 <div>
                   <label style={fieldLabel}>Vehículo</label>
@@ -446,7 +446,7 @@ function VerLead() {
                   <label style={fieldLabel}>Cargador</label>
                   <input value={form.cargador} onChange={(e) => setForm({ ...form, cargador: e.target.value })} style={fieldInput} />
                 </div>
-                <ImageUrlListField label="Fotos del cargador (URLs)" values={form.imagenCargadorUrl}
+                <ImageUrlListField label="Imagen 2" values={form.imagenCargadorUrl}
                   onChange={(nuevas) => setForm({ ...form, imagenCargadorUrl: nuevas })} />
               </div>
               <div className="modal-footer">
