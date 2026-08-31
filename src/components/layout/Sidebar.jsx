@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logoBlanco from "../../assets/brand/enerlogic_v2_transparent.png";
 
 import {
   FaTachometerAlt,
@@ -125,15 +126,8 @@ function Sidebar({ onNavigate }) {
       {/* Cabecera fija */}
       <div className="sidebar-header">
         <div className="sidebar-logo">
-          <img
-            src="https://picsum.photos/seed/erp/42/42"
-            alt="Logo empresa"
-            className="sidebar-logo-img"
-          />
-          <div className="sidebar-logo-text">
-            <h2>Enerlogic</h2>
-            <span>Sistema de gestión</span>
-          </div>
+          {/* Wordmark blanco: es la única versión que lee sobre el navy. */}
+          <img src={logoBlanco} alt="Enerlogic — Energía Inteligente" className="sidebar-logo-img" />
         </div>
       </div>
 

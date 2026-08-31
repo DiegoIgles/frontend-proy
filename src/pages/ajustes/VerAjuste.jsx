@@ -10,13 +10,13 @@ import { useConfirm } from "../../context/ConfirmContext";
 function TipoBadge({ tipo }) {
   if (tipo === "ENTRADA") {
     return (
-      <span style={{ background: "#d1fae5", color: "#065f46", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
+      <span style={{ background: "#E6F3E5", color: "#056125", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
         ENTRADA
       </span>
     );
   }
   return (
-    <span style={{ background: "#fee2e2", color: "#991b1b", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
+    <span style={{ background: "#FBE9E7", color: "#96291D", padding: "3px 12px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>
       SALIDA
     </span>
   );
@@ -83,7 +83,7 @@ function VerAjuste() {
       </div>
 
       {/* Info general */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 16 }}>
         <div className="card">
           <h3 style={{ marginBottom: 12 }}>Información General</h3>
           <InfoRow label="Fecha"   value={new Date(ajuste.fecha).toLocaleDateString("es-BO")} />
@@ -102,59 +102,61 @@ function VerAjuste() {
       {/* Detalle de productos */}
       <div className="card">
         <h3 style={{ marginBottom: 12 }}>Productos Ajustados</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Almacén</th>
-              <th>Stock Actual</th>
-              <th>Cantidad Ajustada</th>
-              <th>Stock Antes del Ajuste</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ajuste.detallesAjuste.map((detalle) => {
-              const prod    = detalle.productoAlmacen.producto;
-              const almacen = detalle.productoAlmacen.almacen;
-              const stockActual = detalle.productoAlmacen.stock;
-              const stockAntes  = ajuste.tipo === "ENTRADA"
-                ? stockActual - detalle.cantidad
-                : stockActual + detalle.cantidad;
-
-              return (
-                <tr key={detalle.detalleAjusteId}>
-                  <td><code>{prod.codigo}</code></td>
-                  <td>
-                    <strong>{prod.nombre}</strong>
-                    <br />
-                    <small style={{ color: "#6b7280" }}>{prod.descripcion}</small>
-                  </td>
-                  <td>{almacen.nombre}</td>
-                  <td><strong>{stockActual}</strong></td>
-                  <td>
-                    <span style={{
-                      color: ajuste.tipo === "ENTRADA" ? "#065f46" : "#991b1b",
-                      fontWeight: 700,
-                    }}>
-                      {ajuste.tipo === "ENTRADA" ? "+" : "−"}{detalle.cantidad}
-                    </span>
-                  </td>
-                  <td style={{ color: "#6b7280" }}>{stockAntes}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={4} style={{ textAlign: "right", fontWeight: 600, paddingTop: 10 }}>
-                Total unidades
-              </td>
-              <td style={{ fontWeight: 700, fontSize: 15 }}>{totalUnidades}</td>
-              <td />
-            </tr>
-          </tfoot>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Almacén</th>
+                <th>Stock Actual</th>
+                <th>Cantidad Ajustada</th>
+                <th>Stock Antes del Ajuste</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ajuste.detallesAjuste.map((detalle) => {
+                const prod    = detalle.productoAlmacen.producto;
+                const almacen = detalle.productoAlmacen.almacen;
+                const stockActual = detalle.productoAlmacen.stock;
+                const stockAntes  = ajuste.tipo === "ENTRADA"
+                  ? stockActual - detalle.cantidad
+                  : stockActual + detalle.cantidad;
+  
+                return (
+                  <tr key={detalle.detalleAjusteId}>
+                    <td><code>{prod.codigo}</code></td>
+                    <td>
+                      <strong>{prod.nombre}</strong>
+                      <br />
+                      <small style={{ color: "#6b7280" }}>{prod.descripcion}</small>
+                    </td>
+                    <td>{almacen.nombre}</td>
+                    <td><strong>{stockActual}</strong></td>
+                    <td>
+                      <span style={{
+                        color: ajuste.tipo === "ENTRADA" ? "#056125" : "#96291D",
+                        fontWeight: 700,
+                      }}>
+                        {ajuste.tipo === "ENTRADA" ? "+" : "−"}{detalle.cantidad}
+                      </span>
+                    </td>
+                    <td style={{ color: "#6b7280" }}>{stockAntes}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={4} style={{ textAlign: "right", fontWeight: 600, paddingTop: 10 }}>
+                  Total unidades
+                </td>
+                <td style={{ fontWeight: 700, fontSize: 15 }}>{totalUnidades}</td>
+                <td />
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
     </Layout>
   );

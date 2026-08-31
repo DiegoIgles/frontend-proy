@@ -16,8 +16,8 @@ function RolBadge({ rol }) {
   return (
     <span style={{
       padding: "3px 12px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-      background: esAdmin ? "#dbeafe" : "#f3f4f6",
-      color:      esAdmin ? "#1e40af" : "#374151",
+      background: esAdmin ? "#E3EEF9" : "#f3f4f6",
+      color:      esAdmin ? "#00509A" : "#374151",
       marginRight: 4,
     }}>
       {rol}
@@ -172,8 +172,8 @@ function VerUsuario() {
               display: "flex", alignItems: "center", gap: 5,
               padding: "8px 14px", borderRadius: 6, border: "none",
               cursor: "pointer", fontWeight: 600, fontSize: 13,
-              background: usuario.isActive ? "#fee2e2" : "#d1fae5",
-              color:      usuario.isActive ? "#991b1b" : "#065f46",
+              background: usuario.isActive ? "#FBE9E7" : "#E6F3E5",
+              color:      usuario.isActive ? "#96291D" : "#056125",
             }}
           >
             {usuario.isActive ? <><FaToggleOff /> Desactivar</> : <><FaToggleOn /> Activar</>}
@@ -192,7 +192,7 @@ function VerUsuario() {
                   border: "3px solid #e5e7eb" }} />
             ) : (
               <div style={{
-                width: 90, height: 90, borderRadius: "50%", background: "#1d4ed8",
+                width: 90, height: 90, borderRadius: "50%", background: "#0062B7",
                 color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
                 fontWeight: 800, fontSize: 28, margin: "0 auto",
               }}>
@@ -212,8 +212,8 @@ function VerUsuario() {
 
           <span style={{
             display: "inline-block", padding: "3px 14px", borderRadius: 12, fontSize: 12, fontWeight: 700,
-            background: usuario.isActive ? "#d1fae5" : "#fee2e2",
-            color:      usuario.isActive ? "#065f46" : "#991b1b",
+            background: usuario.isActive ? "#E6F3E5" : "#FBE9E7",
+            color:      usuario.isActive ? "#056125" : "#96291D",
           }}>
             {usuario.isActive ? "Activo" : "Inactivo"}
           </span>
@@ -224,7 +224,7 @@ function VerUsuario() {
 
           <div className="card">
             <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Información de la Cuenta</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
               <div>
                 <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6b7280", textTransform: "uppercase",
                   letterSpacing: "0.5px", fontWeight: 600 }}>Nombre</p>
@@ -245,8 +245,8 @@ function VerUsuario() {
                   letterSpacing: "0.5px", fontWeight: 600 }}>Estado</p>
                 <span style={{
                   padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-                  background: usuario.isActive ? "#d1fae5" : "#fee2e2",
-                  color:      usuario.isActive ? "#065f46" : "#991b1b",
+                  background: usuario.isActive ? "#E6F3E5" : "#FBE9E7",
+                  color:      usuario.isActive ? "#056125" : "#96291D",
                 }}>
                   {usuario.isActive ? "Activo" : "Inactivo"}
                 </span>
@@ -264,7 +264,7 @@ function VerUsuario() {
           {usuario.profile && (
             <div className="card">
               <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Perfil</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
                 <div>
                   <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6b7280", textTransform: "uppercase",
                     letterSpacing: "0.5px", fontWeight: 600 }}>Género</p>
@@ -294,7 +294,7 @@ function VerUsuario() {
               <button className="modal-close" onClick={() => setShowEditModal(false)}>×</button>
             </div>
             <form onSubmit={handleSaveEdit}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Nombre</label>
                   <input name="name" value={editForm.name} onChange={handleEditChange} />
@@ -316,7 +316,7 @@ function VerUsuario() {
                   </select>
                 </div>
                 {editErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{editErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{editErr}</p>
                 )}
               </div>
               <div className="modal-footer">
@@ -352,7 +352,7 @@ function VerUsuario() {
                   Debe contener al menos una mayúscula, una minúscula y un número.
                 </p>
                 {passErr && (
-                  <p style={{ margin: "8px 0 0", color: "#dc2626", fontSize: 13 }}>{passErr}</p>
+                  <p style={{ margin: "8px 0 0", color: "#C0392B", fontSize: 13 }}>{passErr}</p>
                 )}
               </div>
               <div className="modal-footer">

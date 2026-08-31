@@ -102,9 +102,9 @@ function NotasVenta() {
           <label>Fechas</label>
           <button onClick={() => setShowFechas((v) => !v)}
             style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px",
-              borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#dbeafe" : "#fff",
-              color: showFechas ? "#1d4ed8" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
-            <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#1d4ed8", color: "#fff",
+              borderRadius: 6, border: "1px solid #d1d5db", background: showFechas ? "#E3EEF9" : "#fff",
+              color: showFechas ? "#0062B7" : "#374151", cursor: "pointer", fontWeight: 600, fontSize: 13 }}>
+            <FaFilter /> Fechas {activeFechas > 0 && <span style={{ background: "#0062B7", color: "#fff",
               borderRadius: "50%", width: 18, height: 18, display: "flex", alignItems: "center",
               justifyContent: "center", fontSize: 11 }}>{activeFechas}</span>}
           </button>
@@ -171,13 +171,13 @@ function NotasVenta() {
                   <td><strong>Bs. {Number(nota.montoTotal).toFixed(2)}</strong></td>
                   <td className="col-hide-mobile">
                     {nota.esCredito
-                      ? <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
-                      : <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>}
+                      ? <span style={{ color: "#EE9C02", fontWeight: 600 }}>Crédito</span>
+                      : <span style={{ color: "#2C9826", fontWeight: 600 }}>Contado</span>}
                   </td>
                   <td className="col-hide-mobile">
                     {nota.saldoPendiente > 0
-                      ? <span style={{ color: "#dc2626" }}>Bs. {Number(nota.saldoPendiente).toFixed(2)}</span>
-                      : <span style={{ color: "#059669" }}>Bs. 0.00</span>}
+                      ? <span style={{ color: "#C0392B" }}>Bs. {Number(nota.saldoPendiente).toFixed(2)}</span>
+                      : <span style={{ color: "#2C9826" }}>Bs. 0.00</span>}
                   </td>
                   <td><EstadoBadge estado={nota.estadoDeuda} /></td>
                   <td>

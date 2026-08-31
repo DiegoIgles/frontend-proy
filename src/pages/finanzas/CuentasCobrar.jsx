@@ -161,18 +161,18 @@ function CuentasCobrar() {
 
       {/* Resumen */}
       {data && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 20 }}>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Registros encontrados
             </p>
-            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#1d4ed8" }}>{data.total}</p>
+            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#0062B7" }}>{data.total}</p>
           </div>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Total Pendiente
             </p>
-            <p style={{ fontSize: 24, fontWeight: 800, margin: 0, color: "#d97706" }}>
+            <p style={{ fontSize: 24, fontWeight: 800, margin: 0, color: "#EE9C02" }}>
               Bs. {fmt(data.totalPendiente ?? 0)}
             </p>
           </div>
@@ -230,7 +230,7 @@ function CuentasCobrar() {
         {loading ? (
           <p style={{ color: "#6b7280", textAlign: "center", padding: 24 }}>Cargando...</p>
         ) : error ? (
-          <p style={{ color: "#dc2626", textAlign: "center", padding: 24 }}>Error al cargar las cuentas por cobrar.</p>
+          <p style={{ color: "#C0392B", textAlign: "center", padding: 24 }}>Error al cargar las cuentas por cobrar.</p>
         ) : (
           <>
             <div className="table-responsive">
@@ -258,7 +258,7 @@ function CuentasCobrar() {
                       <tr key={cxc.cuentaPorCobrarId}>
                         <td><EstadoBadge estado={cxc.estado} /></td>
                         <td style={{ maxWidth: 260 }}>{cxc.descripcion || "—"}</td>
-                        <td className="col-hide-mobile" style={{ whiteSpace: "nowrap", color: cxc.estado === "VENCIDO" ? "#dc2626" : undefined }}>
+                        <td className="col-hide-mobile" style={{ whiteSpace: "nowrap", color: cxc.estado === "VENCIDO" ? "#C0392B" : undefined }}>
                           {cxc.fechaVencimiento
                             ? new Date(cxc.fechaVencimiento + "T00:00:00").toLocaleDateString("es-BO")
                             : "—"}
@@ -266,11 +266,11 @@ function CuentasCobrar() {
                         <td style={{ textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
                           Bs. {fmt(cxc.montoTotal)}
                         </td>
-                        <td style={{ textAlign: "right", whiteSpace: "nowrap", color: "#059669" }}>
+                        <td style={{ textAlign: "right", whiteSpace: "nowrap", color: "#2C9826" }}>
                           Bs. {fmt(cxc.montoCobrado)}
                         </td>
                         <td style={{ textAlign: "right", fontWeight: 700, whiteSpace: "nowrap",
-                          color: Number(cxc.saldo) > 0 ? "#d97706" : "#059669" }}>
+                          color: Number(cxc.saldo) > 0 ? "#EE9C02" : "#2C9826" }}>
                           Bs. {fmt(cxc.saldo)}
                         </td>
                         <td style={{ textAlign: "center" }}>

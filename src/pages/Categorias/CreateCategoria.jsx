@@ -3,12 +3,14 @@ import Layout from "../../components/layout/Layout";
 import { useNavigate, Link } from "react-router-dom";
 import { getCategoriasAction } from "./actions/get-categorias.action";
 import { createCategoriaAction } from "./actions/create-categoria.action";
+import EsquemaAtributosEditor from "./components/EsquemaAtributosEditor";
 import { FaSave, FaTimes } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 
 function CreateCategoria() {
   const [nombre, setNombre] = useState("");
   const [categoriaPadreId, setCategoriaPadreId] = useState("");
+  const [esquemaAtributos, setEsquemaAtributos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const navigate = useNavigate();
   const toast = useToast();
@@ -23,6 +25,7 @@ function CreateCategoria() {
       await createCategoriaAction({
         nombre,
         categoriaPadreId: categoriaPadreId || null,
+        esquemaAtributos: esquemaAtributos.filter((c) => c.key && c.label),
       });
       toast.success("Categoría creada correctamente.");
       navigate("/categorias");
@@ -59,6 +62,11 @@ function CreateCategoria() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="form-group">
+            <label>Atributos técnicos</label>
+            <EsquemaAtributosEditor campos={esquemaAtributos} onChange={setEsquemaAtributos} />
           </div>
 
           <div style={{ display: "flex", gap: 10, marginTop: 8 }}>

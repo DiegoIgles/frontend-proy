@@ -136,9 +136,9 @@ function Clientes() {
                 <tr key={c.clienteId}>
                   <td>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#dbeafe",
+                      <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#E3EEF9",
                         display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <FaUser style={{ color: "#2563eb", fontSize: 14 }} />
+                        <FaUser style={{ color: "#0062B7", fontSize: 14 }} />
                       </div>
                       <div>
                         <strong style={{ display: "block" }}>{fullName(c)}</strong>
@@ -147,7 +147,7 @@ function Clientes() {
                   </td>
                   <td className="col-hide-mobile">
                     {c.correo
-                      ? <a href={`mailto:${c.correo}`} style={{ color: "#2563eb" }}>{c.correo}</a>
+                      ? <a href={`mailto:${c.correo}`} style={{ color: "#0062B7" }}>{c.correo}</a>
                       : "—"}
                   </td>
                   <td className="col-hide-mobile">{c.telefono || "—"}</td>
@@ -186,7 +186,7 @@ function Clientes() {
             <form onSubmit={handleSave}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 {formError && (
-                  <div style={{ background: "#fee2e2", color: "#991b1b", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formError}</div>
+                  <div style={{ background: "#FBE9E7", color: "#96291D", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formError}</div>
                 )}
                 <div style={{ display: "flex", gap: 10 }}>
                   <div style={{ flex: 1 }}>

@@ -63,7 +63,7 @@ function RegistrarPagoModal({ saldo, cuentaId, onClose, onRegistrado }) {
         </div>
 
         <p style={{ margin: "0 0 18px", fontSize: 14, color: "#6b7280" }}>
-          Saldo pendiente: <strong style={{ color: "#dc2626" }}>Bs. {fmt(saldo)}</strong>
+          Saldo pendiente: <strong style={{ color: "#C0392B" }}>Bs. {fmt(saldo)}</strong>
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -161,10 +161,10 @@ function VerCuentaPagar() {
       </div>
 
       {loading && <p style={{ color: "#6b7280", textAlign: "center", padding: 40 }}>Cargando...</p>}
-      {error   && <p style={{ color: "#dc2626", textAlign: "center", padding: 40 }}>Error al cargar la cuenta.</p>}
+      {error   && <p style={{ color: "#C0392B", textAlign: "center", padding: 40 }}>Error al cargar la cuenta.</p>}
 
       {!loading && cxp && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
 
           {/* Datos generales */}
           <div className="card">
@@ -176,14 +176,14 @@ function VerCuentaPagar() {
               value={cxp.fechaVencimiento
                 ? new Date(cxp.fechaVencimiento + "T00:00:00").toLocaleDateString("es-BO")
                 : "Sin vencimiento"}
-              valueStyle={cxp.estado === "VENCIDO" ? { color: "#dc2626" } : {}}
+              valueStyle={cxp.estado === "VENCIDO" ? { color: "#C0392B" } : {}}
             />
             <InfoRow label="Monto Total"   value={`Bs. ${fmt(cxp.montoTotal)}`} />
-            <InfoRow label="Monto Pagado"  value={`Bs. ${fmt(cxp.montoPagado)}`} valueStyle={{ color: "#059669" }} />
+            <InfoRow label="Monto Pagado"  value={`Bs. ${fmt(cxp.montoPagado)}`} valueStyle={{ color: "#2C9826" }} />
             <InfoRow
               label="Saldo Pendiente"
               value={`Bs. ${fmt(cxp.saldo)}`}
-              valueStyle={{ color: Number(cxp.saldo) > 0 ? "#dc2626" : "#059669", fontSize: 16 }}
+              valueStyle={{ color: Number(cxp.saldo) > 0 ? "#C0392B" : "#2C9826", fontSize: 16 }}
             />
 
             {/* Barra de progreso */}
@@ -198,7 +198,7 @@ function VerCuentaPagar() {
                   <div style={{ height: 8, background: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
                     <div style={{
                       height: "100%", width: `${pct}%`,
-                      background: pct >= 100 ? "#059669" : "#dc2626",
+                      background: pct >= 100 ? "#2C9826" : "#C0392B",
                       borderRadius: 4, transition: "width 0.4s",
                     }} />
                   </div>
@@ -262,7 +262,7 @@ function VerCuentaPagar() {
                         <td className="col-hide-mobile" style={{ fontSize: 13, color: "#6b7280" }}>
                           {mov.usuario.name} {mov.usuario.lastName}
                         </td>
-                        <td style={{ textAlign: "right", fontWeight: 700, color: "#dc2626", whiteSpace: "nowrap" }}>
+                        <td style={{ textAlign: "right", fontWeight: 700, color: "#C0392B", whiteSpace: "nowrap" }}>
                           − Bs. {fmt(mov.monto)}
                         </td>
                       </tr>

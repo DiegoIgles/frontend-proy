@@ -6,7 +6,7 @@
   height: 60px;
   border: none;
   border-radius: 50%;
-  background: #0d6efd;
+  background: var(--brand-blue);
   color: white;
   font-size: 26px;
   cursor: pointer;
@@ -30,7 +30,7 @@
 }
 
 .chatbot-header{
-  background: #0d6efd;
+  background: var(--brand-blue);
   color: white;
   padding: 14px;
   display: flex;
@@ -50,7 +50,7 @@
   flex:1;
   padding:15px;
   overflow-y:auto;
-  background:#f8f9fa;
+  background:var(--bg-muted);
 }
 
 .chat-msg{
@@ -61,14 +61,14 @@
 }
 
 .chat-msg.user{
-  background:#0d6efd;
+  background:var(--brand-blue);
   color:white;
   margin-left:auto;
 }
 
 .chat-msg.bot{
   background:white;
-  border:1px solid #ddd;
+  border:1px solid var(--border);
 }
 
 .chat-msg-image{
@@ -86,9 +86,9 @@
 }
 
 .chat-quick-reply-btn{
-  border:1.5px solid #0d6efd;
+  border:1.5px solid var(--brand-blue);
   background:white;
-  color:#0d6efd;
+  color:var(--brand-blue);
   border-radius:20px;
   padding:9px 14px;
   font-size:14px;
@@ -99,7 +99,7 @@
 }
 
 .chat-quick-reply-btn:hover{
-  background:#0d6efd;
+  background:var(--brand-blue);
   color:white;
 }
 
@@ -113,8 +113,8 @@
   flex-wrap:wrap;
   gap:8px;
   padding:8px 14px;
-  border-top:1px solid #eee;
-  background:#f1f3f5;
+  border-top:1px solid var(--border);
+  background:var(--bg-sunken);
 }
 
 .chatbot-attachment-item{
@@ -124,12 +124,13 @@
   flex-shrink:0;
 }
 
-.chatbot-attachment-item img{
-  width:44px;
-  height:44px;
-  object-fit:cover;
-  border-radius:6px;
-  display:block;
+.chatbot-attachment-name{
+  flex:1;
+  font-size:12px;
+  color:var(--text-body);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .chatbot-attachment-remove{
@@ -161,11 +162,13 @@
   color:#868e96;
   font-size:18px;
   cursor:pointer;
+  color:var(--text-faint);
+  font-size:14px;
 }
 
 .chatbot-footer{
   display:flex;
-  border-top:1px solid #eee;
+  border-top:1px solid var(--border);
 }
 
 .chatbot-footer input{
@@ -177,7 +180,7 @@
 
 .chatbot-footer button{
   border:none;
-  background:#0d6efd;
+  background:var(--brand-blue);
   color:white;
   padding:0 18px;
   cursor:pointer;
@@ -201,7 +204,7 @@
 }
 
 .location-modal {
-  background: #fff;
+  background: var(--bg-surface);
   border-radius: 12px;
   width: 100%;
   max-width: 480px;
@@ -218,7 +221,7 @@
   padding: 12px 16px;
   font-weight: 600;
   flex: 0 0 auto;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .location-modal-header button {
@@ -248,12 +251,12 @@
 
 .location-modal-hint {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .location-modal-confirm-btn {
-  background: #ff7a00;
-  color: #fff;
+  background: var(--brand-orange);
+  color: var(--bg-surface);
   border: none;
   padding: 12px;
   border-radius: 8px;

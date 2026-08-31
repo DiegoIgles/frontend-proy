@@ -59,7 +59,7 @@ function ReciboVenta() {
             <p className="recibo-meta">N° <strong>{nota.notaVentaId.slice(0, 8).toUpperCase()}</strong></p>
             <p className="recibo-meta">Fecha: <strong>{new Date(nota.fecha).toLocaleDateString("es-BO")}</strong></p>
             <p className="recibo-meta">
-              Tipo: <strong style={{ color: nota.esCredito ? "#d97706" : "#059669" }}>
+              Tipo: <strong style={{ color: nota.esCredito ? "#EE9C02" : "#2C9826" }}>
                 {nota.esCredito ? "CRÉDITO" : "CONTADO"}
               </strong>
             </p>
@@ -132,8 +132,8 @@ function ReciboVenta() {
                   <td style={{ textAlign: "right", color: "#6b7280" }}>Bs. {subtotalBruto.toFixed(2)}</td>
                 </tr>
                 <tr>
-                  <td colSpan={5} style={{ textAlign: "right", color: "#059669" }}>Descuento ({descuento}%)</td>
-                  <td style={{ textAlign: "right", color: "#059669" }}>− Bs. {descuentoMonto.toFixed(2)}</td>
+                  <td colSpan={5} style={{ textAlign: "right", color: "#2C9826" }}>Descuento ({descuento}%)</td>
+                  <td style={{ textAlign: "right", color: "#2C9826" }}>− Bs. {descuentoMonto.toFixed(2)}</td>
                 </tr>
               </>
             )}
@@ -167,11 +167,11 @@ function ReciboVenta() {
               </div>
               <div>
                 <p className="recibo-parte-titulo">MONTO COBRADO</p>
-                <p style={{ fontWeight: 700, color: "#059669" }}>Bs. {Number(nota.cuentaPorCobrar.montoCobrado).toFixed(2)}</p>
+                <p style={{ fontWeight: 700, color: "#2C9826" }}>Bs. {Number(nota.cuentaPorCobrar.montoCobrado).toFixed(2)}</p>
               </div>
               <div>
                 <p className="recibo-parte-titulo">SALDO PENDIENTE</p>
-                <p style={{ fontWeight: 700, color: "#dc2626" }}>Bs. {Number(nota.cuentaPorCobrar.saldo).toFixed(2)}</p>
+                <p style={{ fontWeight: 700, color: "#C0392B" }}>Bs. {Number(nota.cuentaPorCobrar.saldo).toFixed(2)}</p>
               </div>
               <div>
                 <p className="recibo-parte-titulo">VENCIMIENTO</p>
@@ -241,7 +241,7 @@ function ReciboVenta() {
         }
         .recibo-btn-imprimir {
           padding: 8px 20px;
-          background: #1d4ed8;
+          background: #0062B7;
           color: #fff;
           border: none;
           border-radius: 6px;
@@ -277,7 +277,7 @@ function ReciboVenta() {
           justify-content: space-between;
           align-items: flex-start;
         }
-        .recibo-empresa { margin: 0; font-size: 24px; font-weight: 800; color: #1d4ed8; }
+        .recibo-empresa { margin: 0; font-size: 24px; font-weight: 800; color: #0062B7; }
         .recibo-empresa-sub { margin: 2px 0 0; font-size: 12px; color: #6b7280; }
         .recibo-titulo { margin: 0; font-size: 18px; font-weight: 700; }
         .recibo-meta { margin: 3px 0; font-size: 12px; color: #374151; }

@@ -8,6 +8,11 @@ import { useToast } from "../context/ToastContext";
 /* IMPORTAR CHATBOT */
 import FloatingChatbot from "../components/FloatingChatbot";
 
+/* Dos versiones del mismo lockup: la de wordmark blanco solo lee sobre el navy
+   del panel izquierdo; la de color, solo sobre el fondo claro del formulario. */
+import logoBlanco from "../assets/brand/enerlogic_v2_transparent.png";
+import logoColor from "../assets/brand/enerlogic_v1_oficial_transparent.png";
+
 function Login() {
   const { user, loading, login } = useAuth();
   const toast = useToast();
@@ -54,8 +59,12 @@ function Login() {
         {/* Lado izquierdo */}
         <div className="login-left">
           <div className="overlay-text">
-            <h1>Enerlogic</h1>
-            <p>Energía inteligente para decisiones brillantes</p>
+            <img src={logoBlanco} alt="Enerlogic — Energía Inteligente" className="login-brand" />
+            <h1>Ingeniería que transforma la energía en ahorro</h1>
+            <p>
+              Gestión de proyectos, cotizaciones e inventario para soluciones
+              fotovoltaicas en todo el territorio boliviano.
+            </p>
           </div>
         </div>
 
@@ -63,7 +72,10 @@ function Login() {
         <div className="login-right">
           <form onSubmit={handleLogin} className="login-form">
 
-            <h2>Iniciar Sesión</h2>
+            <img src={logoColor} alt="Enerlogic" className="login-form-logo" />
+
+            <h2>Iniciar sesión</h2>
+            <p className="login-form-hint">Ingresá con tu cuenta corporativa</p>
 
             <input
               type="email"
@@ -92,6 +104,8 @@ function Login() {
             >
               {submitting ? "Ingresando..." : "Ingresar"}
             </button>
+
+            <p className="login-footer">Enerlogic S.R.L. · Santa Cruz de la Sierra</p>
 
           </form>
         </div>

@@ -2,9 +2,11 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="footer">
-      <small>© 2026 - Sistema ERP</small>
-    </div>
+    <footer className="footer">
+      <small>
+        © {new Date().getFullYear()} <strong>Enerlogic S.R.L.</strong> · Sistema de gestión
+      </small>
+    </footer>
   );
 }
 

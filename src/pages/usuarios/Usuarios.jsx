@@ -27,8 +27,8 @@ function RolBadge({ rol }) {
   return (
     <span style={{
       padding: "2px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
-      background: esAdmin ? "#dbeafe" : "#f3f4f6",
-      color:      esAdmin ? "#1e40af" : "#374151",
+      background: esAdmin ? "#E3EEF9" : "#f3f4f6",
+      color:      esAdmin ? "#00509A" : "#374151",
       marginRight: 4,
     }}>
       {rol}
@@ -44,7 +44,7 @@ function AvatarSmall({ photo, name, lastName }) {
         border: "2px solid #e5e7eb", flexShrink: 0 }} />
   ) : (
     <div style={{
-      width: 34, height: 34, borderRadius: "50%", background: "#1d4ed8",
+      width: 34, height: 34, borderRadius: "50%", background: "#0062B7",
       color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
       fontWeight: 700, fontSize: 13, flexShrink: 0,
     }}>
@@ -175,50 +175,52 @@ function Usuarios() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Usuario</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
-              ) : usuarios.length === 0 ? (
-                <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
-              ) : usuarios.map((u) => (
-                <tr key={u.id}>
-                  <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <AvatarSmall photo={u.profile?.photo} name={u.name} lastName={u.lastName} />
-                      <span style={{ fontWeight: 600 }}>{u.name} {u.lastName}</span>
-                    </div>
-                  </td>
-                  <td style={{ color: "#6b7280" }}>{u.email}</td>
-                  <td>{u.roles?.map((r) => <RolBadge key={r} rol={r} />)}</td>
-                  <td>
-                    <span style={{
-                      padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-                      background: u.isActive ? "#d1fae5" : "#fee2e2",
-                      color:      u.isActive ? "#065f46" : "#991b1b",
-                    }}>
-                      {u.isActive ? "Activo" : "Inactivo"}
-                    </span>
-                  </td>
-                  <td>
-                    <button className="btn-secondary" onClick={() => navigate(`/usuarios/${u.id}`)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Email</th>
+                  <th>Roles</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
+                ) : usuarios.length === 0 ? (
+                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
+                ) : usuarios.map((u) => (
+                  <tr key={u.id}>
+                    <td>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <AvatarSmall photo={u.profile?.photo} name={u.name} lastName={u.lastName} />
+                        <span style={{ fontWeight: 600 }}>{u.name} {u.lastName}</span>
+                      </div>
+                    </td>
+                    <td style={{ color: "#6b7280" }}>{u.email}</td>
+                    <td>{u.roles?.map((r) => <RolBadge key={r} rol={r} />)}</td>
+                    <td>
+                      <span style={{
+                        padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
+                        background: u.isActive ? "#E6F3E5" : "#FBE9E7",
+                        color:      u.isActive ? "#056125" : "#96291D",
+                      }}>
+                        {u.isActive ? "Activo" : "Inactivo"}
+                      </span>
+                    </td>
+                    <td>
+                      <button className="btn-secondary" onClick={() => navigate(`/usuarios/${u.id}`)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination
@@ -239,7 +241,7 @@ function Usuarios() {
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleCreate}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Nombre *</label>
                   <input name="name" value={form.name} onChange={handleFormChange} placeholder="Juan" />
@@ -267,7 +269,7 @@ function Usuarios() {
                   </select>
                 </div>
                 {formErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>
                 )}
               </div>
               <div className="modal-footer">

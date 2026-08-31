@@ -4,8 +4,10 @@ import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
 import { getProductosAction }  from "./actions/get-productos.action";
 import { createProductoAction } from "./actions/create-producto.action";
-import { getCategoriasAction }  from "../Categorias/actions/get-categorias.action";
+import { getCategoriasFlatAction }  from "../Categorias/actions/get-categorias-flat.action";
 import { getMarcaModelosAction } from "../marca-modelo/actions/marca-modelos.action";
+import ProductoCategoriasYAtributos from "./components/ProductoCategoriasYAtributos";
+import SelectorMarcaModelo from "./components/SelectorMarcaModelo";
 import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
@@ -15,13 +17,13 @@ const today = () => new Date().toISOString().split("T")[0];
 
 const FORM_VACIO = {
   codigo: "", nombre: "", sku: "", descripcion: "",
-  porcentajeGanancia: "", categoriaId: "", marcaModeloId: "",
+  categoriaIds: [], categoriaPrincipalId: "", atributos: {}, marcaModeloId: "",
 };
 
 function StockBadge({ stock }) {
-  const color  = stock === 0 ? { bg: "#fee2e2", text: "#991b1b" }
-               : stock <= 10 ? { bg: "#fef9c3", text: "#92400e" }
-               :               { bg: "#d1fae5", text: "#065f46" };
+  const color  = stock === 0 ? { bg: "#FBE9E7", text: "#96291D" }
+               : stock <= 10 ? { bg: "#fef9c3", text: "#8A5A02" }
+               :               { bg: "#E6F3E5", text: "#056125" };
   return (
     <span style={{
       padding: "2px 10px", borderRadius: 10, fontSize: 12, fontWeight: 700,
@@ -54,7 +56,7 @@ function Productos() {
   const [formErr,   setFormErr]   = useState("");
 
   useEffect(() => {
-    getCategoriasAction().then(setCategorias).catch(() => {});
+    getCategoriasFlatAction().then((d) => setCategorias(Array.isArray(d) ? d : [])).catch(() => {});
     getMarcaModelosAction().then((d) => setMarcaModelos(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
@@ -93,14 +95,19 @@ function Productos() {
       setFormErr("Código, nombre y SKU son obligatorios.");
       return;
     }
+    if (!form.categoriaIds.length || !form.categoriaPrincipalId) {
+      setFormErr("Elegí al menos una categoría y marcá cuál es la principal.");
+      return;
+    }
     try {
       setSaving(true);
-      const dto = { ...form };
-      if (!dto.categoriaId)       delete dto.categoriaId;
-      if (!dto.marcaModeloId)     delete dto.marcaModeloId;
-      if (!dto.descripcion)       delete dto.descripcion;
-      if (dto.porcentajeGanancia === "") delete dto.porcentajeGanancia;
-      else dto.porcentajeGanancia = Number(dto.porcentajeGanancia);
+      const dto = {
+        codigo: form.codigo, nombre: form.nombre, sku: form.sku,
+        categoriaIds: form.categoriaIds, categoriaPrincipalId: form.categoriaPrincipalId,
+      };
+      if (form.descripcion)   dto.descripcion = form.descripcion;
+      if (form.marcaModeloId) dto.marcaModeloId = form.marcaModeloId;
+      if (Object.keys(form.atributos || {}).length) dto.atributos = form.atributos;
       await createProductoAction(dto);
       toast.success("Producto creado correctamente.");
       setShowModal(false);
@@ -169,60 +176,72 @@ function Productos() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Marca / Modelo</th>
-                <th style={{ textAlign: "center" }}>Stock Total</th>
-                <th style={{ textAlign: "right" }}>Precio Actual</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
-              ) : productos.length === 0 ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
-              ) : productos.map((p) => (
-                <tr key={p.productoId}>
-                  <td>
-                    <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
-                      padding: "2px 6px", borderRadius: 4 }}>
-                      {p.codigo}
-                    </span>
-                  </td>
-                  <td>
-                    <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{p.nombre}</p>
-                    {p.sku && <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{p.sku}</p>}
-                  </td>
-                  <td style={{ color: "#6b7280", fontSize: 13 }}>{p.categoria?.nombre ?? "—"}</td>
-                  <td style={{ fontSize: 13, color: "#6b7280" }}>
-                    {p.marcaModelo
-                      ? `${p.marcaModelo.marca?.nombre} / ${p.marcaModelo.modelo?.nombre}`
-                      : "—"}
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    <StockBadge stock={p.stockTotal ?? 0} />
-                  </td>
-                  <td style={{ textAlign: "right", fontWeight: 600 }}>
-                    {p.precioActual != null
-                      ? `$${Number(p.precioActual).toLocaleString("es-CO", { minimumFractionDigits: 2 })}`
-                      : <span style={{ color: "#9ca3af" }}>—</span>}
-                  </td>
-                  <td>
-                    <button className="btn-secondary"
-                      onClick={() => navigate(`/inventario/productos/${p.productoId}`)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Marca / Modelo</th>
+                  <th style={{ textAlign: "center" }}>Stock Total</th>
+                  <th style={{ textAlign: "right" }}>Precio Actual</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Cargando...</td></tr>
+                ) : productos.length === 0 ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af", padding: 30 }}>Sin resultados</td></tr>
+                ) : productos.map((p) => (
+                  <tr key={p.productoId}>
+                    <td>
+                      <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
+                        padding: "2px 6px", borderRadius: 4 }}>
+                        {p.codigo}
+                      </span>
+                    </td>
+                    <td>
+                      <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>{p.nombre}</p>
+                      {p.sku && <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{p.sku}</p>}
+                    </td>
+                    <td style={{ color: "#6b7280", fontSize: 13 }}>
+                      {p.categoriaPrincipal?.nombre ?? "—"}
+                      {p.categorias?.length > 1 && (
+                        <span style={{
+                          marginLeft: 6, fontSize: 10, fontWeight: 700, color: "#6366f1",
+                          background: "#eef2ff", borderRadius: 8, padding: "1px 6px",
+                        }}>
+                          +{p.categorias.length - 1}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ fontSize: 13, color: "#6b7280" }}>
+                      {p.marcaModelo
+                        ? `${p.marcaModelo.marca?.nombre} / ${p.marcaModelo.modelo?.nombre}`
+                        : "—"}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      <StockBadge stock={p.stockTotal ?? 0} />
+                    </td>
+                    <td style={{ textAlign: "right", fontWeight: 600 }}>
+                      {p.precioActual != null
+                        ? `$${Number(p.precioActual).toLocaleString("es-CO", { minimumFractionDigits: 2 })}`
+                        : <span style={{ color: "#9ca3af" }}>—</span>}
+                    </td>
+                    <td>
+                      <button className="btn-secondary"
+                        onClick={() => navigate(`/inventario/productos/${p.productoId}`)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination total={total} limit={limit} offset={offset}
@@ -233,13 +252,13 @@ function Productos() {
       {/* Modal Crear Producto */}
       {showModal && (
         <div className="modal-backdrop" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
+          <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 640 }}>
             <div className="modal-header">
               <h3>Nuevo Producto</h3>
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleCreate}>
-              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="modal-body" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
                 <div>
                   <label>Código *</label>
                   <input name="codigo" value={form.codigo} onChange={handleFormChange} placeholder="PS-400M" />
@@ -256,33 +275,26 @@ function Productos() {
                   <label>Descripción</label>
                   <input name="descripcion" value={form.descripcion} onChange={handleFormChange} placeholder="Descripción opcional..." />
                 </div>
-                <div>
-                  <label>% Ganancia</label>
-                  <input name="porcentajeGanancia" type="number" min="0" max="100"
-                    value={form.porcentajeGanancia} onChange={handleFormChange} placeholder="25" />
-                </div>
-                <div>
-                  <label>Categoría</label>
-                  <select name="categoriaId" value={form.categoriaId} onChange={handleFormChange}>
-                    <option value="">Sin categoría</option>
-                    {categorias.map((c) => (
-                      <option key={c.categoriaId} value={c.categoriaId}>{c.nombre}</option>
-                    ))}
-                  </select>
-                </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Marca / Modelo</label>
-                  <select name="marcaModeloId" value={form.marcaModeloId} onChange={handleFormChange}>
-                    <option value="">Sin marca-modelo</option>
-                    {marcaModelos.map((mm) => (
-                      <option key={mm.marcaModeloId} value={mm.marcaModeloId}>
-                        {mm.marca?.nombre} / {mm.modelo?.nombre}
-                      </option>
-                    ))}
-                  </select>
+                  <SelectorMarcaModelo
+                    value={form.marcaModeloId}
+                    onChange={(id) => setForm((f) => ({ ...f, marcaModeloId: id }))}
+                    opciones={marcaModelos}
+                    onCreada={(mm) => setMarcaModelos((prev) => [...prev, mm])}
+                  />
                 </div>
+                <ProductoCategoriasYAtributos
+                  categoriasDisponibles={categorias}
+                  categoriaIds={form.categoriaIds}
+                  categoriaPrincipalId={form.categoriaPrincipalId}
+                  atributos={form.atributos}
+                  onChangeCategoriaIds={(ids) => setForm((f) => ({ ...f, categoriaIds: ids }))}
+                  onChangeCategoriaPrincipalId={(id) => setForm((f) => ({ ...f, categoriaPrincipalId: id }))}
+                  onChangeAtributos={(at) => setForm((f) => ({ ...f, atributos: at }))}
+                />
                 {formErr && (
-                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>
+                  <p style={{ gridColumn: "1 / -1", margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>
                 )}
               </div>
               <div className="modal-footer">

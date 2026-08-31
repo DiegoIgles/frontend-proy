@@ -9,10 +9,10 @@ import { useToast } from "../../context/ToastContext";
 // ── helpers ────────────────────────────────────────────────
 
 function getOrigen(mov) {
-  if (mov.notaVenta)       return { label: "Nota de Venta",   color: "#059669" };
-  if (mov.notaCompra)      return { label: "Nota de Compra",  color: "#dc2626" };
-  if (mov.cuentaPorCobrar) return { label: "Cobro CxC",       color: "#1d4ed8" };
-  if (mov.cuentaPorPagar)  return { label: "Pago CxP",        color: "#d97706" };
+  if (mov.notaVenta)       return { label: "Nota de Venta",   color: "#2C9826" };
+  if (mov.notaCompra)      return { label: "Nota de Compra",  color: "#C0392B" };
+  if (mov.cuentaPorCobrar) return { label: "Cobro CxC",       color: "#0062B7" };
+  if (mov.cuentaPorPagar)  return { label: "Pago CxP",        color: "#EE9C02" };
   return                          { label: "Manual",           color: "#6b7280" };
 }
 
@@ -20,8 +20,8 @@ function TipoBadge({ tipo }) {
   const isIngreso = tipo === "INGRESO";
   return (
     <span style={{
-      background: isIngreso ? "#d1fae5" : "#fee2e2",
-      color:      isIngreso ? "#065f46" : "#991b1b",
+      background: isIngreso ? "#E6F3E5" : "#FBE9E7",
+      color:      isIngreso ? "#056125" : "#96291D",
       padding: "2px 10px", borderRadius: 12, fontSize: 12, fontWeight: 600,
     }}>
       {tipo}
@@ -73,7 +73,7 @@ function NuevoMovimientoModal({ onClose, onCreated }) {
       position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)",
       zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center",
     }}>
-      <div style={{ background: "#fff", borderRadius: 10, padding: 28, width: 420, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
+      <div style={{ background: "#fff", borderRadius: 10, padding: 28, width: "100%", maxWidth: 420, boxShadow: "0 8px 32px rgba(0,0,0,0.18)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <h3 style={{ margin: 0 }}>Nuevo Movimiento Manual</h3>
           <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "#6b7280" }}>
@@ -89,13 +89,13 @@ function NuevoMovimientoModal({ onClose, onCreated }) {
               <input type="radio" name="tipo" value="INGRESO" checked={form.tipoMovimiento === "INGRESO"}
                 onChange={() => setForm((p) => ({ ...p, tipoMovimiento: "INGRESO" }))}
                 style={{ marginRight: 5 }} />
-              <span style={{ color: "#065f46", fontWeight: 600 }}>INGRESO</span>
+              <span style={{ color: "#056125", fontWeight: 600 }}>INGRESO</span>
             </label>
             <label style={{ cursor: "pointer" }}>
               <input type="radio" name="tipo" value="EGRESO" checked={form.tipoMovimiento === "EGRESO"}
                 onChange={() => setForm((p) => ({ ...p, tipoMovimiento: "EGRESO" }))}
                 style={{ marginRight: 5 }} />
-              <span style={{ color: "#991b1b", fontWeight: 600 }}>EGRESO</span>
+              <span style={{ color: "#96291D", fontWeight: 600 }}>EGRESO</span>
             </label>
           </div>
 
@@ -204,13 +204,13 @@ function Caja() {
 
       {/* Métricas */}
       {resumen && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 20 }}>
-          <MetricCard label="Total Ingresos"  value={resumen.ingresos} color="#059669" />
-          <MetricCard label="Total Egresos"   value={resumen.egresos}  color="#dc2626" />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 16, marginBottom: 20 }}>
+          <MetricCard label="Total Ingresos"  value={resumen.ingresos} color="#2C9826" />
+          <MetricCard label="Total Egresos"   value={resumen.egresos}  color="#C0392B" />
           <MetricCard
             label="Saldo en Caja"
             value={resumen.saldo}
-            color={resumen.saldo >= 0 ? "#1d4ed8" : "#dc2626"}
+            color={resumen.saldo >= 0 ? "#0062B7" : "#C0392B"}
             sub={resumen.saldo < 0 ? "Saldo negativo" : undefined}
           />
         </div>
@@ -271,7 +271,7 @@ function Caja() {
         {loading ? (
           <p style={{ color: "#6b7280", textAlign: "center", padding: 24 }}>Cargando...</p>
         ) : error ? (
-          <p style={{ color: "#dc2626", textAlign: "center", padding: 24 }}>Error al cargar los movimientos.</p>
+          <p style={{ color: "#C0392B", textAlign: "center", padding: 24 }}>Error al cargar los movimientos.</p>
         ) : (
           <>
             <div className="table-responsive">
@@ -313,7 +313,7 @@ function Caja() {
                             {mov.usuario.name} {mov.usuario.lastName}
                           </td>
                           <td style={{ textAlign: "right", fontWeight: 700, whiteSpace: "nowrap",
-                            color: isIngreso ? "#059669" : "#dc2626" }}>
+                            color: isIngreso ? "#2C9826" : "#C0392B" }}>
                             {isIngreso ? "+" : "−"} Bs. {Number(mov.monto).toFixed(2)}
                           </td>
                         </tr>

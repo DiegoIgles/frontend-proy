@@ -215,7 +215,7 @@ function CreateNotaCompra() {
         {/* Información general */}
         <div className="card" style={{ marginBottom: 16 }}>
           <h3 style={{ marginBottom: 14 }}>Información General</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
 
             <div className="form-group">
               <label>Fecha *</label>
@@ -266,7 +266,7 @@ function CreateNotaCompra() {
                 onChange={() => handleFormChange("esCredito", false)}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#059669", fontWeight: 600 }}>Contado</span>
+              <span style={{ color: "#2C9826", fontWeight: 600 }}>Contado</span>
             </label>
             <label style={{ cursor: "pointer" }}>
               <input
@@ -277,16 +277,16 @@ function CreateNotaCompra() {
                 onChange={() => handleFormChange("esCredito", true)}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#d97706", fontWeight: 600 }}>Crédito</span>
+              <span style={{ color: "#EE9C02", fontWeight: 600 }}>Crédito</span>
             </label>
           </div>
         </div>
 
         {/* Sección crédito */}
         {form.esCredito && (
-          <div className="card" style={{ marginBottom: 16, borderLeft: "4px solid #d97706" }}>
-            <h3 style={{ marginBottom: 14, color: "#d97706" }}>Condiciones de Crédito</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="card" style={{ marginBottom: 16, borderLeft: "4px solid #EE9C02" }}>
+            <h3 style={{ marginBottom: 14, color: "#EE9C02" }}>Condiciones de Crédito</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
               <div className="form-group">
                 <label>Fecha de Vencimiento <span style={{ color: "#9ca3af", fontWeight: 400 }}>(opcional)</span></label>
                 <input
@@ -322,63 +322,65 @@ function CreateNotaCompra() {
           </div>
 
           <div style={{ overflowX: "auto" }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Almacén</th>
-                  <th>Cantidad</th>
-                  <th>Precio Compra (Bs.)</th>
-                  <th style={{ textAlign: "right" }}>Subtotal</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {detalles.map((detalle, index) => (
-                  <DetalleRow
-                    key={index}
-                    detalle={detalle}
-                    index={index}
-                    productos={productos}
-                    onChange={handleDetalleChange}
-                    onRemove={removeDetalle}
-                  />
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan={4} style={{ textAlign: "right", fontWeight: 600, paddingTop: 12 }}>
-                    Total Compra
-                  </td>
-                  <td style={{ fontWeight: 700, fontSize: 16, textAlign: "right", color: "#111827" }}>
-                    Bs. {total.toFixed(2)}
-                  </td>
-                  <td />
-                </tr>
-                {form.esCredito && Number(form.credito.montoPagadoInicial) > 0 && (
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
                   <tr>
-                    <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
-                      Pago inicial
+                    <th>Producto</th>
+                    <th>Almacén</th>
+                    <th>Cantidad</th>
+                    <th>Precio Compra (Bs.)</th>
+                    <th style={{ textAlign: "right" }}>Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detalles.map((detalle, index) => (
+                    <DetalleRow
+                      key={index}
+                      detalle={detalle}
+                      index={index}
+                      productos={productos}
+                      onChange={handleDetalleChange}
+                      onRemove={removeDetalle}
+                    />
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={4} style={{ textAlign: "right", fontWeight: 600, paddingTop: 12 }}>
+                      Total Compra
                     </td>
-                    <td style={{ fontSize: 13, color: "#059669", fontWeight: 600, textAlign: "right" }}>
-                      − Bs. {Number(form.credito.montoPagadoInicial).toFixed(2)}
+                    <td style={{ fontWeight: 700, fontSize: 16, textAlign: "right", color: "#111827" }}>
+                      Bs. {total.toFixed(2)}
                     </td>
                     <td />
                   </tr>
-                )}
-                {form.esCredito && (
-                  <tr>
-                    <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
-                      Saldo pendiente
-                    </td>
-                    <td style={{ fontSize: 14, color: "#dc2626", fontWeight: 700, textAlign: "right" }}>
-                      Bs. {Math.max(0, total - Number(form.credito.montoPagadoInicial)).toFixed(2)}
-                    </td>
-                    <td />
-                  </tr>
-                )}
-              </tfoot>
-            </table>
+                  {form.esCredito && Number(form.credito.montoPagadoInicial) > 0 && (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
+                        Pago inicial
+                      </td>
+                      <td style={{ fontSize: 13, color: "#2C9826", fontWeight: 600, textAlign: "right" }}>
+                        − Bs. {Number(form.credito.montoPagadoInicial).toFixed(2)}
+                      </td>
+                      <td />
+                    </tr>
+                  )}
+                  {form.esCredito && (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: "right", fontSize: 13, color: "#6b7280", paddingTop: 4 }}>
+                        Saldo pendiente
+                      </td>
+                      <td style={{ fontSize: 14, color: "#C0392B", fontWeight: 700, textAlign: "right" }}>
+                        Bs. {Math.max(0, total - Number(form.credito.montoPagadoInicial)).toFixed(2)}
+                      </td>
+                      <td />
+                    </tr>
+                  )}
+                </tfoot>
+              </table>
+            </div>
           </div>
         </div>
 

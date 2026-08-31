@@ -1,0 +1,116 @@
+/* ============================================================================
+   Enerlogic — tokens del sistema
+   ============================================================================
+   Los ocho colores de marca salen del arte aprobado de la portada de
+   cotización: son los mismos de `diseños_print/shared/constants.js`, que es la
+   única fuente de verdad de la identidad. Si la marca cambia, se cambia allá y
+   se replica acá — no al revés, y nunca con un hex suelto en un componente.
+
+   Todo lo demás (grises, estados, sombras, radios) se DERIVA de esos ocho o es
+   un neutro deliberadamente sin color, para que nada compita con la marca.
+
+   Breakpoints del sistema (CSS no permite variables en @media, así que quedan
+   documentados acá y escritos a mano en cada archivo):
+       1024px  →  tablet horizontal / laptop chica
+        768px  →  tablet vertical: el sidebar pasa a cajón deslizante
+        480px  →  teléfono: una sola columna, controles a ancho completo
+   ========================================================================== */
+
+:root {
+  /* ---- Marca (no tocar sin actualizar constants.js) ---------------------- */
+  --brand-navy:      #001B3D;
+  --brand-navy-800:  #0A2A52;
+  --brand-blue:      #0062B7;
+  --brand-green:     #2C9826;
+  --brand-green-900: #056125;
+  --brand-orange:    #EE9C02;
+  --brand-bone:      #F1F1F1;
+  --brand-white:     #FFFFFF;
+
+  /* ---- Derivados de marca ----------------------------------------------- */
+  /* Aclarados y oscurecidos del azul y el verde para hover, focus y fondos
+     tenues. Se calculan mezclando con blanco o negro, no eligiendo otro tono. */
+  --blue-hover:      #00509A;
+  --blue-soft:       #E3EEF9;
+  --blue-ring:       rgba(0, 98, 183, 0.18);
+  --green-hover:     #237A1E;
+  --green-soft:      #E6F3E5;
+  --orange-soft:     #FDF1DA;
+  --navy-hover:      #0A2A52;
+
+  /* ---- Neutros ----------------------------------------------------------
+     Rampa gris sin dominante de color: acompaña a la marca sin ensuciarla. */
+  --gray-50:  #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-900: #111827;
+
+  /* ---- Superficies ------------------------------------------------------ */
+  --bg-app:      var(--brand-bone);
+  --bg-surface:  var(--brand-white);
+  --bg-muted:    var(--gray-50);
+  --bg-sunken:   var(--gray-100);
+
+  /* ---- Texto ------------------------------------------------------------ */
+  --text-strong: var(--brand-navy);
+  --text-body:   var(--gray-700);
+  --text-muted:  var(--gray-500);
+  --text-faint:  var(--gray-400);
+  --text-invert: var(--brand-white);
+
+  /* ---- Bordes ----------------------------------------------------------- */
+  --border:        var(--gray-200);
+  --border-strong: var(--gray-300);
+
+  /* ---- Estados ----------------------------------------------------------
+     La marca no tiene rojo. `--danger` es el único color fuera de paleta y
+     existe solo porque una acción destructiva necesita leerse como tal. Se
+     eligió un rojo apagado para que no grite al lado del navy. */
+  --success:      var(--brand-green);
+  --success-soft: var(--green-soft);
+  --warning:      var(--brand-orange);
+  --warning-soft: var(--orange-soft);
+  --danger:       #C0392B;
+  --danger-hover: #96291D;
+  --danger-soft:  #FBE9E7;
+  --info:         var(--brand-blue);
+  --info-soft:    var(--blue-soft);
+
+  /* ---- Sidebar ---------------------------------------------------------- */
+  --sidebar-bg:            var(--brand-navy);
+  --sidebar-item:          rgba(255, 255, 255, 0.72);
+  --sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
+  --sidebar-active-bg:     var(--brand-blue);
+  --sidebar-active-edge:   var(--brand-green);
+  --sidebar-group:         rgba(255, 255, 255, 0.42);
+  --sidebar-divider:       rgba(255, 255, 255, 0.10);
+  --sidebar-width:         248px;
+
+  /* ---- Elevación -------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0, 27, 61, 0.06);
+  --shadow-md: 0 2px 10px rgba(0, 27, 61, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 27, 61, 0.16);
+
+  /* ---- Forma ------------------------------------------------------------ */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* ---- Tipografía ------------------------------------------------------- */
+  --font-ui: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto,
+             'Helvetica Neue', Arial, sans-serif;
+
+  /* ---- Capas ------------------------------------------------------------
+     Centralizado para que nadie tenga que adivinar un z-index nuevo. */
+  --z-sidebar: 1000;
+  --z-overlay: 999;
+  --z-header:  200;
+  --z-modal:   2000;
+  --z-toast:   3000;
+}

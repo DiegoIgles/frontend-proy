@@ -166,7 +166,7 @@ function CreateAjuste() {
                 onChange={() => setForm((p) => ({ ...p, tipo: "ENTRADA" }))}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#065f46", fontWeight: 600 }}>ENTRADA</span>
+              <span style={{ color: "#056125", fontWeight: 600 }}>ENTRADA</span>
               <span style={{ color: "#6b7280", fontSize: 12, marginLeft: 4 }}>(incrementa stock)</span>
             </label>
             <label style={{ cursor: "pointer" }}>
@@ -178,7 +178,7 @@ function CreateAjuste() {
                 onChange={() => setForm((p) => ({ ...p, tipo: "SALIDA" }))}
                 style={{ marginRight: 6 }}
               />
-              <span style={{ color: "#991b1b", fontWeight: 600 }}>SALIDA</span>
+              <span style={{ color: "#96291D", fontWeight: 600 }}>SALIDA</span>
               <span style={{ color: "#6b7280", fontSize: 12, marginLeft: 4 }}>(decrementa stock)</span>
             </label>
           </div>
@@ -200,7 +200,7 @@ function CreateAjuste() {
             borderRadius: 6,
             fontSize: 13,
             background: form.tipo === "ENTRADA" ? "#f0fdf4" : "#fef2f2",
-            borderLeft: `4px solid ${form.tipo === "ENTRADA" ? "#22c55e" : "#ef4444"}`,
+            borderLeft: `4px solid ${form.tipo === "ENTRADA" ? "#2C9826" : "#ef4444"}`,
             color: form.tipo === "ENTRADA" ? "#14532d" : "#7f1d1d",
           }}>
             {form.tipo === "ENTRADA"
@@ -219,28 +219,30 @@ function CreateAjuste() {
           </div>
 
           <div style={{ overflowX: "auto" }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Producto</th>
-                  <th>Almacén</th>
-                  <th>Cantidad</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {detalles.map((detalle, index) => (
-                  <DetalleRow
-                    key={index}
-                    detalle={detalle}
-                    index={index}
-                    productos={productos}
-                    onChange={handleDetalleChange}
-                    onRemove={removeDetalle}
-                  />
-                ))}
-              </tbody>
-            </table>
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Almacén</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detalles.map((detalle, index) => (
+                    <DetalleRow
+                      key={index}
+                      detalle={detalle}
+                      index={index}
+                      productos={productos}
+                      onChange={handleDetalleChange}
+                      onRemove={removeDetalle}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/pagina-estado.css";
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -8,9 +9,9 @@ function PrivateRoute({ children }) {
   // Mientras se verifica el token con el backend, no renderiza nada
   if (loading) {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center",
-        height: "100vh", fontFamily: "Segoe UI, sans-serif", color: "#6b7280", fontSize: 15 }}>
-        Cargando...
+      <div className="ruta-cargando">
+        <span className="ruta-cargando-spinner" />
+        Verificando sesión…
       </div>
     );
   }

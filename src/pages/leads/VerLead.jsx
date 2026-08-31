@@ -187,7 +187,7 @@ function VerLead() {
   };
 
   if (loading) return <Layout><div style={{ padding: 40, textAlign: "center", color: "#9ca3af" }}>Cargando...</div></Layout>;
-  if (error)   return <Layout><div style={{ padding: 40, textAlign: "center", color: "#dc2626" }}>{error}</div></Layout>;
+  if (error)   return <Layout><div style={{ padding: 40, textAlign: "center", color: "#C0392B" }}>{error}</div></Layout>;
   if (!lead) return null;
 
   return (
@@ -213,9 +213,9 @@ function VerLead() {
 
       <div className="card" style={{ maxWidth: 480 }}>
         <div style={{ textAlign: "center", padding: "20px 0 12px" }}>
-          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#dbeafe",
+          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#E3EEF9",
             display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
-            <FaUserPlus style={{ color: "#2563eb", fontSize: 28 }} />
+            <FaUserPlus style={{ color: "#0062B7", fontSize: 28 }} />
           </div>
           <h3 style={{ margin: 0, fontSize: 17 }}>{lead.nombre}</h3>
           <p style={{ margin: "4px 0 0", fontSize: 12, color: "#9ca3af" }}>
@@ -235,7 +235,7 @@ function VerLead() {
             <FaEnvelope style={{ color: "#6b7280", marginTop: 2, flexShrink: 0 }} />
             <div>
               <div style={{ fontSize: 11, color: "#9ca3af" }}>Correo</div>
-              {lead.correo ? <a href={`mailto:${lead.correo}`} style={{ color: "#2563eb" }}>{lead.correo}</a> : <span>—</span>}
+              {lead.correo ? <a href={`mailto:${lead.correo}`} style={{ color: "#0062B7" }}>{lead.correo}</a> : <span>—</span>}
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -313,7 +313,7 @@ function VerLead() {
               <div style={{ fontSize: 11, color: "#9ca3af" }}>Ubicación</div>
               {lead.ubicacion ? (
                 /^https?:\/\//i.test(lead.ubicacion)
-                  ? <a href={lead.ubicacion} target="_blank" rel="noreferrer" style={{ color: "#2563eb" }}>Ver en el mapa</a>
+                  ? <a href={lead.ubicacion} target="_blank" rel="noreferrer" style={{ color: "#0062B7" }}>Ver en el mapa</a>
                   : <span>{lead.ubicacion}</span>
               ) : <span>—</span>}
             </div>
@@ -355,7 +355,7 @@ function VerLead() {
             <form onSubmit={handleSave}>
               <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 {formErr && (
-                  <div style={{ background: "#fee2e2", color: "#991b1b", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formErr}</div>
+                  <div style={{ background: "#FBE9E7", color: "#96291D", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{formErr}</div>
                 )}
                 <div>
                   <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Nombre *</label>

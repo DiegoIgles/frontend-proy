@@ -77,7 +77,7 @@ function PageBtn({ label, onClick, disabled, active }) {
         padding: "0 6px",
         border: active ? "none" : "1px solid #d1d5db",
         borderRadius: 6,
-        background: active ? "#1d4ed8" : disabled ? "#f9fafb" : "#fff",
+        background: active ? "#0062B7" : disabled ? "#f9fafb" : "#fff",
         color: active ? "#fff" : disabled ? "#d1d5db" : "#374151",
         fontWeight: active ? 700 : 400,
         fontSize: 13,

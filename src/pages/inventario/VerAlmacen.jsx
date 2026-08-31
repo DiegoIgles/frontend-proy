@@ -9,9 +9,9 @@ import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
 
 function StockBadge({ stock }) {
-  const s = stock === 0 ? { bg: "#fee2e2", c: "#991b1b" }
-          : stock <= 10 ? { bg: "#fef9c3", c: "#92400e" }
-          :               { bg: "#d1fae5", c: "#065f46" };
+  const s = stock === 0 ? { bg: "#FBE9E7", c: "#96291D" }
+          : stock <= 10 ? { bg: "#fef9c3", c: "#8A5A02" }
+          :               { bg: "#E6F3E5", c: "#056125" };
   return (
     <span style={{ padding: "2px 12px", borderRadius: 10, fontSize: 12,
       fontWeight: 700, background: s.bg, color: s.c }}>
@@ -123,29 +123,29 @@ function VerAlmacen() {
           <button onClick={handleDelete} disabled={deleting}
             style={{ display: "flex", alignItems: "center", gap: 5,
               padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: 13, background: "#fee2e2", color: "#991b1b" }}>
+              fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
             <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
       </div>
 
       {/* Métricas */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 20 }}>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Productos</p>
-          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#1d4ed8" }}>{items.length}</p>
+          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#0062B7" }}>{items.length}</p>
         </div>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Stock Total</p>
           <p style={{ margin: 0, fontSize: 26, fontWeight: 800,
-            color: stockTotal === 0 ? "#dc2626" : "#059669" }}>{stockTotal}</p>
+            color: stockTotal === 0 ? "#C0392B" : "#2C9826" }}>{stockTotal}</p>
         </div>
         <div className="card" style={{ textAlign: "center" }}>
           <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
             textTransform: "uppercase", fontWeight: 600 }}>Sin Stock</p>
-          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#d97706" }}>
+          <p style={{ margin: 0, fontSize: 26, fontWeight: 800, color: "#EE9C02" }}>
             {items.filter((pa) => pa.stock === 0).length}
           </p>
         </div>
@@ -181,54 +181,56 @@ function VerAlmacen() {
           </p>
         ) : (
           <div style={{ overflowX: "auto" }}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Producto</th>
-                  <th>Categoría</th>
-                  <th>Marca / Modelo</th>
-                  <th style={{ textAlign: "center" }}>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtrados.length === 0 ? (
-                  <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
-                ) : filtrados.map((pa) => (
-                  <tr key={pa.productoAlmacenId}>
-                    <td>
-                      <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
-                        padding: "2px 6px", borderRadius: 4 }}>
-                        {pa.producto?.codigo}
-                      </span>
-                    </td>
-                    <td>
-                      <p style={{ margin: 0, fontWeight: 600 }}>{pa.producto?.nombre}</p>
-                      <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{pa.producto?.sku}</p>
-                    </td>
-                    <td style={{ color: "#6b7280", fontSize: 13 }}>
-                      {pa.producto?.categoria?.nombre ?? "—"}
-                    </td>
-                    <td style={{ fontSize: 13, color: "#6b7280" }}>
-                      {pa.producto?.marcaModelo
-                        ? `${pa.producto.marcaModelo.marca?.nombre} / ${pa.producto.marcaModelo.modelo?.nombre}`
-                        : "—"}
-                    </td>
-                    <td style={{ textAlign: "center" }}>
-                      <StockBadge stock={pa.stock ?? 0} />
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Marca / Modelo</th>
+                    <th style={{ textAlign: "center" }}>Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtrados.length === 0 ? (
+                    <tr><td colSpan={5} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
+                  ) : filtrados.map((pa) => (
+                    <tr key={pa.productoAlmacenId}>
+                      <td>
+                        <span style={{ fontFamily: "monospace", fontSize: 12, background: "#f3f4f6",
+                          padding: "2px 6px", borderRadius: 4 }}>
+                          {pa.producto?.codigo}
+                        </span>
+                      </td>
+                      <td>
+                        <p style={{ margin: 0, fontWeight: 600 }}>{pa.producto?.nombre}</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>{pa.producto?.sku}</p>
+                      </td>
+                      <td style={{ color: "#6b7280", fontSize: 13 }}>
+                        {pa.producto?.categoria?.nombre ?? "—"}
+                      </td>
+                      <td style={{ fontSize: 13, color: "#6b7280" }}>
+                        {pa.producto?.marcaModelo
+                          ? `${pa.producto.marcaModelo.marca?.nombre} / ${pa.producto.marcaModelo.modelo?.nombre}`
+                          : "—"}
+                      </td>
+                      <td style={{ textAlign: "center" }}>
+                        <StockBadge stock={pa.stock ?? 0} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr style={{ background: "#f8fafc" }}>
+                    <td colSpan={4} style={{ fontWeight: 700, padding: "10px 12px" }}>TOTAL</td>
+                    <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>
+                      {filtrados.reduce((s, pa) => s + (pa.stock ?? 0), 0)}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr style={{ background: "#f8fafc" }}>
-                  <td colSpan={4} style={{ fontWeight: 700, padding: "10px 12px" }}>TOTAL</td>
-                  <td style={{ textAlign: "center", fontWeight: 800, fontSize: 15 }}>
-                    {filtrados.reduce((s, pa) => s + (pa.stock ?? 0), 0)}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                </tfoot>
+              </table>
+            </div>
           </div>
         )}
       </div>
@@ -250,7 +252,7 @@ function VerAlmacen() {
                   autoFocus
                   style={{ width: "100%", boxSizing: "border-box" }}
                 />
-                {editErr && <p style={{ margin: "8px 0 0", color: "#dc2626", fontSize: 13 }}>{editErr}</p>}
+                {editErr && <p style={{ margin: "8px 0 0", color: "#C0392B", fontSize: 13 }}>{editErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowEdit(false)}>Cancelar</button>

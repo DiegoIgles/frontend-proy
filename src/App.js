@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import Perfil from "./pages/Perfil";
+import NotFound from "./pages/NotFound";
 
 // Inventario
 import Categorias from "./pages/Categorias/Categorias";
@@ -156,6 +157,11 @@ function App() {
 
         {/* Perfil */}
         <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
+
+        {/* 404 — cualquier ruta que no matchee arriba. Va al final y sin
+            PrivateRoute: si la dirección no existe, da igual si hay sesión, y
+            rebotar al login esconde el error real. */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       </AuthProvider>
       </ConfirmProvider>

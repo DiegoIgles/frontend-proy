@@ -248,7 +248,7 @@ function CotizacionProyecto() {
         }
         .cot-btn-print {
           display: flex; align-items: center;
-          padding: 8px 20px; background: #1d4ed8; color: #fff;
+          padding: 8px 20px; background: #0062B7; color: #fff;
           border: none; border-radius: 6px; font-size: 14px;
           font-weight: 600; cursor: pointer;
         }
@@ -273,12 +273,12 @@ function CotizacionProyecto() {
 
         /* Header */
         .cot-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .cot-logo { margin: 0; font-size: 28px; font-weight: 800; color: #1d4ed8; letter-spacing: -0.5px; }
+        .cot-logo { margin: 0; font-size: 28px; font-weight: 800; color: #0062B7; letter-spacing: -0.5px; }
         .cot-logo-sub { margin: 2px 0 0; font-size: 11px; color: #6b7280; }
         .cot-header-meta { text-align: right; }
         .cot-badge-cotizacion {
           display: inline-block; padding: 6px 18px;
-          background: #1d4ed8; color: #fff;
+          background: #0062B7; color: #fff;
           font-size: 16px; font-weight: 800; letter-spacing: 2px;
           border-radius: 4px; margin-bottom: 10px;
         }
@@ -286,8 +286,8 @@ function CotizacionProyecto() {
         .cot-meta-table td { padding: 2px 6px; color: #374151; }
         .cot-meta-table td:first-child { color: #6b7280; text-align: right; padding-right: 8px; }
         .cot-estado { padding: 2px 10px; border-radius: 10px; font-weight: 700; font-size: 11px; }
-        .cot-estado-cotizacion { background: #fef3c7; color: #92400e; }
-        .cot-estado-proyecto   { background: #d1fae5; color: #065f46; }
+        .cot-estado-cotizacion { background: #fef3c7; color: #8A5A02; }
+        .cot-estado-proyecto   { background: #E6F3E5; color: #056125; }
 
         /* Divider */
         .cot-divider { border: none; border-top: 1px solid #e5e7eb; margin: 20px 0; }
@@ -318,7 +318,7 @@ function CotizacionProyecto() {
         /* Tabla */
         .cot-tabla { width: 100%; border-collapse: collapse; font-size: 12px; }
         .cot-tabla th {
-          background: #1d4ed8; color: #fff;
+          background: #0062B7; color: #fff;
           padding: 8px 10px; text-align: left;
           font-size: 11px; font-weight: 600;
         }
@@ -345,7 +345,7 @@ function CotizacionProyecto() {
         .cot-linea-total {
           display: flex; justify-content: space-between;
           font-size: 16px; font-weight: 800;
-          color: #1d4ed8; padding: 6px 0 0;
+          color: #0062B7; padding: 6px 0 0;
         }
 
         /* Firmas */

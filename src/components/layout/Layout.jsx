@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -14,6 +14,13 @@ function Layout({ children }) {
   const closeSidebar = () => {
     setIsOpen(false);
   };
+
+  // Con el cajón abierto, el dedo arrastraba la página de atrás en vez del
+  // menú. La clase la consume layout.css (body.sidebar-open { overflow:hidden }).
+  useEffect(() => {
+    document.body.classList.toggle("sidebar-open", isOpen);
+    return () => document.body.classList.remove("sidebar-open");
+  }, [isOpen]);
 
   return (
     <>

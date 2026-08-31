@@ -96,10 +96,10 @@ function Almacenes() {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 20 }}>
                   <div style={{
-                    width: 46, height: 46, borderRadius: 12, background: "#dbeafe",
+                    width: 46, height: 46, borderRadius: 12, background: "#E3EEF9",
                     display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
                   }}>
-                    <FaWarehouse style={{ color: "#1d4ed8", fontSize: 20 }} />
+                    <FaWarehouse style={{ color: "#0062B7", fontSize: 20 }} />
                   </div>
                   <div style={{ minWidth: 0 }}>
                     <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: "#111827" }}>{a.nombre}</p>
@@ -115,7 +115,7 @@ function Almacenes() {
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "12px 20px", borderTop: "1px solid #f3f4f6",
-                    fontSize: 13, fontWeight: 600, color: "#1d4ed8", textDecoration: "none",
+                    fontSize: 13, fontWeight: 600, color: "#0062B7", textDecoration: "none",
                   }}>
                   Ver detalle <FaArrowRight style={{ fontSize: 11 }} />
                 </Link>
@@ -143,7 +143,7 @@ function Almacenes() {
                   autoFocus
                   style={{ width: "100%", boxSizing: "border-box" }}
                 />
-                {formErr && <p style={{ margin: "8px 0 0", color: "#dc2626", fontSize: 13 }}>{formErr}</p>}
+                {formErr && <p style={{ margin: "8px 0 0", color: "#C0392B", fontSize: 13 }}>{formErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>Cancelar</button>

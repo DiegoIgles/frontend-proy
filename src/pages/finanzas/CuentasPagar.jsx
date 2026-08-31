@@ -161,18 +161,18 @@ function CuentasPagar() {
 
       {/* Resumen */}
       {data && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginBottom: 20 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 20 }}>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Registros encontrados
             </p>
-            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#1d4ed8" }}>{data.total}</p>
+            <p style={{ fontSize: 28, fontWeight: 800, margin: 0, color: "#0062B7" }}>{data.total}</p>
           </div>
           <div className="card" style={{ textAlign: "center" }}>
             <p style={{ fontSize: 12, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
               Total Pendiente por Pagar
             </p>
-            <p style={{ fontSize: 24, fontWeight: 800, margin: 0, color: "#dc2626" }}>
+            <p style={{ fontSize: 24, fontWeight: 800, margin: 0, color: "#C0392B" }}>
               Bs. {fmt(data.totalPendiente ?? 0)}
             </p>
           </div>
@@ -230,7 +230,7 @@ function CuentasPagar() {
         {loading ? (
           <p style={{ color: "#6b7280", textAlign: "center", padding: 24 }}>Cargando...</p>
         ) : error ? (
-          <p style={{ color: "#dc2626", textAlign: "center", padding: 24 }}>Error al cargar las cuentas por pagar.</p>
+          <p style={{ color: "#C0392B", textAlign: "center", padding: 24 }}>Error al cargar las cuentas por pagar.</p>
         ) : (
           <>
             <div className="table-responsive">
@@ -258,7 +258,7 @@ function CuentasPagar() {
                       <tr key={cxp.cuentaPorPagarId}>
                         <td><EstadoBadge estado={cxp.estado} /></td>
                         <td style={{ maxWidth: 260 }}>{cxp.descripcion || "—"}</td>
-                        <td className="col-hide-mobile" style={{ whiteSpace: "nowrap", color: cxp.estado === "VENCIDO" ? "#dc2626" : undefined }}>
+                        <td className="col-hide-mobile" style={{ whiteSpace: "nowrap", color: cxp.estado === "VENCIDO" ? "#C0392B" : undefined }}>
                           {cxp.fechaVencimiento
                             ? new Date(cxp.fechaVencimiento + "T00:00:00").toLocaleDateString("es-BO")
                             : "—"}
@@ -266,11 +266,11 @@ function CuentasPagar() {
                         <td style={{ textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>
                           Bs. {fmt(cxp.montoTotal)}
                         </td>
-                        <td style={{ textAlign: "right", whiteSpace: "nowrap", color: "#059669" }}>
+                        <td style={{ textAlign: "right", whiteSpace: "nowrap", color: "#2C9826" }}>
                           Bs. {fmt(cxp.montoPagado)}
                         </td>
                         <td style={{ textAlign: "right", fontWeight: 700, whiteSpace: "nowrap",
-                          color: Number(cxp.saldo) > 0 ? "#dc2626" : "#059669" }}>
+                          color: Number(cxp.saldo) > 0 ? "#C0392B" : "#2C9826" }}>
                           Bs. {fmt(cxp.saldo)}
                         </td>
                         <td style={{ textAlign: "center" }}>

@@ -36,9 +36,9 @@ const ROLES_DESTINO = ["admin", "super-user", "user"];
 const FORM_VACIO = { titulo: "", mensaje: "", destino: "todos", usuarioIds: [], roles: [] };
 
 function IconoNotificacion({ tipo, evento }) {
-  if (tipo === "MANUAL") return <FaBullhorn style={{ color: "#1d4ed8" }} />;
-  if (evento === "STOCK_AGOTADO") return <FaTimesCircle style={{ color: "#dc2626" }} />;
-  return <FaExclamationTriangle style={{ color: "#d97706" }} />;
+  if (tipo === "MANUAL") return <FaBullhorn style={{ color: "#0062B7" }} />;
+  if (evento === "STOCK_AGOTADO") return <FaTimesCircle style={{ color: "#C0392B" }} />;
+  return <FaExclamationTriangle style={{ color: "#EE9C02" }} />;
 }
 
 function Notificaciones() {
@@ -330,7 +330,7 @@ function Notificaciones() {
                     </select>
                   </div>
                 )}
-                {formErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{formErr}</p>}
+                {formErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{formErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>Cancelar</button>

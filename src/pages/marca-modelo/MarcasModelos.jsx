@@ -20,8 +20,8 @@ function TabBtn({ label, icon, active, onClick }) {
     <button onClick={onClick} style={{
       padding: "8px 20px", border: "none", cursor: "pointer", fontWeight: 600,
       fontSize: 13, background: "none",
-      borderBottom: active ? "2px solid #3b82f6" : "2px solid transparent",
-      color: active ? "#3b82f6" : "#6b7280",
+      borderBottom: active ? "2px solid #0062B7" : "2px solid transparent",
+      color: active ? "#0062B7" : "#6b7280",
     }}>
       {icon} {label}
     </button>
@@ -56,7 +56,7 @@ function NombreModal({ title, value, onChange, onSave, onClose, saving, error })
             <label>Nombre *</label>
             <input value={value} onChange={(e) => onChange(e.target.value)}
               placeholder="Ej: Victron Energy" autoFocus />
-            {error && <p style={{ margin: "8px 0 0", color: "#dc2626", fontSize: 13 }}>{error}</p>}
+            {error && <p style={{ margin: "8px 0 0", color: "#C0392B", fontSize: 13 }}>{error}</p>}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn-secondary" onClick={onClose}>Cancelar</button>
@@ -220,7 +220,7 @@ function MarcasModelos() {
     <Layout>
       <div className="page-header">
         <h1><FaTrademark style={{ marginRight: 8 }} />Marcas y Modelos</h1>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {tab === "marcas" && (
             <button className="btn-primary" onClick={() => openCreate("marca")}
               style={{ display: "flex", alignItems: "center", gap: 5 }}>
@@ -244,11 +244,11 @@ function MarcasModelos() {
       </div>
 
       {/* Métricas */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 14, marginBottom: 20 }}>
         {[
-          { label: "Marcas",        value: marcas.length,        color: "#1d4ed8" },
+          { label: "Marcas",        value: marcas.length,        color: "#0062B7" },
           { label: "Modelos",       value: modelos.length,       color: "#7c3aed" },
-          { label: "Combinaciones", value: combinaciones.length, color: "#059669" },
+          { label: "Combinaciones", value: combinaciones.length, color: "#2C9826" },
         ].map((m) => (
           <div key={m.label} className="card" style={{ textAlign: "center" }}>
             <p style={{ margin: "0 0 4px", fontSize: 11, color: "#6b7280",
@@ -260,7 +260,7 @@ function MarcasModelos() {
 
       {/* Tabs */}
       <div className="card" style={{ padding: 0 }}>
-        <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", paddingLeft: 4 }}>
+        <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", paddingLeft: 4, overflowX: "auto" }}>
           <TabBtn label="Marcas"        icon={<FaTrademark />} active={tab === "marcas"}        onClick={() => setTab("marcas")} />
           <TabBtn label="Modelos"       icon={<FaTag />}       active={tab === "modelos"}       onClick={() => setTab("modelos")} />
           <TabBtn label="Combinaciones" icon={<FaLink />}      active={tab === "combinaciones"} onClick={() => setTab("combinaciones")} />
@@ -276,50 +276,52 @@ function MarcasModelos() {
               marcas.length === 0
                 ? <p style={{ textAlign: "center", color: "#9ca3af" }}>No hay marcas registradas.</p>
                 : (
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Marca</th>
-                        <th>Modelos vinculados</th>
-                        <th style={{ textAlign: "center" }}>Combinaciones</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {marcas.map((m) => (
-                        <tr key={m.marcaId}>
-                          <td style={{ fontWeight: 700 }}>{m.nombre}</td>
-                          <td>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                              {m.marcaModelos?.map((mm) => (
-                                <span key={mm.marcaModeloId} style={{
-                                  padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                                  background: "#ede9fe", color: "#5b21b6", fontWeight: 600,
-                                }}>
-                                  {mm.modelo?.nombre}
-                                </span>
-                              ))}
-                              {!m.marcaModelos?.length && <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
-                            </div>
-                          </td>
-                          <td style={{ textAlign: "center", fontWeight: 700 }}>
-                            {m.marcaModelos?.length ?? 0}
-                          </td>
-                          <td>
-                            <div style={{ display: "flex", gap: 6 }}>
-                              <ActionBtn onClick={() => openEdit("marca", m)} bg="#dbeafe" color="#1e40af">
-                                <FaEdit /> Editar
-                              </ActionBtn>
-                              <ActionBtn onClick={() => handleDelete("marca", m.marcaId, m.nombre)}
-                                bg="#fee2e2" color="#991b1b">
-                                <FaTrash /> Eliminar
-                              </ActionBtn>
-                            </div>
-                          </td>
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Marca</th>
+                          <th>Modelos vinculados</th>
+                          <th style={{ textAlign: "center" }}>Combinaciones</th>
+                          <th>Acciones</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {marcas.map((m) => (
+                          <tr key={m.marcaId}>
+                            <td style={{ fontWeight: 700 }}>{m.nombre}</td>
+                            <td>
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                {m.marcaModelos?.map((mm) => (
+                                  <span key={mm.marcaModeloId} style={{
+                                    padding: "2px 10px", borderRadius: 10, fontSize: 12,
+                                    background: "#ede9fe", color: "#5b21b6", fontWeight: 600,
+                                  }}>
+                                    {mm.modelo?.nombre}
+                                  </span>
+                                ))}
+                                {!m.marcaModelos?.length && <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
+                              </div>
+                            </td>
+                            <td style={{ textAlign: "center", fontWeight: 700 }}>
+                              {m.marcaModelos?.length ?? 0}
+                            </td>
+                            <td>
+                              <div style={{ display: "flex", gap: 6 }}>
+                                <ActionBtn onClick={() => openEdit("marca", m)} bg="#E3EEF9" color="#00509A">
+                                  <FaEdit /> Editar
+                                </ActionBtn>
+                                <ActionBtn onClick={() => handleDelete("marca", m.marcaId, m.nombre)}
+                                  bg="#FBE9E7" color="#96291D">
+                                  <FaTrash /> Eliminar
+                                </ActionBtn>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )
 
             /* ── Tab Modelos ── */
@@ -327,46 +329,48 @@ function MarcasModelos() {
               modelos.length === 0
                 ? <p style={{ textAlign: "center", color: "#9ca3af" }}>No hay modelos registrados.</p>
                 : (
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Modelo</th>
-                        <th>Marcas vinculadas</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {modelos.map((m) => (
-                        <tr key={m.modeloId}>
-                          <td style={{ fontWeight: 700 }}>{m.nombre}</td>
-                          <td>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                              {m.marcaModelos?.map((mm) => (
-                                <span key={mm.marcaModeloId} style={{
-                                  padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                                  background: "#dbeafe", color: "#1e40af", fontWeight: 600,
-                                }}>
-                                  {mm.marca?.nombre}
-                                </span>
-                              ))}
-                              {!m.marcaModelos?.length && <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
-                            </div>
-                          </td>
-                          <td>
-                            <div style={{ display: "flex", gap: 6 }}>
-                              <ActionBtn onClick={() => openEdit("modelo", m)} bg="#dbeafe" color="#1e40af">
-                                <FaEdit /> Editar
-                              </ActionBtn>
-                              <ActionBtn onClick={() => handleDelete("modelo", m.modeloId, m.nombre)}
-                                bg="#fee2e2" color="#991b1b">
-                                <FaTrash /> Eliminar
-                              </ActionBtn>
-                            </div>
-                          </td>
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Modelo</th>
+                          <th>Marcas vinculadas</th>
+                          <th>Acciones</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {modelos.map((m) => (
+                          <tr key={m.modeloId}>
+                            <td style={{ fontWeight: 700 }}>{m.nombre}</td>
+                            <td>
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                {m.marcaModelos?.map((mm) => (
+                                  <span key={mm.marcaModeloId} style={{
+                                    padding: "2px 10px", borderRadius: 10, fontSize: 12,
+                                    background: "#E3EEF9", color: "#00509A", fontWeight: 600,
+                                  }}>
+                                    {mm.marca?.nombre}
+                                  </span>
+                                ))}
+                                {!m.marcaModelos?.length && <span style={{ color: "#9ca3af", fontSize: 13 }}>—</span>}
+                              </div>
+                            </td>
+                            <td>
+                              <div style={{ display: "flex", gap: 6 }}>
+                                <ActionBtn onClick={() => openEdit("modelo", m)} bg="#E3EEF9" color="#00509A">
+                                  <FaEdit /> Editar
+                                </ActionBtn>
+                                <ActionBtn onClick={() => handleDelete("modelo", m.modeloId, m.nombre)}
+                                  bg="#FBE9E7" color="#96291D">
+                                  <FaTrash /> Eliminar
+                                </ActionBtn>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )
 
             /* ── Tab Combinaciones ── */
@@ -374,40 +378,42 @@ function MarcasModelos() {
               combinaciones.length === 0
                 ? <p style={{ textAlign: "center", color: "#9ca3af" }}>No hay combinaciones registradas.</p>
                 : (
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {combinaciones.map((c) => (
-                        <tr key={c.marcaModeloId}>
-                          <td>
-                            <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                              background: "#dbeafe", color: "#1e40af", fontWeight: 600 }}>
-                              {c.marca?.nombre}
-                            </span>
-                          </td>
-                          <td>
-                            <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                              background: "#ede9fe", color: "#5b21b6", fontWeight: 600 }}>
-                              {c.modelo?.nombre}
-                            </span>
-                          </td>
-                          <td>
-                            <ActionBtn
-                              onClick={() => handleDeleteCombo(c.marcaModeloId, `${c.marca?.nombre} / ${c.modelo?.nombre}`)}
-                              bg="#fee2e2" color="#991b1b">
-                              <FaUnlink /> Desvincular
-                            </ActionBtn>
-                          </td>
+                  <div className="table-responsive">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Marca</th>
+                          <th>Modelo</th>
+                          <th>Acciones</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {combinaciones.map((c) => (
+                          <tr key={c.marcaModeloId}>
+                            <td>
+                              <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
+                                background: "#E3EEF9", color: "#00509A", fontWeight: 600 }}>
+                                {c.marca?.nombre}
+                              </span>
+                            </td>
+                            <td>
+                              <span style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
+                                background: "#ede9fe", color: "#5b21b6", fontWeight: 600 }}>
+                                {c.modelo?.nombre}
+                              </span>
+                            </td>
+                            <td>
+                              <ActionBtn
+                                onClick={() => handleDeleteCombo(c.marcaModeloId, `${c.marca?.nombre} / ${c.modelo?.nombre}`)}
+                                bg="#FBE9E7" color="#96291D">
+                                <FaUnlink /> Desvincular
+                              </ActionBtn>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )
             )
           )}
@@ -457,7 +463,7 @@ function MarcasModelos() {
                     ))}
                   </select>
                 </div>
-                {comboErr && <p style={{ margin: 0, color: "#dc2626", fontSize: 13 }}>{comboErr}</p>}
+                {comboErr && <p style={{ margin: 0, color: "#C0392B", fontSize: 13 }}>{comboErr}</p>}
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowCombo(false)}>Cancelar</button>

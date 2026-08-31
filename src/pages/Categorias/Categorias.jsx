@@ -56,7 +56,7 @@ function CategoriaModal({ show, onClose, onSaved, flatList, editData }) {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {err && <div style={{ background: "#fee2e2", color: "#991b1b", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{err}</div>}
+            {err && <div style={{ background: "#FBE9E7", color: "#96291D", padding: "8px 12px", borderRadius: 6, fontSize: 13 }}>{err}</div>}
             <div>
               <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Nombre *</label>
               <input value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })}

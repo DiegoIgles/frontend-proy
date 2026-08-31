@@ -39,7 +39,7 @@ function CotizacionCard({ c, onPrint, onEdit, onDelete, deleting }) {
         </span>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 12px", fontSize: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "6px 12px", fontSize: 12 }}>
         <MetaItem icon={<FaUser />} label="Cliente" value={c.nombreCliente} />
         <MetaItem icon={<FaCalendarAlt />} label="Fecha" value={fmtDate(c.fecha)} />
         <MetaItem icon={<FaSolarPanel />} label="Paneles" value={`${c.cantidadPaneles} und.`} />

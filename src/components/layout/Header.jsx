@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { FaSignOutAlt, FaUserCircle, FaBars } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import NotificationBell from "./NotificationBell";
 
+// El estilo vive en layout.css. Acá no va ni un color suelto: en pantallas
+// chicas hay que poder esconder piezas con media queries, y eso no se puede
+// hacer sobre estilos en línea.
 function Header({ toggleSidebar }) {
-  const navigate         = useNavigate();
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -13,77 +16,64 @@ function Header({ toggleSidebar }) {
     navigate("/");
   };
 
-  const photoUrl  = user?.profile?.photo || null;
-  const initiales = user ? `${user.name?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase() : "";
+  const photoUrl = user?.profile?.photo || null;
+  const iniciales = user
+    ? `${user.name?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase()
+    : "";
 
   return (
-    <div className="header">
-      {/* Izquierda: hamburger + título */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <button className="menu-toggle" onClick={toggleSidebar}>☰</button>
-        <h3 style={{ margin: 0 }}>Panel de Administración</h3>
+    <header className="header">
+      <div className="header-left">
+        <button
+          className="menu-toggle"
+          onClick={toggleSidebar}
+          aria-label="Abrir menú"
+        >
+          <FaBars />
+        </button>
+        <h1 className="header-title">Panel de Administración</h1>
       </div>
 
-      {/* Derecha: notificaciones + perfil + logout */}
-      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-
-        {/* Notificaciones */}
+      <div className="header-right">
         <NotificationBell />
 
-        {/* Info del usuario */}
         {user && (
           <button
+            className="header-user"
             onClick={() => navigate("/perfil")}
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              background: "none", border: "none", cursor: "pointer",
-              padding: "4px 8px", borderRadius: 8,
-              transition: "background 0.15s",
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = "#f3f4f6"}
-            onMouseLeave={(e) => e.currentTarget.style.background = "none"}
             title="Ver perfil"
           >
-            {/* Avatar */}
             {photoUrl ? (
-              <img
-                src={photoUrl}
-                alt="avatar"
-                style={{ width: 34, height: 34, borderRadius: "50%", objectFit: "cover",
-                  border: "2px solid #e5e7eb" }}
-              />
+              <img src={photoUrl} alt="" className="header-avatar" />
             ) : (
-              <div style={{
-                width: 34, height: 34, borderRadius: "50%",
-                background: "#1d4ed8", color: "#fff",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontWeight: 700, fontSize: 13, flexShrink: 0,
-              }}>
-                {initiales || <FaUserCircle style={{ fontSize: 18 }} />}
+              <div className="header-avatar-fallback">
+                {iniciales || <FaUserCircle style={{ fontSize: 18 }} />}
               </div>
             )}
 
-            {/* Nombre y rol */}
-            <div style={{ textAlign: "left", lineHeight: 1.3 }}>
-              <p style={{ margin: 0, fontWeight: 700, fontSize: 13, color: "#111827" }}>
+            <div className="header-user-info">
+              <p className="header-user-name">
                 {user.name} {user.lastName}
               </p>
-              <p style={{ margin: 0, fontSize: 11, color: "#6b7280", textTransform: "capitalize" }}>
+              <p className="header-user-role">
                 {user.roles?.includes("admin") ? "Administrador" : "Usuario"}
               </p>
             </div>
           </button>
         )}
 
-        {/* Separador */}
-        <div style={{ width: 1, height: 32, background: "#e5e7eb", flexShrink: 0 }} />
+        <div className="header-divider" />
 
-        {/* Logout */}
-        <button className="logout-btn" onClick={handleLogout} title="Cerrar sesión">
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          title="Cerrar sesión"
+          aria-label="Cerrar sesión"
+        >
           <FaSignOutAlt />
         </button>
       </div>
-    </div>
+    </header>
   );
 }
 

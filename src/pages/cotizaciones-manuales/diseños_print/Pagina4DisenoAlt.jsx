@@ -57,7 +57,7 @@ export function Pagina4DisenoAlt({ cot }) {
       >
         {/* LOGO CORPORATIVO ENERLOGIC */}
         <img
-          src="/cotizacion/logo_1.jpeg"
+          src="/cotizacion/assets/enerlogic_v1_oficial_transparent.png"
           alt="Logo Enerlogic"
           style={{ height: "16mm", width: "auto", objectFit: "contain" }}
         />

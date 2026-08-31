@@ -71,7 +71,7 @@ function ProductoRow({ index, fila, productos, onChange, onRemove }) {
         {stockSeleccionado ? (
           <span style={{
             fontWeight: 600, fontSize: 13,
-            color: stockSeleccionado.stock < Number(fila.cantidad) ? "#dc2626" : "#059669",
+            color: stockSeleccionado.stock < Number(fila.cantidad) ? "#C0392B" : "#2C9826",
           }}>
             {stockSeleccionado.stock}
           </span>
@@ -102,7 +102,7 @@ function ProductoRow({ index, fila, productos, onChange, onRemove }) {
       {/* Eliminar */}
       <td style={{ textAlign: "center" }}>
         <button type="button" onClick={() => onRemove(index)}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "#dc2626", fontSize: 14, padding: "4px 8px" }}>
+          style={{ background: "none", border: "none", cursor: "pointer", color: "#C0392B", fontSize: 14, padding: "4px 8px" }}>
           <FaTimes />
         </button>
       </td>
@@ -219,7 +219,7 @@ function CreateProyecto() {
         {/* Datos principales */}
         <div className="card" style={{ marginBottom: 20 }}>
           <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Datos del Proyecto</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             <div className="form-group" style={{ gridColumn: "1 / -1" }}>
               <label>Nombre *</label>
               <input type="text" placeholder="Ej: Instalación Solar 10kW - Casa García"
@@ -307,7 +307,7 @@ function CreateProyecto() {
         {/* Presupuesto — ahora debajo de productos para que el cálculo tenga sentido */}
         <div className="card" style={{ marginBottom: 20 }}>
           <h3 style={{ margin: "0 0 16px", fontSize: 15 }}>Presupuesto</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
 
             <div className="form-group">
               <label>Mano de Obra (Bs.) <span style={{ color: "#9ca3af", fontWeight: 400 }}>(opcional)</span></label>
@@ -326,7 +326,7 @@ function CreateProyecto() {
                 <span>Monto Final Cotizado (Bs.)</span>
                 {montoOverride && (
                   <button type="button" onClick={recalcularMonto}
-                    style={{ background: "none", border: "none", cursor: "pointer", color: "#1d4ed8", fontSize: 12, display: "flex", alignItems: "center", gap: 4, padding: 0 }}>
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "#0062B7", fontSize: 12, display: "flex", alignItems: "center", gap: 4, padding: 0 }}>
                     <FaSyncAlt /> Recalcular
                   </button>
                 )}
@@ -336,7 +336,7 @@ function CreateProyecto() {
               {/* Desglose del cálculo automático */}
               {totalCalculado > 0 && (
                 <div style={{ marginTop: 6, padding: "8px 10px", background: "#f0fdf4", borderRadius: 6, border: "1px solid #bbf7d0" }}>
-                  <p style={{ margin: 0, fontSize: 12, color: "#166534" }}>
+                  <p style={{ margin: 0, fontSize: 12, color: "#056125" }}>
                     <strong>Cálculo automático:</strong>{" "}
                     {totalProductos > 0 && `Productos Bs. ${fmt(totalProductos)}`}
                     {totalProductos > 0 && Number(form.manoObra) > 0 && " + "}

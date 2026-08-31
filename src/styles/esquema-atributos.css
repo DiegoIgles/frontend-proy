@@ -1,0 +1,161 @@
+/* ============================================================================
+   Editor de atributos técnicos de una categoría.
+
+   Por qué container query y no media query
+   ----------------------------------------
+   El editor vive dentro de una tarjeta, y su ancho NO sigue al del viewport:
+   con el sidebar desplegado (248 px), a 1024 px de pantalla el editor tiene
+   ~730 px; a 768 px, donde el sidebar pasa a cajón, tiene ~740 px. O sea que
+   achicar la pantalla puede AGRANDAR el editor. Cualquier umbral por viewport
+   se equivoca en algún tramo. La única medida honesta es su propio ancho.
+
+   El estado base es el APILADO, no la fila. Así, si un navegador no soporta
+   container queries, cae en el layout que funciona en cualquier ancho: se ve
+   más largo, pero nunca roto. La fila alineada es la mejora, no el punto de
+   partida.
+   ========================================================================== */
+
+.esquema-editor {
+  container-type: inline-size;
+}
+
+.esquema-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.esquema-fila {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 8px;
+  align-items: center;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: var(--radius-md);
+}
+
+/* --- Apilado (base) ------------------------------------------------------ */
+
+.esquema-fila > input,
+.esquema-fila > select {
+  grid-column: 1 / -1;
+}
+
+.esquema-etiqueta {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.esquema-etiqueta:first-child {
+  margin-top: 0;
+}
+
+.esquema-requerido {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text-body);
+  white-space: nowrap;
+  margin-top: 6px;
+}
+
+.esquema-quitar {
+  grid-column: 2;
+  justify-self: end;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--danger);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  /* 36 px de lado: por debajo de eso no se acierta con el dedo. */
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.esquema-quitar:hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+
+/* Los campos se estilan acá y no se heredan de .form-group, porque el editor
+   se usa en dos lugares y solo uno lo envuelve en un form-group. */
+.esquema-fila input[type="text"],
+.esquema-fila input:not([type]),
+.esquema-fila select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-body);
+  font-size: 13.5px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.esquema-fila input:focus,
+.esquema-fila select:focus {
+  outline: none;
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--blue-ring);
+}
+
+.esquema-vacio {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+/* --- Fila alineada (mejora, cuando el editor tiene lugar) ---------------- */
+
+@container (min-width: 620px) {
+  .esquema-fila {
+    grid-template-columns: 1fr 1fr 1fr 0.7fr auto auto;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  /* Con los rótulos fuera del flujo, la rejilla vuelve a tener exactamente los
+     seis hijos que esperan esas seis columnas. */
+  .esquema-etiqueta {
+    display: none;
+  }
+
+  .esquema-fila > input,
+  .esquema-fila > select {
+    grid-column: auto;
+  }
+
+  /* Las opciones siguen ocupando todo el ancho, debajo de la fila. */
+  .esquema-fila > input.esquema-opciones {
+    grid-column: 1 / -1;
+  }
+
+  .esquema-requerido,
+  .esquema-quitar {
+    grid-column: auto;
+    margin-top: 0;
+  }
+
+  .esquema-requerido {
+    font-size: 11px;
+  }
+
+  .esquema-quitar {
+    width: 30px;
+    height: 30px;
+  }
+}

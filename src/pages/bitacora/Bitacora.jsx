@@ -8,9 +8,9 @@ import { exportBitacoraAction } from "./actions/export-bitacora.action";
 import { FaHistory, FaSearch, FaFileExcel, FaTimes, FaEye } from "react-icons/fa";
 
 const ACCION_COLORS = {
-  CREAR:             { bg: "#d1fae5", color: "#065f46" },
-  ACTUALIZAR:        { bg: "#dbeafe", color: "#1e40af" },
-  ELIMINAR:          { bg: "#fee2e2", color: "#991b1b" },
+  CREAR:             { bg: "#E6F3E5", color: "#056125" },
+  ACTUALIZAR:        { bg: "#E3EEF9", color: "#00509A" },
+  ELIMINAR:          { bg: "#FBE9E7", color: "#96291D" },
   APROBAR:           { bg: "#ede9fe", color: "#5b21b6" },
   REGISTRAR_PAGO:    { bg: "#cffafe", color: "#0e7490" },
   REGISTRAR_COBRO:   { bg: "#cffafe", color: "#0e7490" },
@@ -54,7 +54,7 @@ function DetalleModal({ registro, onClose }) {
             <strong>{registro.accion}</strong> sobre <strong>{registro.tablaAfectada}</strong>
             {" "}(ID: {registro.registroId})
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
             <div>
               <label style={{ fontSize: 12, color: "#6b7280", display: "block", marginBottom: 4 }}>Valor anterior</label>
               <pre style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 6,
@@ -195,43 +195,45 @@ function Bitacora() {
       {/* Tabla */}
       <div className="card">
         <div style={{ overflowX: "auto" }}>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Usuario</th>
-                <th>Acción</th>
-                <th>Módulo</th>
-                <th>Tabla afectada</th>
-                <th>Registro ID</th>
-                <th>Detalle</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
-              ) : registros.length === 0 ? (
-                <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
-              ) : registros.map((r) => (
-                <tr key={r.id}>
-                  <td style={{ whiteSpace: "nowrap" }}>{new Date(r.fechaRegistro).toLocaleString("es-BO")}</td>
-                  <td style={{ color: "#374151" }}>
-                    {r.usuario ? `${r.usuario.name} ${r.usuario.lastName}` : "Sistema"}
-                  </td>
-                  <td><AccionBadge accion={r.accion} /></td>
-                  <td>{r.modulo}</td>
-                  <td style={{ color: "#6b7280" }}>{r.tablaAfectada}</td>
-                  <td style={{ color: "#6b7280", fontSize: 12 }}>{r.registroId}</td>
-                  <td>
-                    <button className="btn-secondary" onClick={() => setDetalle(r)}
-                      style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                      <FaEye /> Ver
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Acción</th>
+                  <th>Módulo</th>
+                  <th>Tabla afectada</th>
+                  <th>Registro ID</th>
+                  <th>Detalle</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af" }}>Cargando...</td></tr>
+                ) : registros.length === 0 ? (
+                  <tr><td colSpan={7} style={{ textAlign: "center", color: "#9ca3af" }}>Sin resultados</td></tr>
+                ) : registros.map((r) => (
+                  <tr key={r.id}>
+                    <td style={{ whiteSpace: "nowrap" }}>{new Date(r.fechaRegistro).toLocaleString("es-BO")}</td>
+                    <td style={{ color: "#374151" }}>
+                      {r.usuario ? `${r.usuario.name} ${r.usuario.lastName}` : "Sistema"}
+                    </td>
+                    <td><AccionBadge accion={r.accion} /></td>
+                    <td>{r.modulo}</td>
+                    <td style={{ color: "#6b7280" }}>{r.tablaAfectada}</td>
+                    <td style={{ color: "#6b7280", fontSize: 12 }}>{r.registroId}</td>
+                    <td>
+                      <button className="btn-secondary" onClick={() => setDetalle(r)}
+                        style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <FaEye /> Ver
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <Pagination
