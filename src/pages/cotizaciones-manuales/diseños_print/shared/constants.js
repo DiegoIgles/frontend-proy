@@ -8,6 +8,12 @@ export const PAGE_HEIGHT_MM = 215.9;
 export const COLORS = {
   navy: "#001B3D",
   navy800: "#0A2A52",
+  // Fondo pleno de la página 3. Es más oscuro que `navy` y no es un capricho:
+  // el arte aprobado lo usa plano en toda la hoja (medido en ocho zonas, de la
+  // esquina superior izquierda al pie derecho: media RGB 0.7/18.6/36.4 con
+  // desviación de ~2 niveles). Sobre `navy` los rótulos blancos y el verde
+  // pierden contraste. No usarlo en las páginas 1 y 2, que son de fondo claro.
+  navy900: "#001226",
   azul: "#0062B7",
   verde: "#2C9826",
   verde900: "#056125",

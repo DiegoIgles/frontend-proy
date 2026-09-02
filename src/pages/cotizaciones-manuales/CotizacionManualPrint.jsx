@@ -4,6 +4,7 @@ import { getCotizacionManualAction } from "./actions/get-cotizacion.action";
 import { FaPrint, FaArrowLeft, FaBolt } from "react-icons/fa";
 import { Pagina1Portada } from "./diseños_print/Pagina1Portada";
 import { Pagina2QuienesSomos } from "./diseños_print/Pagina2QuienesSomos";
+import { Pagina3Experiencia } from "./diseños_print/Pagina3Experiencia";
 import { Pagina4Diseno } from "./diseños_print/Pagina4Diseno";
 import { Pagina5Cotizacion } from "./diseños_print/Pagina5Cotizacion";
 import { Pagina6Roi } from "./diseños_print/Pagina6Roi";
@@ -189,10 +190,8 @@ function CotizacionManualPrint() {
         {/* ═══════════ PÁGINA 2: ¿QUIÉNES SOMOS? (CLONADA) ═══════════ */}
         <Pagina2QuienesSomos />
 
-        {/* ═══════════ PÁGINA 3: INTRODUCCIÓN (ESTÁTICA) ═══════════ */}
-        <section className="pagina pagina-estatica">
-          <img src="/cotizacion/cotizacion3_A4.png" alt="Portada 3" />
-        </section>
+        {/* ═══════════ PÁGINA 3: LA CONFIANZA DE NUESTRA EXPERIENCIA (CLONADA) ═══════════ */}
+        <Pagina3Experiencia />
 
         {/* ═══════════ PÁGINA 4: DISEÑO DEL SISTEMA (DINÁMICA - NUEVA PORTADA 4) ═══════════ */}
         <Pagina4Diseno cot={cot} />
