@@ -131,3 +131,41 @@ export function IconCalendario({ color = COLORS.verde900, ...props }) {
     </svg>
   );
 }
+
+// --- Garantías (página 8) ---------------------------------------------------
+// Van calados en blanco sobre el disco navy de cada tarjeta, por eso el trazo
+// es más grueso que el del resto: a 33 mm de disco impreso un trazo fino se
+// cierra contra el fondo oscuro.
+
+export function IconPanelSolar({ color = COLORS.blanco, ...props }) {
+  return (
+    <svg {...linea(color, 2.8)} {...props}>
+      <path d="M8.5 9h31l4.5 21H4z" />
+      <path d="M6.2 19.5h35.6M24 9v21" />
+      <path d="M15.5 9l-3.5 21M32.5 9l3.5 21" />
+      <path d="M24 30v9M14 39h20" />
+    </svg>
+  );
+}
+
+export function IconInversor({ color = COLORS.blanco, ...props }) {
+  return (
+    <svg {...linea(color, 2.8)} {...props}>
+      <rect x="11" y="5.5" width="26" height="33" rx="3" />
+      <rect x="15" y="10" width="18" height="16" rx="1.6" strokeWidth="2.2" />
+      <rect x="20.5" y="29" width="7" height="6" rx="1.4" strokeWidth="2.2" />
+      <path d="M16 38.5v4M24 38.5v4M32 38.5v4" />
+    </svg>
+  );
+}
+
+// Instalación: llave y destornillador cruzados en aspa.
+export function IconHerramientas({ color = COLORS.blanco, ...props }) {
+  return (
+    <svg {...linea(color, 2.8)} {...props}>
+      <path d="M33.5 5.5a8 8 0 0 0-8.8 11.5L7.5 34.2a2.9 2.9 0 0 0 0 4l2 2a2.9 2.9 0 0 0 4 0l17.2-17.2a8 8 0 0 0 11.5-8.8l-5.3 5.3-4.6-.9-.9-4.6z" />
+      <path d="M7.6 13.6 13.6 7.6l6.2 6.2-3 3z" />
+      <path d="m18.6 18.6 18.8 18.8a2.7 2.7 0 0 0 3.8-3.8L22.4 14.8" />
+    </svg>
+  );
+}

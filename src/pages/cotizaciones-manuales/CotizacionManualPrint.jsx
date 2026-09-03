@@ -9,6 +9,7 @@ import { Pagina4Diseno } from "./diseños_print/Pagina4Diseno";
 import { Pagina5Cotizacion } from "./diseños_print/Pagina5Cotizacion";
 import { Pagina6Roi } from "./diseños_print/Pagina6Roi";
 import { Pagina7Proteccion } from "./diseños_print/Pagina7Proteccion";
+import { Pagina8Garantias } from "./diseños_print/Pagina8Garantias";
 
 // ── Helpers de formato ────────────────────────────────────────
 
@@ -205,10 +206,8 @@ function CotizacionManualPrint() {
         {/* ═══════════ PÁGINA 7: ALCANCE Y PROTECCIÓN DE INVERSIÓN (DINÁMICA) ═══════════ */}
         <Pagina7Proteccion cot={cot} />
 
-        {/* ═══════════ PÁGINA 8: GARANTÍAS Y PROTECCIÓN (ESTÁTICA) ═══════════ */}
-        <section className="pagina pagina-estatica">
-          <img src="/cotizacion/cotizacion8_A4.png" alt="Garantías 8" />
-        </section>
+        {/* ═══════════ PÁGINA 8: GARANTÍAS (CLONADA) ═══════════ */}
+        <Pagina8Garantias />
 
         {/* ═══════════ PÁGINA 9: TÉRMINOS Y CONDICIONES (ESTÁTICA) ═══════════ */}
         <section className="pagina pagina-estatica">
