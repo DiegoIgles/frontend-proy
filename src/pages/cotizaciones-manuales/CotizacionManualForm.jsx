@@ -137,14 +137,33 @@ function ImageUploader({ label, value, onChange, multiple = false }) {
   );
 }
 
-// ── Subida de 4 imágenes para Página 4 (Diseño del Sistema) ────
+// ── Imágenes de la Página 4 (Diseño del Sistema) ───────────────
+//
+// Son cuatro RANURAS FIJAS y se llenan las que haga falta: basta con una. Cada
+// ranura se queda con su rótulo en el impreso, así que la que se suba en
+// "Vista Lateral" va a decir VISTA LATERAL aunque sea la única de la hoja.
+//
+// La página se rearma según cuántas haya: 1 imagen ocupa la banda entera, 2 van
+// apiladas a media banda, y 3 o 4 arman una grande arriba con las demás en fila
+// abajo. Por eso la proporción ideal depende de si la imagen va a caer de
+// "grande" o de "chica", y eso no se sabe hasta saber cuántas hay: las medidas
+// de abajo son las del caso de cuatro, que es el que más aprieta.
 
 const PAGINA4_SLOTS = [
-  { label: "1. Vista Superior (Principal)", ratio: "16:9 (~1.7:1)", res: "1600 × 936 px", marco: "135 × 79 mm" },
-  { label: "2. Vista 3D (Secundaria 1)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
-  { label: "3. Vista Inclinada (Secundaria 2)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
-  { label: "4. Vista Lateral (Secundaria 3)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
+  { label: "1. Vista Superior", ratio: "16:9 (~1.7:1)", res: "1600 × 936 px" },
+  { label: "2. Vista 3D", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
+  { label: "3. Vista Inclinada", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
+  { label: "4. Vista Lateral", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
 ];
+
+// Deja SIEMPRE un arreglo dueño de sus cuatro posiciones y sin agujeros.
+// `nuevas[3] = url` sobre un arreglo corto crea huecos, y un hueco viaja a la
+// API como `null`, que el DTO rechaza con "each value in imagenesProyecto must
+// be a string". La ranura vacía tiene que ser cadena vacía, no hueco: el orden
+// importa porque cada posición es una vista con su rótulo en el impreso.
+function ranuras(value) {
+  return Array.from({ length: PAGINA4_SLOTS.length }, (_, i) => value?.[i] || "");
+}
 
 function ProyectoImagesUploader({ value = [], onChange }) {
   const [uploadingIndex, setUploadingIndex] = useState(null);
@@ -157,7 +176,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
     setUploadingIndex(slotIndex);
     try {
       const { secureUrl } = await uploadImagenCotizacionAction(file);
-      const newImages = [...(value || [])];
+      const newImages = ranuras(value);
       newImages[slotIndex] = secureUrl;
       onChange(newImages);
       toast.success(`Imagen (${PAGINA4_SLOTS[slotIndex].label}) subida correctamente.`);
@@ -170,7 +189,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
   };
 
   const removeSlotImage = (slotIndex) => {
-    const newImages = [...(value || [])];
+    const newImages = ranuras(value);
     newImages[slotIndex] = "";
     onChange(newImages);
   };
@@ -180,7 +199,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
   return (
     <div style={{ marginBottom: 18 }}>
       <label style={labelStyle}>
-        Imágenes del Proyecto (Página 4 — 4 Imágenes Requeridas *)
+        Imágenes del Proyecto (Página 4 — de 1 a 4, al menos una *)
       </label>
 
       {/* ── Guía de proporciones y dimensiones de imagen ── */}
@@ -189,17 +208,24 @@ function ProyectoImagesUploader({ value = [], onChange }) {
         padding: "10px 14px", marginBottom: 12, fontSize: 12, color: "#1e40af"
       }}>
         <div style={{ fontWeight: 700, marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
-          💡 Guía de Proporciones y Medidas para la Página 4
+          💡 Cómo se arma la Página 4 según cuántas imágenes subas
         </div>
         <ul style={{ margin: "4px 0 0", paddingLeft: 18, lineHeight: "1.5" }}>
-          <li>
-            <strong>Vista Superior (Principal)</strong>: Proporción <strong>16:9</strong> (~1.7:1). Medida ideal: <strong>1600 × 936 px</strong>.
-            <span style={{ color: "#b91c1c", display: "block", fontSize: 11, fontWeight: 600 }}>
-              * Evitar imágenes ultra panorámicas o angostas (ej. 1135 × 265 px), ya que el marco A4 es rectangular estándar.
-            </span>
+          <li><strong>1 imagen</strong>: ocupa la banda entera, con su rótulo al costado.</li>
+          <li><strong>2 imágenes</strong>: van apiladas, media banda cada una.</li>
+          <li><strong>3 o 4</strong>: la primera va grande arriba y las demás en fila abajo.</li>
+          <li style={{ marginTop: 4 }}>
+            Cada ranura conserva SU rótulo: si solo cargás la lateral, esa va a ser la
+            imagen grande de la hoja pero seguirá diciendo <strong>VISTA LATERAL</strong>.
           </li>
-          <li>
-            <strong>Vistas Secundarias (3D, Inclinada, Lateral)</strong>: Proporción <strong>4:3</strong> (~1.2:1). Medida ideal: <strong>720 × 608 px</strong>.
+          <li style={{ marginTop: 4 }}>
+            Proporciones ideales (para el caso de cuatro, que es el más apretado):
+            la principal <strong>16:9</strong> (1600 × 936 px) y las otras{" "}
+            <strong>5:4</strong> (760 × 610 px).
+            <span style={{ color: "#b91c1c", display: "block", fontSize: 11, fontWeight: 600 }}>
+              * Las imágenes se recortan al centro para llenar su marco. Evitá tomas
+              ultra panorámicas o muy angostas: se les va a perder el borde.
+            </span>
           </li>
         </ul>
       </div>
@@ -258,14 +284,92 @@ function ProyectoImagesUploader({ value = [], onChange }) {
       </div>
       <p style={{
         margin: "8px 0 0", fontSize: 12, fontWeight: 600,
-        color: uploadedCount === 4 ? "#15803d" : "#b91c1c",
+        color: uploadedCount > 0 ? "#15803d" : "#b91c1c",
         display: "flex", alignItems: "center", gap: 6
       }}>
-        {uploadedCount === 4
-          ? "✓ Se han subido las 4 imágenes requeridas."
-          : `⚠ Obligatorio: Faltan ${4 - uploadedCount} de las 4 imágenes requeridas.`}
+        {uploadedCount === 0
+          ? "⚠ Falta subir al menos una imagen para la Página 4."
+          : `✓ ${uploadedCount} ${uploadedCount === 1 ? "imagen cargada" : "imágenes cargadas"}: la página se arma con ${uploadedCount === 1 ? "una vista a banda completa" : uploadedCount === 2 ? "dos vistas apiladas" : `una vista grande y ${uploadedCount - 1} en fila`}.`}
       </p>
     </div>
+  );
+}
+
+// El usuario autenticado viene de la API con `name` y `lastName` (así está la
+// entidad User). El formulario buscaba `nombreCompleto`/`nombre`, que no existen
+// en ningún lado: por eso "Realizado por" salía siempre vacío. Se dejan los dos
+// nombres viejos como último recurso por si algún endpoint los devuelve.
+function nombreDe(user) {
+  if (!user) return "";
+  const completo = [user.name, user.lastName].filter(Boolean).join(" ").trim();
+  return completo || user.nombreCompleto || user.nombre || "";
+}
+
+// Nota sugerida de la página 5, la del arte aprobado. Cada renglón se imprime
+// como una viñeta, así que se guarda una idea por línea y SIN el "•": el
+// impreso lo pone. No se aplica sola —el usuario decide si la usa, la edita o
+// deja el campo vacío— y por eso vive acá y no en INITIAL_FORM.
+const NOTA_SUGERIDA = [
+  "Los precios incluyen IVA.",
+  "Forma de pago: 70% anticipo – 30% contra entrega.",
+  "El tiempo de entrega corre a partir de recibida la orden de compra o comprobante de pago.",
+].join("\n");
+
+// Campo de notas: un renglón por viñeta, con la nota sugerida a un clic.
+// Es un textarea y no un input porque el impreso convierte CADA LÍNEA en una
+// viñeta; con un input de una sola línea la nota del arte —que son tres— no se
+// podía cargar. Sirve igual al crear y al editar: lo único que maneja es el
+// texto, así que una cotización guardada se abre con lo suyo y se sigue
+// editando desde ahí.
+function CampoNotas({ value, onChange }) {
+  const texto = value ?? "";
+  const yaEsLaSugerida = texto.trim() === NOTA_SUGERIDA;
+  const lineas = texto.split("\n").map((l) => l.trim()).filter(Boolean).length;
+
+  const btn = {
+    padding: "5px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600,
+    border: "1px solid #d1d5db", background: "#fff", color: "#374151", cursor: "pointer",
+  };
+
+  return (
+    <>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          onClick={() => onChange(NOTA_SUGERIDA)}
+          disabled={yaEsLaSugerida}
+          style={{
+            ...btn,
+            ...(yaEsLaSugerida
+              ? { opacity: 0.55, cursor: "default" }
+              : { borderColor: "#16a34a", color: "#15803d", background: "#f0fdf4" }),
+          }}
+        >
+          {yaEsLaSugerida ? "✓ Usando la nota sugerida" : "Usar nota sugerida"}
+        </button>
+        {texto.trim() !== "" && (
+          <button type="button" onClick={() => onChange("")} style={btn}>
+            Limpiar
+          </button>
+        )}
+        <span style={{ fontSize: 11, color: "#6b7280" }}>
+          Opcional. Cada renglón se imprime como una viñeta; el “•” lo pone la cotización.
+        </span>
+      </div>
+
+      <textarea
+        style={{ ...inputStyle, minHeight: 88, resize: "vertical", lineHeight: 1.5, fontFamily: "inherit" }}
+        placeholder={"Una nota por renglón. Por ejemplo:\nLos precios incluyen IVA."}
+        value={texto}
+        onChange={(e) => onChange(e.target.value)}
+      />
+
+      <p style={{ margin: "5px 0 0", fontSize: 11, color: texto.trim() === "" ? "#9ca3af" : "#15803d", fontWeight: 600 }}>
+        {texto.trim() === ""
+          ? "Sin notas: la tarjeta de notas no se imprime."
+          : `${lineas} ${lineas === 1 ? "viñeta" : "viñetas"} en la página 5.`}
+      </p>
+    </>
   );
 }
 
@@ -322,24 +426,30 @@ function CotizacionManualForm() {
   const [catalogoSeleccionado, setCatalogoSeleccionado] = useState(null);
   const [catalogoCantidad, setCatalogoCantidad] = useState(1);
 
+  // Quién figuraba como autor ANTES de abrir esta edición. Solo se usa para
+  // avisarlo debajo del campo: "REALIZADO POR" es un único campo y lo pisa quien
+  // guarda, así que sin este aviso el cambio de autor pasaría en silencio.
+  const [autorPrevio, setAutorPrevio] = useState("");
+
   useEffect(() => {
     getCategoriasFlatAction().then((d) => setCategoriasCatalogo(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
-  // Al crear una nueva cotización, autocompletar 'realizadoPor' con el usuario logueado
+  // Al crear una nueva cotización, autocompletar 'realizadoPor' con el usuario
+  // logueado. Solo si el campo está vacío: si el usuario ya escribió otro
+  // nombre, no se le pisa.
   useEffect(() => {
-    if (!esEdicion && user) {
-      const nombreUsuario = user.nombreCompleto || user.nombre || "";
-      if (nombreUsuario && !form.realizadoPor) {
-        setForm((f) => ({ ...f, realizadoPor: nombreUsuario }));
-      }
-    }
+    if (esEdicion || !user) return;
+    const nombreUsuario = nombreDe(user);
+    if (!nombreUsuario) return;
+    setForm((f) => (f.realizadoPor ? f : { ...f, realizadoPor: nombreUsuario }));
   }, [user, esEdicion]);
 
   useEffect(() => {
     if (!esEdicion) return;
     getCotizacionManualAction(id)
       .then((data) => {
+        setAutorPrevio(data.realizadoPor || "");
         setForm({
           ...INITIAL_FORM,
           ...data,
@@ -349,7 +459,11 @@ function CotizacionManualForm() {
           imagenesProyecto: data.imagenesProyecto ?? [],
           imagenCuadroProductos: data.imagenCuadroProductos ?? "",
           items: data.items ?? [],
-          realizadoPor: data.realizadoPor || (user?.nombreCompleto || user?.nombre || ""),
+          // Al editar, el campo se carga con QUIEN ESTÁ EDITANDO, no con el autor
+          // guardado: es el nombre que va a quedar al guardar, y mostrarlo desde
+          // el principio evita que la cotización cambie de autor sin que se vea.
+          // El autor anterior se conserva aparte para avisarlo.
+          realizadoPor: nombreDe(user) || data.realizadoPor || "",
           roiBarras: DEFAULT_ROI_BARRAS.map((def, idx) => {
             const loaded = data.roiBarras ?? [];
             const match = loaded[idx] || loaded.find((b) => String(b.etiqueta).includes(String(idx * 5 + 5)));
@@ -471,8 +585,8 @@ function CotizacionManualForm() {
     }
 
     const imgsCount = (form.imagenesProyecto || []).filter(Boolean).length;
-    if (imgsCount < 4) {
-      toast.error(`Debes subir las 4 imágenes requeridas para la Página 4 (Faltan ${4 - imgsCount}).`);
+    if (imgsCount < 1) {
+      toast.error("Debes subir al menos una imagen para la Página 4 (Diseño del Sistema).");
       return;
     }
 
@@ -484,7 +598,12 @@ function CotizacionManualForm() {
       subtituloPropuesta: form.subtituloPropuesta ? form.subtituloPropuesta.trim() : undefined,
       ubicacion: form.ubicacion ? form.ubicacion.trim() : undefined,
       fecha: form.fecha,
-      imagenesProyecto: form.imagenesProyecto,
+      // Se normaliza otra vez acá por si el registro venía de la base con huecos:
+      // densa, y se recortan solo las vacías del FINAL. Las del medio se mandan
+      // porque son las que sostienen la correspondencia ranura → rótulo.
+      imagenesProyecto: ranuras(form.imagenesProyecto).filter(
+        (url, i, arr) => url || arr.slice(i).some(Boolean)
+      ),
       potenciaInstalada: num(form.potenciaInstalada),
       cantidadPaneles: num(form.cantidadPaneles),
       superficieRequerida: num(form.superficieRequerida),
@@ -601,14 +720,19 @@ function CotizacionManualForm() {
             <Field label="Validez de la Oferta (días)">
               <input style={inputStyle} type="number" step="1" min="1" value={form.validezOfertaDias} onChange={set("validezOfertaDias")} />
             </Field>
-            <Field label="Realizado por (Usuario logueado)">
+            <Field label="Realizado por">
               <input style={inputStyle} placeholder="Nombre del usuario" value={form.realizadoPor} onChange={set("realizadoPor")} />
+              {autorPrevio && autorPrevio !== form.realizadoPor && (
+                <p style={{ margin: "5px 0 0", fontSize: 11, color: "#b45309", fontWeight: 600 }}>
+                  Antes figuraba: {autorPrevio}. Al guardar pasará a figurar el nombre de arriba.
+                </p>
+              )}
             </Field>
             <Field label="Tiempo de Montaje">
               <input style={inputStyle} placeholder="15 a 20 días" value={form.tiempoMontaje} onChange={set("tiempoMontaje")} />
             </Field>
             <Field label="Notas / Observaciones (Página 5)" flex="1 1 100%">
-              <input style={inputStyle} placeholder="Observaciones o notas adicionales..." value={form.notas} onChange={set("notas")} />
+              <CampoNotas value={form.notas} onChange={(v) => setForm((f) => ({ ...f, notas: v }))} />
             </Field>
           </div>
 
