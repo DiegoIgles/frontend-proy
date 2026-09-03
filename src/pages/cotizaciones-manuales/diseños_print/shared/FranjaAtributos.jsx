@@ -82,7 +82,10 @@ function IconoPosventa() {
 // Cada etiqueta va en 2 renglones, igual que el arte aprobado — no en una
 // sola línea. El salto está fijo (no depende del ancho disponible) porque
 // el punto de quiebre no siempre es tras la primera palabra.
-const ATRIBUTOS = [
+// Se exporta para que una página pueda reemplazar UN ítem sin rehacer la lista
+// ni tocar a las demás: la página 4 sustituye solo el icono de "Ingeniería
+// Especializada" por la medalla de su arte, y la portada sigue con el de acá.
+export const ATRIBUTOS = [
   { icono: <IconoIngenieria />, texto: "Ingeniería\nEspecializada" },
   { icono: <IconoConfiables />, texto: "Soluciones\nConfiables" },
   { icono: <IconoEficiencia />, texto: "Energía eficiente\ny sostenible" },

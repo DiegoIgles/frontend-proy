@@ -137,14 +137,33 @@ function ImageUploader({ label, value, onChange, multiple = false }) {
   );
 }
 
-// ── Subida de 4 imágenes para Página 4 (Diseño del Sistema) ────
+// ── Imágenes de la Página 4 (Diseño del Sistema) ───────────────
+//
+// Son cuatro RANURAS FIJAS y se llenan las que haga falta: basta con una. Cada
+// ranura se queda con su rótulo en el impreso, así que la que se suba en
+// "Vista Lateral" va a decir VISTA LATERAL aunque sea la única de la hoja.
+//
+// La página se rearma según cuántas haya: 1 imagen ocupa la banda entera, 2 van
+// apiladas a media banda, y 3 o 4 arman una grande arriba con las demás en fila
+// abajo. Por eso la proporción ideal depende de si la imagen va a caer de
+// "grande" o de "chica", y eso no se sabe hasta saber cuántas hay: las medidas
+// de abajo son las del caso de cuatro, que es el que más aprieta.
 
 const PAGINA4_SLOTS = [
-  { label: "1. Vista Superior (Principal)", ratio: "16:9 (~1.7:1)", res: "1600 × 936 px", marco: "135 × 79 mm" },
-  { label: "2. Vista 3D (Secundaria 1)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
-  { label: "3. Vista Inclinada (Secundaria 2)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
-  { label: "4. Vista Lateral (Secundaria 3)", ratio: "4:3 (~1.2:1)", res: "720 × 608 px", marco: "56.5 × 47.7 mm" },
+  { label: "1. Vista Superior", ratio: "16:9 (~1.7:1)", res: "1600 × 936 px" },
+  { label: "2. Vista 3D", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
+  { label: "3. Vista Inclinada", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
+  { label: "4. Vista Lateral", ratio: "5:4 (~1.25:1)", res: "760 × 610 px" },
 ];
+
+// Deja SIEMPRE un arreglo dueño de sus cuatro posiciones y sin agujeros.
+// `nuevas[3] = url` sobre un arreglo corto crea huecos, y un hueco viaja a la
+// API como `null`, que el DTO rechaza con "each value in imagenesProyecto must
+// be a string". La ranura vacía tiene que ser cadena vacía, no hueco: el orden
+// importa porque cada posición es una vista con su rótulo en el impreso.
+function ranuras(value) {
+  return Array.from({ length: PAGINA4_SLOTS.length }, (_, i) => value?.[i] || "");
+}
 
 function ProyectoImagesUploader({ value = [], onChange }) {
   const [uploadingIndex, setUploadingIndex] = useState(null);
@@ -157,7 +176,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
     setUploadingIndex(slotIndex);
     try {
       const { secureUrl } = await uploadImagenCotizacionAction(file);
-      const newImages = [...(value || [])];
+      const newImages = ranuras(value);
       newImages[slotIndex] = secureUrl;
       onChange(newImages);
       toast.success(`Imagen (${PAGINA4_SLOTS[slotIndex].label}) subida correctamente.`);
@@ -170,7 +189,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
   };
 
   const removeSlotImage = (slotIndex) => {
-    const newImages = [...(value || [])];
+    const newImages = ranuras(value);
     newImages[slotIndex] = "";
     onChange(newImages);
   };
@@ -180,7 +199,7 @@ function ProyectoImagesUploader({ value = [], onChange }) {
   return (
     <div style={{ marginBottom: 18 }}>
       <label style={labelStyle}>
-        Imágenes del Proyecto (Página 4 — 4 Imágenes Requeridas *)
+        Imágenes del Proyecto (Página 4 — de 1 a 4, al menos una *)
       </label>
 
       {/* ── Guía de proporciones y dimensiones de imagen ── */}
@@ -189,17 +208,24 @@ function ProyectoImagesUploader({ value = [], onChange }) {
         padding: "10px 14px", marginBottom: 12, fontSize: 12, color: "#1e40af"
       }}>
         <div style={{ fontWeight: 700, marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
-          💡 Guía de Proporciones y Medidas para la Página 4
+          💡 Cómo se arma la Página 4 según cuántas imágenes subas
         </div>
         <ul style={{ margin: "4px 0 0", paddingLeft: 18, lineHeight: "1.5" }}>
-          <li>
-            <strong>Vista Superior (Principal)</strong>: Proporción <strong>16:9</strong> (~1.7:1). Medida ideal: <strong>1600 × 936 px</strong>.
-            <span style={{ color: "#b91c1c", display: "block", fontSize: 11, fontWeight: 600 }}>
-              * Evitar imágenes ultra panorámicas o angostas (ej. 1135 × 265 px), ya que el marco A4 es rectangular estándar.
-            </span>
+          <li><strong>1 imagen</strong>: ocupa la banda entera, con su rótulo al costado.</li>
+          <li><strong>2 imágenes</strong>: van apiladas, media banda cada una.</li>
+          <li><strong>3 o 4</strong>: la primera va grande arriba y las demás en fila abajo.</li>
+          <li style={{ marginTop: 4 }}>
+            Cada ranura conserva SU rótulo: si solo cargás la lateral, esa va a ser la
+            imagen grande de la hoja pero seguirá diciendo <strong>VISTA LATERAL</strong>.
           </li>
-          <li>
-            <strong>Vistas Secundarias (3D, Inclinada, Lateral)</strong>: Proporción <strong>4:3</strong> (~1.2:1). Medida ideal: <strong>720 × 608 px</strong>.
+          <li style={{ marginTop: 4 }}>
+            Proporciones ideales (para el caso de cuatro, que es el más apretado):
+            la principal <strong>16:9</strong> (1600 × 936 px) y las otras{" "}
+            <strong>5:4</strong> (760 × 610 px).
+            <span style={{ color: "#b91c1c", display: "block", fontSize: 11, fontWeight: 600 }}>
+              * Las imágenes se recortan al centro para llenar su marco. Evitá tomas
+              ultra panorámicas o muy angostas: se les va a perder el borde.
+            </span>
           </li>
         </ul>
       </div>
@@ -258,12 +284,12 @@ function ProyectoImagesUploader({ value = [], onChange }) {
       </div>
       <p style={{
         margin: "8px 0 0", fontSize: 12, fontWeight: 600,
-        color: uploadedCount === 4 ? "#15803d" : "#b91c1c",
+        color: uploadedCount > 0 ? "#15803d" : "#b91c1c",
         display: "flex", alignItems: "center", gap: 6
       }}>
-        {uploadedCount === 4
-          ? "✓ Se han subido las 4 imágenes requeridas."
-          : `⚠ Obligatorio: Faltan ${4 - uploadedCount} de las 4 imágenes requeridas.`}
+        {uploadedCount === 0
+          ? "⚠ Falta subir al menos una imagen para la Página 4."
+          : `✓ ${uploadedCount} ${uploadedCount === 1 ? "imagen cargada" : "imágenes cargadas"}: la página se arma con ${uploadedCount === 1 ? "una vista a banda completa" : uploadedCount === 2 ? "dos vistas apiladas" : `una vista grande y ${uploadedCount - 1} en fila`}.`}
       </p>
     </div>
   );
@@ -471,8 +497,8 @@ function CotizacionManualForm() {
     }
 
     const imgsCount = (form.imagenesProyecto || []).filter(Boolean).length;
-    if (imgsCount < 4) {
-      toast.error(`Debes subir las 4 imágenes requeridas para la Página 4 (Faltan ${4 - imgsCount}).`);
+    if (imgsCount < 1) {
+      toast.error("Debes subir al menos una imagen para la Página 4 (Diseño del Sistema).");
       return;
     }
 
@@ -484,7 +510,12 @@ function CotizacionManualForm() {
       subtituloPropuesta: form.subtituloPropuesta ? form.subtituloPropuesta.trim() : undefined,
       ubicacion: form.ubicacion ? form.ubicacion.trim() : undefined,
       fecha: form.fecha,
-      imagenesProyecto: form.imagenesProyecto,
+      // Se normaliza otra vez acá por si el registro venía de la base con huecos:
+      // densa, y se recortan solo las vacías del FINAL. Las del medio se mandan
+      // porque son las que sostienen la correspondencia ranura → rótulo.
+      imagenesProyecto: ranuras(form.imagenesProyecto).filter(
+        (url, i, arr) => url || arr.slice(i).some(Boolean)
+      ),
       potenciaInstalada: num(form.potenciaInstalada),
       cantidadPaneles: num(form.cantidadPaneles),
       superficieRequerida: num(form.superficieRequerida),
