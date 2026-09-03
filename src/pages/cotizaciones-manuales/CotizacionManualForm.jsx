@@ -295,6 +295,84 @@ function ProyectoImagesUploader({ value = [], onChange }) {
   );
 }
 
+// El usuario autenticado viene de la API con `name` y `lastName` (así está la
+// entidad User). El formulario buscaba `nombreCompleto`/`nombre`, que no existen
+// en ningún lado: por eso "Realizado por" salía siempre vacío. Se dejan los dos
+// nombres viejos como último recurso por si algún endpoint los devuelve.
+function nombreDe(user) {
+  if (!user) return "";
+  const completo = [user.name, user.lastName].filter(Boolean).join(" ").trim();
+  return completo || user.nombreCompleto || user.nombre || "";
+}
+
+// Nota sugerida de la página 5, la del arte aprobado. Cada renglón se imprime
+// como una viñeta, así que se guarda una idea por línea y SIN el "•": el
+// impreso lo pone. No se aplica sola —el usuario decide si la usa, la edita o
+// deja el campo vacío— y por eso vive acá y no en INITIAL_FORM.
+const NOTA_SUGERIDA = [
+  "Los precios incluyen IVA.",
+  "Forma de pago: 70% anticipo – 30% contra entrega.",
+  "El tiempo de entrega corre a partir de recibida la orden de compra o comprobante de pago.",
+].join("\n");
+
+// Campo de notas: un renglón por viñeta, con la nota sugerida a un clic.
+// Es un textarea y no un input porque el impreso convierte CADA LÍNEA en una
+// viñeta; con un input de una sola línea la nota del arte —que son tres— no se
+// podía cargar. Sirve igual al crear y al editar: lo único que maneja es el
+// texto, así que una cotización guardada se abre con lo suyo y se sigue
+// editando desde ahí.
+function CampoNotas({ value, onChange }) {
+  const texto = value ?? "";
+  const yaEsLaSugerida = texto.trim() === NOTA_SUGERIDA;
+  const lineas = texto.split("\n").map((l) => l.trim()).filter(Boolean).length;
+
+  const btn = {
+    padding: "5px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600,
+    border: "1px solid #d1d5db", background: "#fff", color: "#374151", cursor: "pointer",
+  };
+
+  return (
+    <>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6, flexWrap: "wrap" }}>
+        <button
+          type="button"
+          onClick={() => onChange(NOTA_SUGERIDA)}
+          disabled={yaEsLaSugerida}
+          style={{
+            ...btn,
+            ...(yaEsLaSugerida
+              ? { opacity: 0.55, cursor: "default" }
+              : { borderColor: "#16a34a", color: "#15803d", background: "#f0fdf4" }),
+          }}
+        >
+          {yaEsLaSugerida ? "✓ Usando la nota sugerida" : "Usar nota sugerida"}
+        </button>
+        {texto.trim() !== "" && (
+          <button type="button" onClick={() => onChange("")} style={btn}>
+            Limpiar
+          </button>
+        )}
+        <span style={{ fontSize: 11, color: "#6b7280" }}>
+          Opcional. Cada renglón se imprime como una viñeta; el “•” lo pone la cotización.
+        </span>
+      </div>
+
+      <textarea
+        style={{ ...inputStyle, minHeight: 88, resize: "vertical", lineHeight: 1.5, fontFamily: "inherit" }}
+        placeholder={"Una nota por renglón. Por ejemplo:\nLos precios incluyen IVA."}
+        value={texto}
+        onChange={(e) => onChange(e.target.value)}
+      />
+
+      <p style={{ margin: "5px 0 0", fontSize: 11, color: texto.trim() === "" ? "#9ca3af" : "#15803d", fontWeight: 600 }}>
+        {texto.trim() === ""
+          ? "Sin notas: la tarjeta de notas no se imprime."
+          : `${lineas} ${lineas === 1 ? "viñeta" : "viñetas"} en la página 5.`}
+      </p>
+    </>
+  );
+}
+
 // ── Campos helpers ────────────────────────────────────────────
 
 const labelStyle = {
@@ -348,24 +426,30 @@ function CotizacionManualForm() {
   const [catalogoSeleccionado, setCatalogoSeleccionado] = useState(null);
   const [catalogoCantidad, setCatalogoCantidad] = useState(1);
 
+  // Quién figuraba como autor ANTES de abrir esta edición. Solo se usa para
+  // avisarlo debajo del campo: "REALIZADO POR" es un único campo y lo pisa quien
+  // guarda, así que sin este aviso el cambio de autor pasaría en silencio.
+  const [autorPrevio, setAutorPrevio] = useState("");
+
   useEffect(() => {
     getCategoriasFlatAction().then((d) => setCategoriasCatalogo(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
-  // Al crear una nueva cotización, autocompletar 'realizadoPor' con el usuario logueado
+  // Al crear una nueva cotización, autocompletar 'realizadoPor' con el usuario
+  // logueado. Solo si el campo está vacío: si el usuario ya escribió otro
+  // nombre, no se le pisa.
   useEffect(() => {
-    if (!esEdicion && user) {
-      const nombreUsuario = user.nombreCompleto || user.nombre || "";
-      if (nombreUsuario && !form.realizadoPor) {
-        setForm((f) => ({ ...f, realizadoPor: nombreUsuario }));
-      }
-    }
+    if (esEdicion || !user) return;
+    const nombreUsuario = nombreDe(user);
+    if (!nombreUsuario) return;
+    setForm((f) => (f.realizadoPor ? f : { ...f, realizadoPor: nombreUsuario }));
   }, [user, esEdicion]);
 
   useEffect(() => {
     if (!esEdicion) return;
     getCotizacionManualAction(id)
       .then((data) => {
+        setAutorPrevio(data.realizadoPor || "");
         setForm({
           ...INITIAL_FORM,
           ...data,
@@ -375,7 +459,11 @@ function CotizacionManualForm() {
           imagenesProyecto: data.imagenesProyecto ?? [],
           imagenCuadroProductos: data.imagenCuadroProductos ?? "",
           items: data.items ?? [],
-          realizadoPor: data.realizadoPor || (user?.nombreCompleto || user?.nombre || ""),
+          // Al editar, el campo se carga con QUIEN ESTÁ EDITANDO, no con el autor
+          // guardado: es el nombre que va a quedar al guardar, y mostrarlo desde
+          // el principio evita que la cotización cambie de autor sin que se vea.
+          // El autor anterior se conserva aparte para avisarlo.
+          realizadoPor: nombreDe(user) || data.realizadoPor || "",
           roiBarras: DEFAULT_ROI_BARRAS.map((def, idx) => {
             const loaded = data.roiBarras ?? [];
             const match = loaded[idx] || loaded.find((b) => String(b.etiqueta).includes(String(idx * 5 + 5)));
@@ -632,14 +720,19 @@ function CotizacionManualForm() {
             <Field label="Validez de la Oferta (días)">
               <input style={inputStyle} type="number" step="1" min="1" value={form.validezOfertaDias} onChange={set("validezOfertaDias")} />
             </Field>
-            <Field label="Realizado por (Usuario logueado)">
+            <Field label="Realizado por">
               <input style={inputStyle} placeholder="Nombre del usuario" value={form.realizadoPor} onChange={set("realizadoPor")} />
+              {autorPrevio && autorPrevio !== form.realizadoPor && (
+                <p style={{ margin: "5px 0 0", fontSize: 11, color: "#b45309", fontWeight: 600 }}>
+                  Antes figuraba: {autorPrevio}. Al guardar pasará a figurar el nombre de arriba.
+                </p>
+              )}
             </Field>
             <Field label="Tiempo de Montaje">
               <input style={inputStyle} placeholder="15 a 20 días" value={form.tiempoMontaje} onChange={set("tiempoMontaje")} />
             </Field>
             <Field label="Notas / Observaciones (Página 5)" flex="1 1 100%">
-              <input style={inputStyle} placeholder="Observaciones o notas adicionales..." value={form.notas} onChange={set("notas")} />
+              <CampoNotas value={form.notas} onChange={(v) => setForm((f) => ({ ...f, notas: v }))} />
             </Field>
           </div>
 

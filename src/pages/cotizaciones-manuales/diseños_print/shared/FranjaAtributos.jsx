@@ -27,7 +27,7 @@ function IconoIngenieria() {
   );
 }
 
-function IconoConfiables() {
+export function IconoConfiables() {
   return (
     <svg {...svgBase} role="img" aria-label="Soluciones confiables">
       <path
@@ -41,7 +41,7 @@ function IconoConfiables() {
   );
 }
 
-function IconoEficiencia() {
+export function IconoEficiencia() {
   return (
     <svg {...svgBase} role="img" aria-label="Energía eficiente y sostenible">
       <g stroke={COLORS.verde} strokeWidth={2.6}>
@@ -56,7 +56,7 @@ function IconoEficiencia() {
   );
 }
 
-function IconoPosventa() {
+export function IconoPosventa() {
   return (
     <svg {...svgBase} role="img" aria-label="Acompañamiento posventa">
       <circle cx="24" cy="24" r="20.4" stroke={COLORS.verde} strokeWidth={2.2} />
@@ -127,7 +127,7 @@ export function FranjaAtributos({ atributos = ATRIBUTOS, mostrarBarra = true, es
       >
         {atributos.map((a, i) => (
           <li
-            key={a.texto}
+            key={i}
             style={{
               display: "flex",
               alignItems: "center",
