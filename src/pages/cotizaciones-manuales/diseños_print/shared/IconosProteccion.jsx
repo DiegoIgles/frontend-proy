@@ -169,3 +169,17 @@ export function IconHerramientas({ color = COLORS.blanco, ...props }) {
     </svg>
   );
 }
+
+// Acompañamiento posventa. El IconoPosventa de FranjaAtributos no sirve fuera
+// del navy: la mitad de su trazo es blanco y sobre papel claro desaparece.
+export function IconAuricular({ color = COLORS.navy, ...props }) {
+  return (
+    <svg {...linea(color, 2.6)} {...props}>
+      <path d="M10 29v-5a14 14 0 0 1 28 0v5" />
+      <path d="M10 25.5h2.4a2.8 2.8 0 0 1 2.8 2.8v6.4a2.8 2.8 0 0 1-2.8 2.8H10a3.6 3.6 0 0 1-3.6-3.6v-4.8A3.6 3.6 0 0 1 10 25.5Z" />
+      <path d="M38 25.5h-2.4a2.8 2.8 0 0 0-2.8 2.8v6.4a2.8 2.8 0 0 0 2.8 2.8H38a3.6 3.6 0 0 0 3.6-3.6v-4.8a3.6 3.6 0 0 0-3.6-3.6Z" />
+      <path d="M38.5 37.5v1.8a4.2 4.2 0 0 1-4.2 4.2H27" />
+      <rect x="21.5" y="40" width="6" height="6" rx="3" />
+    </svg>
+  );
+}

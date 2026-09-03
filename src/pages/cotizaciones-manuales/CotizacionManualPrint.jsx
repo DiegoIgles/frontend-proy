@@ -11,6 +11,7 @@ import { Pagina6Roi } from "./diseños_print/Pagina6Roi";
 import { Pagina7Proteccion } from "./diseños_print/Pagina7Proteccion";
 import { Pagina8Garantias } from "./diseños_print/Pagina8Garantias";
 import { Pagina9Alcance } from "./diseños_print/Pagina9Alcance";
+import { Pagina10Cierre } from "./diseños_print/Pagina10Cierre";
 
 // ── Helpers de formato ────────────────────────────────────────
 
@@ -213,10 +214,8 @@ function CotizacionManualPrint() {
         {/* ═══════════ PÁGINA 9: ALCANCE DEL PROYECTO (CLONADA) ═══════════ */}
         <Pagina9Alcance />
 
-        {/* ═══════════ PÁGINA 10: CIERRE (ESTÁTICA) ═══════════ */}
-        <section className="pagina pagina-estatica">
-          <img src="/cotizacion/cotizacion10_A4.png" alt="Cierre 10" />
-        </section>
+        {/* ═══════════ PÁGINA 10: CIERRE (CLONADA) ═══════════ */}
+        <Pagina10Cierre />
 
       </div>
 

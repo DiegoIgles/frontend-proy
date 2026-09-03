@@ -14,6 +14,11 @@ export const COLORS = {
   // desviación de ~2 niveles). Sobre `navy` los rótulos blancos y el verde
   // pierden contraste. No usarlo en las páginas 1 y 2, que son de fondo claro.
   navy900: "#001226",
+  // Papel de la página 10. Es el color exacto del fondo del arte de esa hoja,
+  // medido en el borde del recorte decorativo: ese recorte es un rectángulo y
+  // lo único que lo hace desaparecer contra la hoja es que los dos colores
+  // coincidan. Con `hueso` se veía el canto del rectángulo.
+  perla: "#F4F6F3",
   azul: "#0062B7",
   verde: "#2C9826",
   verde900: "#056125",
