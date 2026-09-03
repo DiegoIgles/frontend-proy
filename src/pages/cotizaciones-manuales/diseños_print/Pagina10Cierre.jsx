@@ -40,8 +40,14 @@ const BAJADA = { cap: 553, paso: 34 };
 // Los tres rasgos. En el arte los divisores caen en 194 y 396, y las columnas
 // no son iguales: la tercera es más ancha porque "ACOMPAÑAMIENTO" es la palabra
 // más larga. Se respetan tal cual en vez de repartir en tercios.
+//
+// El del medio se CENTRA en su celda y los otros dos se alinean a la izquierda.
+// No es un descuido del arte: su rótulo es el más corto de los tres y alineado
+// a la izquierda quedaba descolgado dentro de un hueco ancho. Medido en el
+// original, su texto va de 258 a 334, o sea centrado en los 194..396 de su
+// celda. Por eso acá se declara por CENTRO y los otros por borde izquierdo.
 const RASGOS = {
-  columnas: [32, 212, 414],
+  columnas: [{ x0: 32 }, { cx: 295 }, { x0: 414 }],
   divisores: [194, 396],
   divisorY: [686, 852],
   iconoY: 694, iconoD: 72,
@@ -157,7 +163,17 @@ export function Pagina10Cierre({ contenido = CONTENIDO_CIERRE }) {
           // `width: max-content` para que la caja mida lo que mide su rótulo:
           // el icono va centrado SOBRE EL TEXTO, no sobre la columna, y las tres
           // columnas del arte tienen anchos distintos.
-          <div key={r.lineas[0]} style={{ position: "absolute", left: mmX(RASGOS.columnas[i]), top: mmY(RASGOS.iconoY), width: "max-content" }}>
+          <div
+            key={r.lineas[0]}
+            style={{
+              position: "absolute",
+              top: mmY(RASGOS.iconoY),
+              width: "max-content",
+              ...(RASGOS.columnas[i].cx !== undefined
+                ? { left: mmX(RASGOS.columnas[i].cx), transform: "translateX(-50%)" }
+                : { left: mmX(RASGOS.columnas[i].x0) }),
+            }}
+          >
             <Icono color={COLORS.navy} style={{ display: "block", margin: "0 auto", width: mmX(RASGOS.iconoD), height: mmX(RASGOS.iconoD) }} />
             {r.lineas.map((l, j) => (
               <p key={l} style={{ margin: `${j === 0 ? mmY(RASGOS.rotuloCap - RASGOS.iconoY - RASGOS.iconoD * KX / KY) : 0} 0 0`, fontSize: `${CUERPO.rasgo}mm`, fontWeight: 700, lineHeight: (Y(RASGOS.rotuloPaso) / CUERPO.rasgo).toFixed(3), letterSpacing: "0.04mm", color: j === 0 ? COLORS.navy : COLORS.verde900, whiteSpace: "nowrap" }}>
