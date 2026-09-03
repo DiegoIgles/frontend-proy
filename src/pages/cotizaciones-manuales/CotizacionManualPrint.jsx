@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getCotizacionManualAction } from "./actions/get-cotizacion.action";
-import { FaPrint, FaArrowLeft, FaBolt } from "react-icons/fa";
+import { FaPrint, FaArrowLeft } from "react-icons/fa";
 import { Pagina1Portada } from "./diseños_print/Pagina1Portada";
 import { Pagina2QuienesSomos } from "./diseños_print/Pagina2QuienesSomos";
 import { Pagina3Experiencia } from "./diseños_print/Pagina3Experiencia";
@@ -12,144 +12,6 @@ import { Pagina7Proteccion } from "./diseños_print/Pagina7Proteccion";
 import { Pagina8Garantias } from "./diseños_print/Pagina8Garantias";
 import { Pagina9Alcance } from "./diseños_print/Pagina9Alcance";
 import { Pagina10Cierre } from "./diseños_print/Pagina10Cierre";
-
-// ── Helpers de formato ────────────────────────────────────────
-
-function fmt(n, dec = 2) {
-  return Number(n ?? 0).toLocaleString("es-BO", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-}
-
-function fmtEntero(n) {
-  return Number(n ?? 0).toLocaleString("es-BO", { maximumFractionDigits: 0 });
-}
-
-function fmtFechaCorta(d) {
-  if (!d) return "—";
-  const fecha = new Date(String(d).slice(0, 10) + "T00:00:00");
-  return fecha.toLocaleDateString("es-BO", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
-
-// ── Logo corporativo ──────────────────────────────────────────
-
-function Logo({ light = false }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <div style={{
-        width: 42, height: 42, borderRadius: 10,
-        background: light ? "#22c55e" : "linear-gradient(135deg, #16a34a, #22c55e)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        color: "#fff", fontSize: 22,
-      }}>
-        <FaBolt />
-      </div>
-      <div>
-        <p style={{
-          margin: 0, fontWeight: 800, fontSize: 20, letterSpacing: 1.5,
-          color: light ? "#fff" : "#0f2a4a", lineHeight: 1
-        }}>
-          ENERLOGIC
-        </p>
-        <p style={{
-          margin: 0, fontSize: 9, letterSpacing: 3, fontWeight: 600,
-          color: light ? "#86efac" : "#16a34a"
-        }}>
-          ENERGÍA INTELIGENTE
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ── Gráfico de barras ROI (HTML/CSS puro) ─────────────────────
-
-function GraficoRoi({ barras }) {
-  const datos = (barras ?? []).map((b, i) => ({
-    etiqueta: b.etiqueta || `Año ${i + 1}`,
-    valor: Number(b.valor ?? 0),
-  }));
-
-  if (datos.length === 0) {
-    return (
-      <div style={{
-        flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
-        color: "#9ca3af", fontSize: 13, border: "1px dashed #d1d5db", borderRadius: 10
-      }}>
-        Sin datos de barras ROI cargados
-      </div>
-    );
-  }
-
-  const valores = datos.map((d) => d.valor);
-  const max = Math.max(...valores, 0);
-  const min = Math.min(...valores, 0);
-  const rango = max - min || 1;
-  const ceroDesdeAbajo = ((0 - min) / rango) * 100;
-
-  return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
-      {/* Área del gráfico */}
-      <div style={{
-        position: "relative", flex: 1, display: "flex", gap: "1.5%",
-        padding: "26px 6px 0", minHeight: 0
-      }}>
-        {/* Línea del eje cero */}
-        <div style={{
-          position: "absolute", left: 0, right: 0, height: 2,
-          bottom: `${ceroDesdeAbajo}%`, background: "#0f2a4a", opacity: 0.5
-        }} />
-
-        {datos.map((d, i) => {
-          const altoPct = (Math.abs(d.valor) / rango) * 100;
-          const positivo = d.valor >= 0;
-          const barStyle = positivo
-            ? { bottom: `${ceroDesdeAbajo}%`, height: `${altoPct}%` }
-            : { bottom: `${ceroDesdeAbajo - altoPct}%`, height: `${altoPct}%` };
-          const labelStyle = positivo
-            ? { bottom: `calc(${ceroDesdeAbajo + altoPct}% + 4px)` }
-            : { bottom: `calc(${ceroDesdeAbajo - altoPct}% - 4px)`, transform: "translateY(100%)" };
-
-          return (
-            <div key={i} style={{ position: "relative", flex: 1, height: "100%" }}>
-              {/* Valor al extremo de la barra */}
-              <span style={{
-                position: "absolute", left: "50%", transform: `translateX(-50%) ${positivo ? "" : "translateY(100%)"}`,
-                ...labelStyle, fontSize: 10, fontWeight: 800, whiteSpace: "nowrap",
-                color: positivo ? "#166534" : "#b45309",
-              }}>
-                {fmtEntero(d.valor)}
-              </span>
-
-              {/* Barra */}
-              <div style={{
-                position: "absolute", left: "12%", right: "12%",
-                borderRadius: "6px 6px 0 0",
-                background: positivo
-                  ? "linear-gradient(180deg, #22c55e, #16a34a)"
-                  : "linear-gradient(180deg, #f59e0b, #d97706)",
-                ...barStyle,
-              }} />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Etiquetas debajo de cada barra */}
-      <div style={{
-        display: "flex", gap: "1.5%", padding: "6px 6px 0",
-        borderTop: "1px solid #e5e7eb"
-      }}>
-        {datos.map((d, i) => (
-          <div key={i} style={{
-            flex: 1, textAlign: "center", fontSize: 10,
-            fontWeight: 700, color: "#374151"
-          }}>
-            {d.etiqueta}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // ── Documento imprimible (10 Páginas) ─────────────────────────
 
@@ -168,10 +30,6 @@ function CotizacionManualPrint() {
   if (loading) return <p style={{ padding: 40, fontFamily: "sans-serif" }}>Cargando cotización...</p>;
   if (error) return <p style={{ padding: 40, fontFamily: "sans-serif" }}>Error al cargar la cotización.</p>;
   if (!cot) return null;
-
-  const AZUL = "#0f2a4a";
-  const VERDE = "#16a34a";
-  const NARANJA = "#f59e0b";
 
   return (
     <>
