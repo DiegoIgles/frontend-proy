@@ -5,11 +5,11 @@ import "./floatingChatbot.css";
 import LocationPickerModal from "./LocationPickerModal";
 
 const WEBHOOK_URL =
-  "http://localhost:5678/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
+  "https://n8n.juanpablorodriguez.work/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
 
 // Webhook aparte en n8n para recibir la foto de la factura (multipart/form-data)
 const UPLOAD_WEBHOOK_URL =
-  "http://localhost:5678/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
+  "https://n8n.juanpablorodriguez.work/webhook/472d94d7-cd57-446e-aa40-fcdcc6b6b41e";
 
 function FloatingChatbot() {
   const [open, setOpen] = useState(false);
