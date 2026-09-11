@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ConfirmProvider } from "./context/ConfirmContext";
 import "./styles/feedback.css";
+import Website from "./website/Website";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
@@ -84,8 +85,10 @@ function App() {
       <ConfirmProvider>
       <AuthProvider>
       <Routes>
-        {/* Pública */}
-        <Route path="/" element={<Login />} />
+        {/* Públicas: la raíz del dominio es el website de EnerLogic; el
+            acceso al sistema de gestión queda en /login. */}
+        <Route path="/"      element={<Website />} />
+        <Route path="/login" element={<Login />} />
 
         {/* Dashboard */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />

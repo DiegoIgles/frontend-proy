@@ -20,7 +20,7 @@ function PaginaEstado({ codigo, titulo, mensaje, mostrarRuta = false }) {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const destino = user ? "/dashboard" : "/";
+  const destino = user ? "/dashboard" : "/login";
   const etiquetaDestino = user ? "Volver al panel" : "Ir al inicio de sesión";
 
   return (

@@ -13,7 +13,7 @@ function Header({ toggleSidebar }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
 
   const photoUrl = user?.profile?.photo || null;
