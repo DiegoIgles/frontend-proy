@@ -7,6 +7,7 @@ import { ConfirmProvider } from "./context/ConfirmContext";
 import "./styles/feedback.css";
 import Website from "./website/Website";
 import Login from "./pages/Login";
+import FloatingChatbot from "./components/FloatingChatbot";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import Perfil from "./pages/Perfil";
@@ -86,8 +87,12 @@ function App() {
       <AuthProvider>
       <Routes>
         {/* Públicas: la raíz del dominio es el website de EnerLogic; el
-            acceso al sistema de gestión queda en /login. */}
-        <Route path="/"      element={<Website />} />
+            acceso al sistema de gestión queda en /login.
+            El chatbot va como hermano del website y no adentro: es un
+            componente del sistema (usa sus variables de theme.css) y dentro
+            de `.enerlogic-site` el reset y las variables del website lo
+            desarmarían. Al ser position: fixed se ve igual. */}
+        <Route path="/"      element={<><Website /><FloatingChatbot /></>} />
         <Route path="/login" element={<Login />} />
 
         {/* Dashboard */}
