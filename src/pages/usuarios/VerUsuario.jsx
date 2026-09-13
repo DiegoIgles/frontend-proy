@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
+import RolBadge from "../../components/RolBadge";
+import { ROLES_OPCIONES } from "../../auth/roles";
 import { getUserAction }        from "./actions/get-user.action";
 import { updateUserAction }     from "./actions/update-user.action";
 import { changePasswordAction } from "./actions/change-password.action";
@@ -10,20 +12,6 @@ import {
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
-
-function RolBadge({ rol }) {
-  const esAdmin = rol === "admin" || rol === "super-user";
-  return (
-    <span style={{
-      padding: "3px 12px", borderRadius: 10, fontSize: 12, fontWeight: 700,
-      background: esAdmin ? "#E3EEF9" : "#f3f4f6",
-      color:      esAdmin ? "#00509A" : "#374151",
-      marginRight: 4,
-    }}>
-      {rol}
-    </span>
-  );
-}
 
 function VerUsuario() {
   const { id }   = useParams();
@@ -310,9 +298,7 @@ function VerUsuario() {
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Roles (Ctrl+clic para múltiples)</label>
                   <select multiple value={editForm.roles} onChange={handleRolesChange} style={{ height: 90 }}>
-                    <option value="user">user</option>
-                    <option value="admin">admin</option>
-                    <option value="super-user">super-user</option>
+                    {ROLES_OPCIONES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                   </select>
                 </div>
                 {editErr && (

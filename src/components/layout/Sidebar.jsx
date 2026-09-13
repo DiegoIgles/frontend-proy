@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { SOLO_ADMIN, ADMIN_VENDEDOR, ADMIN_BODEGA, tieneRol } from "../../auth/roles";
 import logoBlanco from "../../assets/brand/enerlogic_v2_transparent.png";
 
 import {
@@ -28,6 +29,9 @@ import {
 
 let _navScroll = 0;
 
+// `roles` en una sección o en un ítem lo esconde a quien no tenga alguno;
+// sin `roles` lo ve cualquier usuario con sesión. Debe coincidir con las
+// restricciones de las rutas en App.js.
 const MENU = [
   {
     title: "GENERAL",
@@ -38,6 +42,7 @@ const MENU = [
   },
   {
     title: "USUARIOS",
+    roles: SOLO_ADMIN,
     items: [
       { to: "/usuarios", label: "Gestión de Usuarios", icon: <FaUserCog /> },
     ],
@@ -46,15 +51,15 @@ const MENU = [
     title: "PROYECTOS",
     items: [
       { to: "/proyectos", label: "Gestión de Proyectos", icon: <FaProjectDiagram /> },
-      { to: "/cotizaciones-manuales", label: "Cotizaciones Manuales", icon: <FaFileContract /> },
+      { to: "/cotizaciones-manuales", label: "Cotizaciones Manuales", icon: <FaFileContract />, roles: ADMIN_VENDEDOR },
     ],
   },
   {
     title: "FINANZAS",
     items: [
-      { to: "/finanzas/caja",               label: "Caja",               icon: <FaReceipt /> },
-      { to: "/finanzas/cuentas-por-cobrar", label: "Cuentas por Cobrar", icon: <FaFileInvoiceDollar /> },
-      { to: "/finanzas/cuentas-por-pagar",  label: "Cuentas por Pagar",  icon: <FaMoneyBillWave /> },
+      { to: "/finanzas/caja",               label: "Caja",               icon: <FaReceipt />,            roles: SOLO_ADMIN },
+      { to: "/finanzas/cuentas-por-cobrar", label: "Cuentas por Cobrar", icon: <FaFileInvoiceDollar />, roles: ADMIN_VENDEDOR },
+      { to: "/finanzas/cuentas-por-pagar",  label: "Cuentas por Pagar",  icon: <FaMoneyBillWave />,     roles: SOLO_ADMIN },
     ],
   },
   {
@@ -64,22 +69,22 @@ const MENU = [
       { to: "/inventario/productos",  label: "Productos",        icon: <FaBoxOpen /> },
       { to: "/inventario/marcas",     label: "Marcas / Modelos", icon: <FaTrademark /> },
       { to: "/inventario/almacenes",  label: "Almacenes",        icon: <FaWarehouse /> },
-      { to: "/ajustes",               label: "Ajustes de Stock", icon: <FaSlidersH /> },
+      { to: "/ajustes",               label: "Ajustes de Stock", icon: <FaSlidersH />, roles: ADMIN_BODEGA },
     ],
   },
   {
     title: "COMPRAS & VENTAS",
     items: [
-      { to: "/compras/notas",       label: "Notas de Compra", icon: <FaShoppingCart /> },
-      { to: "/compras/proveedores", label: "Proveedores",     icon: <FaTruck /> },
-      { to: "/ventas/notas",        label: "Notas de Venta",  icon: <FaShoppingBag /> },
-      { to: "/ventas/clientes",     label: "Clientes",        icon: <FaUsers /> },
-      { to: "/leads",               label: "Gestión de Leads", icon: <FaAddressBook /> },
+      { to: "/compras/notas",       label: "Notas de Compra",  icon: <FaShoppingCart />, roles: ADMIN_BODEGA },
+      { to: "/compras/proveedores", label: "Proveedores",      icon: <FaTruck />,        roles: ADMIN_BODEGA },
+      { to: "/ventas/notas",        label: "Notas de Venta",   icon: <FaShoppingBag />,  roles: ADMIN_VENDEDOR },
+      { to: "/ventas/clientes",     label: "Clientes",         icon: <FaUsers />,        roles: ADMIN_VENDEDOR },
+      { to: "/leads",               label: "Gestión de Leads", icon: <FaAddressBook />,  roles: ADMIN_VENDEDOR },
     ],
   },
   {
     title: "AUDITORÍA",
-    roles: ["admin", "super-user"],
+    roles: SOLO_ADMIN,
     items: [
       { to: "/bitacora", label: "Bitácora", icon: <FaHistory /> },
     ],
@@ -102,9 +107,11 @@ function Sidebar({ onNavigate }) {
     if (window.innerWidth < 768 && onNavigate) onNavigate();
   };
 
-  const menu = MENU.filter(
-    (section) => !section.roles || section.roles.some((r) => user?.roles?.includes(r))
-  );
+  // Filtra secciones e ítems por rol; una sección que queda vacía desaparece.
+  const menu = MENU
+    .filter((section) => tieneRol(user, section.roles))
+    .map((section) => ({ ...section, items: section.items.filter((item) => tieneRol(user, item.roles)) }))
+    .filter((section) => section.items.length > 0);
 
   // Por defecto, abre únicamente el grupo que contiene la ruta activa.
   const [openSections, setOpenSections] = useState(() => {

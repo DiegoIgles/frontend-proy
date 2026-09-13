@@ -8,6 +8,8 @@ import { deleteCategoriaAction } from "./actions/delete-categoria.action";
 import EsquemaAtributosEditor from "./components/EsquemaAtributosEditor";
 import { FaArrowLeft, FaEdit, FaTrash, FaTags, FaBoxOpen, FaEye } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 
 function VerCategoria() {
@@ -15,6 +17,9 @@ function VerCategoria() {
   const navigate = useNavigate();
   const toast = useToast();
   const confirm = useConfirm();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
 
   const [cat,      setCat]      = useState(null);
   const [flatList, setFlatList] = useState([]);
@@ -119,15 +124,17 @@ function VerCategoria() {
             <h1 style={{ margin: 0 }}>{cat.nombre}</h1>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button className="btn-secondary" onClick={openEdit} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <FaEdit /> Editar
-          </button>
-          <button className="btn-danger" onClick={handleDelete} disabled={deleting}
-            style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
-          </button>
-        </div>
+        {puedeEditar && (
+          <div style={{ display: "flex", gap: 8 }}>
+            <button className="btn-secondary" onClick={openEdit} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <FaEdit /> Editar
+            </button>
+            <button className="btn-danger" onClick={handleDelete} disabled={deleting}
+              style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
+            </button>
+          </div>
+        )}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 16 }}>

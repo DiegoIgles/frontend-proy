@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import Pagination from "../../components/Pagination";
 import { getProyectosAction } from "./actions/get-proyectos.action";
 import {
@@ -89,6 +91,9 @@ function MetaItem({ icon, label, value }) {
 
 function Proyectos() {
   const navigate = useNavigate();
+  // Bodega solo consulta proyectos; los cambios los hacen admin y vendedor.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.VENDEDOR);
 
   // Filtros principales
   const [search, setSearch] = useState("");
@@ -161,10 +166,12 @@ function Proyectos() {
     <Layout>
       <div className="page-header">
         <h1>Gestión de Proyectos</h1>
-        <button className="btn-primary" onClick={() => navigate("/proyectos/crear")}
-          style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <FaPlus /> Nueva Cotización
-        </button>
+        {puedeEditar && (
+          <button className="btn-primary" onClick={() => navigate("/proyectos/crear")}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <FaPlus /> Nueva Cotización
+          </button>
+        )}
       </div>
 
       {/* Métricas rápidas */}

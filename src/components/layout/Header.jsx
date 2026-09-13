@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaUserCircle, FaBars } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
+import { rolLabel } from "../../auth/roles";
 import NotificationBell from "./NotificationBell";
 
 // El estilo vive en layout.css. Acá no va ni un color suelto: en pantallas
@@ -56,7 +57,7 @@ function Header({ toggleSidebar }) {
                 {user.name} {user.lastName}
               </p>
               <p className="header-user-role">
-                {user.roles?.includes("admin") ? "Administrador" : "Usuario"}
+                {user.roles?.map(rolLabel).join(" · ") || "Usuario"}
               </p>
             </div>
           </button>

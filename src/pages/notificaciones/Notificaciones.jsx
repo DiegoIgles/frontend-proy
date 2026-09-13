@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
+import { ROLES_OPCIONES } from "../../auth/roles";
 import { getNotificacionesAction } from "./actions/get-notificaciones.action";
 import { marcarNotificacionLeidaAction } from "./actions/marcar-notificacion-leida.action";
 import { marcarTodasLeidasAction } from "./actions/marcar-todas-leidas.action";
@@ -31,7 +32,6 @@ const ESTADOS = [
   { value: "true",  label: "Leídas" },
 ];
 
-const ROLES_DESTINO = ["admin", "super-user", "user"];
 
 const FORM_VACIO = { titulo: "", mensaje: "", destino: "todos", usuarioIds: [], roles: [] };
 
@@ -42,9 +42,9 @@ function IconoNotificacion({ tipo, evento }) {
 }
 
 function Notificaciones() {
-  const { user } = useAuth();
+  const { isAdmin } = useAuth();
   const toast = useToast();
-  const esAdmin = user?.roles?.includes("admin") || user?.roles?.includes("super-user");
+  const esAdmin = isAdmin;
 
   const [items, setItems]     = useState([]);
   const [total, setTotal]     = useState(0);
@@ -326,7 +326,7 @@ function Notificaciones() {
                   <div>
                     <label>Roles (Ctrl+clic para múltiples)</label>
                     <select multiple value={form.roles} onChange={handleMultiChange("roles")} style={{ height: 80 }}>
-                      {ROLES_DESTINO.map((r) => <option key={r} value={r}>{r}</option>)}
+                      {ROLES_OPCIONES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                     </select>
                   </div>
                 )}

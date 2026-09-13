@@ -5,9 +5,14 @@ import { getAlmacenesAction }  from "./actions/get-almacenes.action";
 import { createAlmacenAction } from "./actions/create-almacen.action";
 import { FaWarehouse, FaPlus, FaArrowRight, FaBoxOpen } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 
 function Almacenes() {
   const toast = useToast();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
 
   const [almacenes, setAlmacenes] = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -60,11 +65,13 @@ function Almacenes() {
             {almacenes.length} {almacenes.length === 1 ? "almacén registrado" : "almacenes registrados"}
           </p>
         </div>
-        <button className="btn-primary"
-          onClick={() => { setNombre(""); setFormErr(""); setShowModal(true); }}
-          style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <FaPlus /> Nuevo Almacén
-        </button>
+        {puedeEditar && (
+          <button className="btn-primary"
+            onClick={() => { setNombre(""); setFormErr(""); setShowModal(true); }}
+            style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <FaPlus /> Nuevo Almacén
+          </button>
+        )}
       </div>
 
       {/* Cards de almacenes */}

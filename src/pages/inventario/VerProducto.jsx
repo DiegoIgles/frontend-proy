@@ -20,6 +20,8 @@ import {
   FaBoxOpen, FaTag, FaChartBar, FaCogs, FaPlus, FaTimes as FaX, FaSearch,
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 import SelectorMarcaModelo from "./components/SelectorMarcaModelo";
 
@@ -40,6 +42,9 @@ function VerProducto() {
   const navigate = useNavigate();
   const toast = useToast();
   const confirm = useConfirm();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
 
   const [producto,   setProducto]   = useState(null);
   const [loading,    setLoading]    = useState(true);
@@ -337,18 +342,20 @@ function VerProducto() {
             </p>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button className="btn-secondary" onClick={openEdit}
-            style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <FaEdit /> Editar
-          </button>
-          <button onClick={handleDelete} disabled={deleting}
-            style={{ display: "flex", alignItems: "center", gap: 5,
-              padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
-            <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
-          </button>
-        </div>
+        {puedeEditar && (
+          <div style={{ display: "flex", gap: 8 }}>
+            <button className="btn-secondary" onClick={openEdit}
+              style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <FaEdit /> Editar
+            </button>
+            <button onClick={handleDelete} disabled={deleting}
+              style={{ display: "flex", alignItems: "center", gap: 5,
+                padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
+                fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
+              <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Métricas rápidas */}
@@ -418,7 +425,7 @@ function VerProducto() {
                       }}>
                         {esPrincipal && <FaTag size={10} />}
                         {c.nombre}
-                        {!esPrincipal && (
+                        {!esPrincipal && puedeEditar && (
                           <button type="button" onClick={() => handleRemoveCategoria(c.categoriaId)}
                             title="Quitar categoría"
                             style={{ background: "none", border: "none", cursor: "pointer", color: "#9ca3af",
@@ -429,10 +436,12 @@ function VerProducto() {
                       </span>
                     );
                   })}
-                  <button type="button" onClick={abrirAddCategoria} className="btn-secondary"
-                    style={{ fontSize: 11, padding: "4px 10px", display: "flex", alignItems: "center", gap: 4 }}>
-                    <FaPlus size={10} /> Categoría
-                  </button>
+                  {puedeEditar && (
+                    <button type="button" onClick={abrirAddCategoria} className="btn-secondary"
+                      style={{ fontSize: 11, padding: "4px 10px", display: "flex", alignItems: "center", gap: 4 }}>
+                      <FaPlus size={10} /> Categoría
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -465,13 +474,15 @@ function VerProducto() {
         {/* Tab: Stock */}
         {tab === "stock" && (
           <div style={{ padding: 20 }}>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
-              <button className="btn-primary"
-                onClick={() => { setAlmacenForm({ almacenId: "", stockInicial: 0 }); setAlmacenErr(""); setShowAlmacen(true); }}
-                style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <FaWarehouse /> Asignar Almacén
-              </button>
-            </div>
+            {puedeEditar && (
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
+                <button className="btn-primary"
+                  onClick={() => { setAlmacenForm({ almacenId: "", stockInicial: 0 }); setAlmacenErr(""); setShowAlmacen(true); }}
+                  style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <FaWarehouse /> Asignar Almacén
+                </button>
+              </div>
+            )}
             {producto.productoAlmacenes?.length === 0 ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Sin almacenes asignados.</p>
             ) : (
@@ -512,13 +523,15 @@ function VerProducto() {
         {/* Tab: Precios */}
         {tab === "precios" && (
           <div style={{ padding: 20 }}>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
-              <button className="btn-primary"
-                onClick={() => { setPrecioForm({ precio: "", fecha: today() }); setPrecioErr(""); setShowPrecio(true); }}
-                style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <FaDollarSign /> Registrar Precio
-              </button>
-            </div>
+            {puedeEditar && (
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
+                <button className="btn-primary"
+                  onClick={() => { setPrecioForm({ precio: "", fecha: today() }); setPrecioErr(""); setShowPrecio(true); }}
+                  style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <FaDollarSign /> Registrar Precio
+                </button>
+              </div>
+            )}
             {!producto.precios?.length ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Sin historial de precios.</p>
             ) : (
@@ -558,12 +571,14 @@ function VerProducto() {
         {/* Tab: Componentes (BOM) */}
         {tab === "componentes" && (
           <div style={{ padding: 20 }}>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
-              <button className="btn-primary" onClick={abrirAddComponente}
-                style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <FaCogs /> Agregar Componente
-              </button>
-            </div>
+            {puedeEditar && (
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
+                <button className="btn-primary" onClick={abrirAddComponente}
+                  style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <FaCogs /> Agregar Componente
+                </button>
+              </div>
+            )}
             {!producto.componentes?.length ? (
               <p style={{ color: "#9ca3af", textAlign: "center", padding: 20 }}>Este producto no tiene componentes.</p>
             ) : (
@@ -584,11 +599,13 @@ function VerProducto() {
                         <td style={{ fontWeight: 600 }}>{c.producto?.nombre}</td>
                         <td style={{ textAlign: "center" }}>{c.cantidad}</td>
                         <td style={{ textAlign: "right" }}>
-                          <button type="button" onClick={() => handleRemoveComponente(c.producto?.productoId)}
-                            title="Quitar componente"
-                            style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
-                            <FaTrash />
-                          </button>
+                          {puedeEditar && (
+                            <button type="button" onClick={() => handleRemoveComponente(c.producto?.productoId)}
+                              title="Quitar componente"
+                              style={{ background: "none", border: "none", color: "#C0392B", cursor: "pointer" }}>
+                              <FaTrash />
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

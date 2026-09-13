@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { checkAuthStatusAction } from "../pages/auth/actions/check-auth-status.action";
 import { getUserAuthAction } from "../pages/auth/actions/get-user-auth.action";
+import { ROL, tieneRol } from "../auth/roles";
 
 const AuthContext = createContext(null);
 
@@ -50,8 +51,12 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Helpers de rol: `hasRole("admin", "bodega")` → true si tiene alguno.
+  const hasRole = (...roles) => tieneRol(user, roles);
+  const isAdmin = tieneRol(user, [ROL.ADMIN]);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser, hasRole, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

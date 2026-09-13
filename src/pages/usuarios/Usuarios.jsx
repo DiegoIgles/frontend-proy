@@ -2,16 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import Pagination from "../../components/Pagination";
+import RolBadge from "../../components/RolBadge";
+import { ROLES_OPCIONES, ROL_POR_DEFECTO } from "../../auth/roles";
 import { getUsersAction } from "./actions/get-users.action";
 import { createUserAction } from "./actions/create-user.action";
 import { FaUserCog, FaPlus, FaSearch, FaUserCircle, FaEye } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 
 const ROLES = [
-  { value: "",           label: "Todos los roles" },
-  { value: "admin",      label: "Administrador" },
-  { value: "super-user", label: "Super Usuario" },
-  { value: "user",       label: "Usuario" },
+  { value: "", label: "Todos los roles" },
+  ...ROLES_OPCIONES,
 ];
 
 const ESTADOS = [
@@ -20,21 +20,7 @@ const ESTADOS = [
   { value: "false", label: "Inactivos" },
 ];
 
-const FORM_VACIO = { name: "", lastName: "", email: "", password: "", roles: ["user"] };
-
-function RolBadge({ rol }) {
-  const esAdmin = rol === "admin" || rol === "super-user";
-  return (
-    <span style={{
-      padding: "2px 10px", borderRadius: 10, fontSize: 11, fontWeight: 700,
-      background: esAdmin ? "#E3EEF9" : "#f3f4f6",
-      color:      esAdmin ? "#00509A" : "#374151",
-      marginRight: 4,
-    }}>
-      {rol}
-    </span>
-  );
-}
+const FORM_VACIO = { name: "", lastName: "", email: "", password: "", roles: [ROL_POR_DEFECTO] };
 
 function AvatarSmall({ photo, name, lastName }) {
   const initiales = `${name?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
@@ -263,9 +249,7 @@ function Usuarios() {
                   <label>Roles (Ctrl+clic para múltiples)</label>
                   <select multiple value={form.roles} onChange={handleRolesChange}
                     style={{ height: 90 }}>
-                    <option value="user">user</option>
-                    <option value="admin">admin</option>
-                    <option value="super-user">super-user</option>
+                    {ROLES_OPCIONES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                   </select>
                 </div>
                 {formErr && (

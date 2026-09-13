@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import Layout from "../components/layout/Layout";
+import RolBadge from "../components/RolBadge";
 import { useAuth } from "../context/AuthContext";
 import { uploadProfileImageAction } from "./auth/actions/upload-profile-image.action";
 import { deleteProfileImageAction } from "./auth/actions/delete-profile-image.action";
@@ -162,13 +163,9 @@ function Perfil() {
           </p>
           <p style={{ margin: "0 0 14px", fontSize: 13, color: "#6b7280" }}>{user.email}</p>
 
-          <span style={{
-            display: "inline-block", padding: "3px 12px", borderRadius: 12, fontSize: 12,
-            fontWeight: 700, background: user.roles?.includes("admin") ? "#E3EEF9" : "#f3f4f6",
-            color: user.roles?.includes("admin") ? "#00509A" : "#374151",
-          }}>
-            {user.roles?.includes("admin") ? "Administrador" : "Usuario"}
-          </span>
+          <div style={{ display: "flex", justifyContent: "center", gap: 4, flexWrap: "wrap" }}>
+            {user.roles?.map((r) => <RolBadge key={r} rol={r} size="md" />)}
+          </div>
 
           {/* Input oculto */}
           <input
@@ -263,12 +260,7 @@ function Perfil() {
                 <p style={{ margin: "0 0 4px", fontSize: 12, color: "#6b7280", textTransform: "uppercase",
                   letterSpacing: "0.5px", fontWeight: 600 }}>Roles</p>
                 <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-                  {user.roles?.map((r) => (
-                    <span key={r} style={{ padding: "2px 10px", borderRadius: 10, fontSize: 12,
-                      fontWeight: 600, background: "#E3EEF9", color: "#00509A" }}>
-                      {r}
-                    </span>
-                  ))}
+                  {user.roles?.map((r) => <RolBadge key={r} rol={r} size="md" />)}
                 </div>
               </div>
             </div>

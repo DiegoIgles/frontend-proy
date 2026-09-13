@@ -12,6 +12,8 @@ import {
   FaBoxOpen, FaPlus, FaSearch, FaEye, FaCheckSquare, FaSquare,
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 
 const today = () => new Date().toISOString().split("T")[0];
 
@@ -37,6 +39,9 @@ function StockBadge({ stock }) {
 function Productos() {
   const navigate = useNavigate();
   const toast = useToast();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
 
   const [productos,  setProductos]  = useState([]);
   const [total,      setTotal]      = useState(0);
@@ -126,9 +131,11 @@ function Productos() {
     <Layout>
       <div className="page-header">
         <h1><FaBoxOpen style={{ marginRight: 8 }} />Productos</h1>
-        <button className="btn-primary" onClick={() => { setForm(FORM_VACIO); setFormErr(""); setShowModal(true); }}>
-          <FaPlus /> Nuevo Producto
-        </button>
+        {puedeEditar && (
+          <button className="btn-primary" onClick={() => { setForm(FORM_VACIO); setFormErr(""); setShowModal(true); }}>
+            <FaPlus /> Nuevo Producto
+          </button>
+        )}
       </div>
 
       {/* Filtros */}

@@ -12,6 +12,8 @@ import {
   FaExclamationTriangle, FaChartBar, FaListAlt, FaBoxOpen,
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 
 // ── helpers ──────────────────────────────────────────────────
@@ -236,7 +238,7 @@ function TabInfo({ p }) {
 
 // ── Tab: Seguimiento ──────────────────────────────────────────
 
-function TabSeguimiento({ p, onRefresh }) {
+function TabSeguimiento({ p, onRefresh, puedeEditar }) {
   const toast = useToast();
   const confirm = useConfirm();
   const [showModal, setShowModal] = useState(false);
@@ -284,13 +286,15 @@ function TabSeguimiento({ p, onRefresh }) {
             </span>
           )}
         </div>
-        <button
-          className="btn-primary"
-          onClick={() => setShowModal(true)}
-          style={{ display: "flex", alignItems: "center", gap: 6 }}
-        >
-          <FaPlus /> Registrar Gasto
-        </button>
+        {puedeEditar && (
+          <button
+            className="btn-primary"
+            onClick={() => setShowModal(true)}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}
+          >
+            <FaPlus /> Registrar Gasto
+          </button>
+        )}
       </div>
 
       <div className="card">
@@ -320,13 +324,15 @@ function TabSeguimiento({ p, onRefresh }) {
                         Bs. {fmt(seg.monto)}
                       </td>
                       <td style={{ textAlign: "center" }}>
-                        <button
-                          onClick={() => handleDelete(seg.seguimientoId)}
-                          disabled={deleting === seg.seguimientoId}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "#C0392B", fontSize: 14, padding: "4px 8px" }}
-                        >
-                          <FaTrash />
-                        </button>
+                        {puedeEditar && (
+                          <button
+                            onClick={() => handleDelete(seg.seguimientoId)}
+                            disabled={deleting === seg.seguimientoId}
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "#C0392B", fontSize: 14, padding: "4px 8px" }}
+                          >
+                            <FaTrash />
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -522,6 +528,9 @@ function VerProyecto() {
   const navigate = useNavigate();
   const toast    = useToast();
   const confirm  = useConfirm();
+  // Bodega solo consulta proyectos; los cambios los hacen admin y vendedor.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.VENDEDOR);
   const [p, setP]           = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState(null);
@@ -616,7 +625,7 @@ function VerProyecto() {
               <FaFilePdf /> Imprimir Cotización
             </button>
           )}
-          {p && esCotizacion && (
+          {p && esCotizacion && puedeEditar && (
             <button
               className="btn-primary"
               onClick={handleAprobar}
@@ -626,14 +635,16 @@ function VerProyecto() {
               <FaCheckCircle /> {aprobando ? "Aprobando..." : "Aprobar → Proyecto"}
             </button>
           )}
-          <button
-            className="btn-secondary"
-            onClick={handleEliminar}
-            disabled={eliminando}
-            style={{ display: "flex", alignItems: "center", gap: 6, color: "#C0392B", borderColor: "#C0392B" }}
-          >
-            <FaTrash /> {eliminando ? "Eliminando..." : "Eliminar"}
-          </button>
+          {puedeEditar && (
+            <button
+              className="btn-secondary"
+              onClick={handleEliminar}
+              disabled={eliminando}
+              style={{ display: "flex", alignItems: "center", gap: 6, color: "#C0392B", borderColor: "#C0392B" }}
+            >
+              <FaTrash /> {eliminando ? "Eliminando..." : "Eliminar"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -652,7 +663,7 @@ function VerProyecto() {
           </div>
 
           {tab === "info"        && <TabInfo p={p} />}
-          {tab === "seguimiento" && <TabSeguimiento p={p} onRefresh={fetchData} />}
+          {tab === "seguimiento" && <TabSeguimiento p={p} onRefresh={fetchData} puedeEditar={puedeEditar} />}
           {tab === "analisis"    && p.estado === "PROYECTO" && <TabAnalisis proyectoId={id} />}
         </>
       )}

@@ -11,6 +11,8 @@ import {
 } from "./actions/marca-modelos.action";
 import { FaTrademark, FaPlus, FaEdit, FaTrash, FaLink, FaUnlink, FaTag } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -75,6 +77,9 @@ function NombreModal({ title, value, onChange, onSave, onClose, saving, error })
 function MarcasModelos() {
   const toast = useToast();
   const confirm = useConfirm();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
   const [tab, setTab] = useState("marcas");
 
   // datos
@@ -220,27 +225,29 @@ function MarcasModelos() {
     <Layout>
       <div className="page-header">
         <h1><FaTrademark style={{ marginRight: 8 }} />Marcas y Modelos</h1>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {tab === "marcas" && (
-            <button className="btn-primary" onClick={() => openCreate("marca")}
-              style={{ display: "flex", alignItems: "center", gap: 5 }}>
-              <FaPlus /> Nueva Marca
-            </button>
-          )}
-          {tab === "modelos" && (
-            <button className="btn-primary" onClick={() => openCreate("modelo")}
-              style={{ display: "flex", alignItems: "center", gap: 5 }}>
-              <FaPlus /> Nuevo Modelo
-            </button>
-          )}
-          {tab === "combinaciones" && (
-            <button className="btn-primary"
-              onClick={() => { setComboMarca(""); setComboModelo(""); setComboErr(""); setShowCombo(true); }}
-              style={{ display: "flex", alignItems: "center", gap: 5 }}>
-              <FaLink /> Vincular Marca-Modelo
-            </button>
-          )}
-        </div>
+        {puedeEditar && (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {tab === "marcas" && (
+              <button className="btn-primary" onClick={() => openCreate("marca")}
+                style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <FaPlus /> Nueva Marca
+              </button>
+            )}
+            {tab === "modelos" && (
+              <button className="btn-primary" onClick={() => openCreate("modelo")}
+                style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <FaPlus /> Nuevo Modelo
+              </button>
+            )}
+            {tab === "combinaciones" && (
+              <button className="btn-primary"
+                onClick={() => { setComboMarca(""); setComboModelo(""); setComboErr(""); setShowCombo(true); }}
+                style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <FaLink /> Vincular Marca-Modelo
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Métricas */}
@@ -307,15 +314,17 @@ function MarcasModelos() {
                               {m.marcaModelos?.length ?? 0}
                             </td>
                             <td>
-                              <div style={{ display: "flex", gap: 6 }}>
-                                <ActionBtn onClick={() => openEdit("marca", m)} bg="#E3EEF9" color="#00509A">
-                                  <FaEdit /> Editar
-                                </ActionBtn>
-                                <ActionBtn onClick={() => handleDelete("marca", m.marcaId, m.nombre)}
-                                  bg="#FBE9E7" color="#96291D">
-                                  <FaTrash /> Eliminar
-                                </ActionBtn>
-                              </div>
+                              {puedeEditar && (
+                                <div style={{ display: "flex", gap: 6 }}>
+                                  <ActionBtn onClick={() => openEdit("marca", m)} bg="#E3EEF9" color="#00509A">
+                                    <FaEdit /> Editar
+                                  </ActionBtn>
+                                  <ActionBtn onClick={() => handleDelete("marca", m.marcaId, m.nombre)}
+                                    bg="#FBE9E7" color="#96291D">
+                                    <FaTrash /> Eliminar
+                                  </ActionBtn>
+                                </div>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -356,15 +365,17 @@ function MarcasModelos() {
                               </div>
                             </td>
                             <td>
-                              <div style={{ display: "flex", gap: 6 }}>
-                                <ActionBtn onClick={() => openEdit("modelo", m)} bg="#E3EEF9" color="#00509A">
-                                  <FaEdit /> Editar
-                                </ActionBtn>
-                                <ActionBtn onClick={() => handleDelete("modelo", m.modeloId, m.nombre)}
-                                  bg="#FBE9E7" color="#96291D">
-                                  <FaTrash /> Eliminar
-                                </ActionBtn>
-                              </div>
+                              {puedeEditar && (
+                                <div style={{ display: "flex", gap: 6 }}>
+                                  <ActionBtn onClick={() => openEdit("modelo", m)} bg="#E3EEF9" color="#00509A">
+                                    <FaEdit /> Editar
+                                  </ActionBtn>
+                                  <ActionBtn onClick={() => handleDelete("modelo", m.modeloId, m.nombre)}
+                                    bg="#FBE9E7" color="#96291D">
+                                    <FaTrash /> Eliminar
+                                  </ActionBtn>
+                                </div>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -403,11 +414,13 @@ function MarcasModelos() {
                               </span>
                             </td>
                             <td>
-                              <ActionBtn
-                                onClick={() => handleDeleteCombo(c.marcaModeloId, `${c.marca?.nombre} / ${c.modelo?.nombre}`)}
-                                bg="#FBE9E7" color="#96291D">
-                                <FaUnlink /> Desvincular
-                              </ActionBtn>
+                              {puedeEditar && (
+                                <ActionBtn
+                                  onClick={() => handleDeleteCombo(c.marcaModeloId, `${c.marca?.nombre} / ${c.modelo?.nombre}`)}
+                                  bg="#FBE9E7" color="#96291D">
+                                  <FaUnlink /> Desvincular
+                                </ActionBtn>
+                              )}
                             </td>
                           </tr>
                         ))}

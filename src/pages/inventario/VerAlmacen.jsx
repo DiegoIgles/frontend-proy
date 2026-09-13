@@ -6,6 +6,8 @@ import { updateAlmacenAction } from "./actions/update-almacen.action";
 import { deleteAlmacenAction } from "./actions/delete-almacen.action";
 import { FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaBoxOpen, FaSearch } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 
 function StockBadge({ stock }) {
@@ -25,6 +27,9 @@ function VerAlmacen() {
   const navigate = useNavigate();
   const toast = useToast();
   const confirm = useConfirm();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
 
   const [almacen,  setAlmacen]  = useState(null);
   const [loading,  setLoading]  = useState(true);
@@ -114,19 +119,21 @@ function VerAlmacen() {
             <p style={{ margin: 0, fontSize: 11, color: "#9ca3af" }}>Almacén</p>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button className="btn-secondary"
-            onClick={() => { setNombre(almacen.nombre); setEditErr(""); setShowEdit(true); }}
-            style={{ display: "flex", alignItems: "center", gap: 5 }}>
-            <FaEdit /> Editar
-          </button>
-          <button onClick={handleDelete} disabled={deleting}
-            style={{ display: "flex", alignItems: "center", gap: 5,
-              padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
-            <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
-          </button>
-        </div>
+        {puedeEditar && (
+          <div style={{ display: "flex", gap: 8 }}>
+            <button className="btn-secondary"
+              onClick={() => { setNombre(almacen.nombre); setEditErr(""); setShowEdit(true); }}
+              style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <FaEdit /> Editar
+            </button>
+            <button onClick={handleDelete} disabled={deleting}
+              style={{ display: "flex", alignItems: "center", gap: 5,
+                padding: "8px 14px", borderRadius: 6, border: "none", cursor: "pointer",
+                fontWeight: 600, fontSize: 13, background: "#FBE9E7", color: "#96291D" }}>
+              <FaTrash /> {deleting ? "Eliminando..." : "Eliminar"}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Métricas */}

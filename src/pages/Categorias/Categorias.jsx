@@ -8,6 +8,8 @@ import { updateCategoriaAction }   from "./actions/update-categoria.action";
 import { deleteCategoriaAction }   from "./actions/delete-categoria.action";
 import { FaPlus, FaEdit, FaTrash, FaEye, FaChevronDown, FaChevronRight, FaTags } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { useAuth } from "../../context/AuthContext";
+import { ROL } from "../../auth/roles";
 import { useConfirm } from "../../context/ConfirmContext";
 
 const EMPTY_FORM = { nombre: "", categoriaPadreId: "" };
@@ -92,7 +94,7 @@ function CategoriaModal({ show, onClose, onSaved, flatList, editData }) {
   );
 }
 
-function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId }) {
+function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId, puedeEditar }) {
   const [open, setOpen] = useState(false);
   const hasSubs = cat.subcategorias?.length > 0;
 
@@ -127,9 +129,11 @@ function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId }) {
         <td>
           <div style={{ display: "flex", gap: 6 }}>
             <Link to={`/inventario/categorias/${cat.categoriaId}`} className="btn-secondary" title="Ver detalle"><FaEye /></Link>
+            {puedeEditar && (<>
             <button className="btn-secondary" title="Editar" onClick={() => onEdit(cat, null)}><FaEdit /></button>
             <button className="btn-danger" title="Eliminar" disabled={deletingId === cat.categoriaId}
               onClick={() => onDelete(cat.categoriaId)}><FaTrash /></button>
+            </>)}
           </div>
         </td>
       </tr>
@@ -145,9 +149,11 @@ function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId }) {
           <td>
             <div style={{ display: "flex", gap: 6 }}>
               <Link to={`/inventario/categorias/${sub.categoriaId}`} className="btn-secondary" title="Ver detalle"><FaEye /></Link>
+              {puedeEditar && (<>
               <button className="btn-secondary" title="Editar" onClick={() => onEdit(sub, cat)}><FaEdit /></button>
               <button className="btn-danger" title="Eliminar" disabled={deletingId === sub.categoriaId}
                 onClick={() => onDelete(sub.categoriaId)}><FaTrash /></button>
+              </>)}
             </div>
           </td>
         </tr>
@@ -159,6 +165,9 @@ function CategoryRow({ cat, flatList, onEdit, onDelete, deletingId }) {
 function Categorias() {
   const toast = useToast();
   const confirm = useConfirm();
+  // Vendedor solo consulta inventario; los cambios los hacen admin y bodega.
+  const { hasRole } = useAuth();
+  const puedeEditar = hasRole(ROL.ADMIN, ROL.BODEGA);
   const [tree,       setTree]       = useState([]);
   const [flatList,   setFlatList]   = useState([]);
   const [loading,    setLoading]    = useState(true);
@@ -214,10 +223,12 @@ function Categorias() {
     <Layout>
       <div className="page-header">
         <h1>Categorías</h1>
-        <button className="btn-primary" onClick={openCreate}
-          style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <FaPlus /> Nueva Categoría
-        </button>
+        {puedeEditar && (
+          <button className="btn-primary" onClick={openCreate}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <FaPlus /> Nueva Categoría
+          </button>
+        )}
       </div>
 
       {/* Métricas rápidas */}
@@ -252,7 +263,8 @@ function Categorias() {
               <tbody>
                 {tree.map((cat) => (
                   <CategoryRow key={cat.categoriaId} cat={cat} flatList={flatList}
-                    onEdit={openEdit} onDelete={handleDelete} deletingId={deletingId} />
+                    onEdit={openEdit} onDelete={handleDelete} deletingId={deletingId}
+                    puedeEditar={puedeEditar} />
                 ))}
               </tbody>
             </table>

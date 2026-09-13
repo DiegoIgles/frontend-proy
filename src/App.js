@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import FloatingChatbot from "./components/FloatingChatbot";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import { SOLO_ADMIN, ADMIN_VENDEDOR, ADMIN_BODEGA } from "./auth/roles";
 import Perfil from "./pages/Perfil";
 import NotFound from "./pages/NotFound";
 
@@ -95,6 +96,10 @@ function App() {
         <Route path="/"      element={<><Website /><FloatingChatbot /></>} />
         <Route path="/login" element={<Login />} />
 
+        {/* Rutas privadas. `roles` restringe por rol (ver src/auth/roles.js);
+            sin `roles` basta con tener sesión. Inventario y proyectos quedan
+            abiertos a todos los roles porque vendedor/bodega los consultan;
+            los botones de escritura se esconden dentro de cada página. */}
         {/* Dashboard */}
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 
@@ -108,60 +113,60 @@ function App() {
         <Route path="/inventario/marcas"             element={<PrivateRoute><MarcasModelos /></PrivateRoute>} />
 
         {/* Compras */}
-        <Route path="/compras/notas"        element={<PrivateRoute><NotasCompra /></PrivateRoute>} />
-        <Route path="/compras/notas/crear"  element={<PrivateRoute><CreateNotaCompra /></PrivateRoute>} />
-        <Route path="/compras/notas/:id"      element={<PrivateRoute><VerNotaCompra /></PrivateRoute>} />
-        <Route path="/compras/notas/:id/pago"   element={<PrivateRoute><PagoNotaCompra /></PrivateRoute>} />
-        <Route path="/compras/notas/:id/recibo"      element={<PrivateRoute><ReciboCompra /></PrivateRoute>} />
-        <Route path="/compras/proveedores"            element={<PrivateRoute><Proveedores /></PrivateRoute>} />
-        <Route path="/compras/proveedores/:id"        element={<PrivateRoute><VerProveedor /></PrivateRoute>} />
+        <Route path="/compras/notas"        element={<PrivateRoute roles={ADMIN_BODEGA}><NotasCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/crear"  element={<PrivateRoute roles={ADMIN_BODEGA}><CreateNotaCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/:id"      element={<PrivateRoute roles={ADMIN_BODEGA}><VerNotaCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/:id/pago"   element={<PrivateRoute roles={ADMIN_BODEGA}><PagoNotaCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/:id/recibo"      element={<PrivateRoute roles={ADMIN_BODEGA}><ReciboCompra /></PrivateRoute>} />
+        <Route path="/compras/proveedores"            element={<PrivateRoute roles={ADMIN_BODEGA}><Proveedores /></PrivateRoute>} />
+        <Route path="/compras/proveedores/:id"        element={<PrivateRoute roles={ADMIN_BODEGA}><VerProveedor /></PrivateRoute>} />
 
         {/* Finanzas */}
-        <Route path="/finanzas/caja"                          element={<PrivateRoute><Caja /></PrivateRoute>} />
-        <Route path="/finanzas/cuentas-por-cobrar"            element={<PrivateRoute><CuentasCobrar /></PrivateRoute>} />
-        <Route path="/finanzas/cuentas-por-cobrar/:id"        element={<PrivateRoute><VerCuentaCobrar /></PrivateRoute>} />
-        <Route path="/finanzas/cuentas-por-pagar"             element={<PrivateRoute><CuentasPagar /></PrivateRoute>} />
-        <Route path="/finanzas/cuentas-por-pagar/:id"         element={<PrivateRoute><VerCuentaPagar /></PrivateRoute>} />
+        <Route path="/finanzas/caja"                          element={<PrivateRoute roles={SOLO_ADMIN}><Caja /></PrivateRoute>} />
+        <Route path="/finanzas/cuentas-por-cobrar"            element={<PrivateRoute roles={ADMIN_VENDEDOR}><CuentasCobrar /></PrivateRoute>} />
+        <Route path="/finanzas/cuentas-por-cobrar/:id"        element={<PrivateRoute roles={ADMIN_VENDEDOR}><VerCuentaCobrar /></PrivateRoute>} />
+        <Route path="/finanzas/cuentas-por-pagar"             element={<PrivateRoute roles={SOLO_ADMIN}><CuentasPagar /></PrivateRoute>} />
+        <Route path="/finanzas/cuentas-por-pagar/:id"         element={<PrivateRoute roles={SOLO_ADMIN}><VerCuentaPagar /></PrivateRoute>} />
 
         {/* Proyectos */}
         <Route path="/proyectos"        element={<PrivateRoute><Proyectos /></PrivateRoute>} />
-        <Route path="/proyectos/crear"  element={<PrivateRoute><CreateProyecto /></PrivateRoute>} />
+        <Route path="/proyectos/crear"  element={<PrivateRoute roles={ADMIN_VENDEDOR}><CreateProyecto /></PrivateRoute>} />
         <Route path="/proyectos/:id"            element={<PrivateRoute><VerProyecto /></PrivateRoute>} />
         <Route path="/proyectos/:id/cotizacion" element={<PrivateRoute><CotizacionProyecto /></PrivateRoute>} />
 
         {/* Cotizaciones Manuales */}
-        <Route path="/cotizaciones-manuales"               element={<PrivateRoute><CotizacionesManuales /></PrivateRoute>} />
-        <Route path="/cotizaciones-manuales/crear"         element={<PrivateRoute><CotizacionManualForm /></PrivateRoute>} />
-        <Route path="/cotizaciones-manuales/:id/editar"    element={<PrivateRoute><CotizacionManualForm /></PrivateRoute>} />
-        <Route path="/cotizaciones-manuales/:id/imprimir"  element={<PrivateRoute><CotizacionManualPrint /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales"               element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionesManuales /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/crear"         element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualForm /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/:id/editar"    element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualForm /></PrivateRoute>} />
+        <Route path="/cotizaciones-manuales/:id/imprimir"  element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualPrint /></PrivateRoute>} />
 
         {/* Ajustes */}
-        <Route path="/ajustes"        element={<PrivateRoute><Ajustes /></PrivateRoute>} />
-        <Route path="/ajustes/crear"  element={<PrivateRoute><CreateAjuste /></PrivateRoute>} />
-        <Route path="/ajustes/:id"    element={<PrivateRoute><VerAjuste /></PrivateRoute>} />
+        <Route path="/ajustes"        element={<PrivateRoute roles={ADMIN_BODEGA}><Ajustes /></PrivateRoute>} />
+        <Route path="/ajustes/crear"  element={<PrivateRoute roles={ADMIN_BODEGA}><CreateAjuste /></PrivateRoute>} />
+        <Route path="/ajustes/:id"    element={<PrivateRoute roles={ADMIN_BODEGA}><VerAjuste /></PrivateRoute>} />
 
         {/* Ventas */}
-        <Route path="/ventas/clientes"     element={<PrivateRoute><Clientes /></PrivateRoute>} />
-        <Route path="/ventas/clientes/:id" element={<PrivateRoute><VerCliente /></PrivateRoute>} />
-        <Route path="/ventas/notas"             element={<PrivateRoute><NotasVenta /></PrivateRoute>} />
-        <Route path="/ventas/notas/crear"       element={<PrivateRoute><CreateNotaVenta /></PrivateRoute>} />
-        <Route path="/ventas/notas/:id"         element={<PrivateRoute><VerNotaVenta /></PrivateRoute>} />
-        <Route path="/ventas/notas/:id/cobro"    element={<PrivateRoute><CobroNotaVenta /></PrivateRoute>} />
-        <Route path="/ventas/notas/:id/recibo"  element={<PrivateRoute><ReciboVenta /></PrivateRoute>} />
+        <Route path="/ventas/clientes"     element={<PrivateRoute roles={ADMIN_VENDEDOR}><Clientes /></PrivateRoute>} />
+        <Route path="/ventas/clientes/:id" element={<PrivateRoute roles={ADMIN_VENDEDOR}><VerCliente /></PrivateRoute>} />
+        <Route path="/ventas/notas"             element={<PrivateRoute roles={ADMIN_VENDEDOR}><NotasVenta /></PrivateRoute>} />
+        <Route path="/ventas/notas/crear"       element={<PrivateRoute roles={ADMIN_VENDEDOR}><CreateNotaVenta /></PrivateRoute>} />
+        <Route path="/ventas/notas/:id"         element={<PrivateRoute roles={ADMIN_VENDEDOR}><VerNotaVenta /></PrivateRoute>} />
+        <Route path="/ventas/notas/:id/cobro"    element={<PrivateRoute roles={ADMIN_VENDEDOR}><CobroNotaVenta /></PrivateRoute>} />
+        <Route path="/ventas/notas/:id/recibo"  element={<PrivateRoute roles={ADMIN_VENDEDOR}><ReciboVenta /></PrivateRoute>} />
 
         {/* Usuarios */}
-        <Route path="/usuarios"     element={<PrivateRoute><Usuarios /></PrivateRoute>} />
-        <Route path="/usuarios/:id" element={<PrivateRoute><VerUsuario /></PrivateRoute>} />
+        <Route path="/usuarios"     element={<PrivateRoute roles={SOLO_ADMIN}><Usuarios /></PrivateRoute>} />
+        <Route path="/usuarios/:id" element={<PrivateRoute roles={SOLO_ADMIN}><VerUsuario /></PrivateRoute>} />
 
         {/* Bitácora */}
-        <Route path="/bitacora" element={<PrivateRoute><Bitacora /></PrivateRoute>} />
+        <Route path="/bitacora" element={<PrivateRoute roles={SOLO_ADMIN}><Bitacora /></PrivateRoute>} />
 
         {/* Notificaciones */}
         <Route path="/notificaciones" element={<PrivateRoute><Notificaciones /></PrivateRoute>} />
 
         {/* Leads */}
-        <Route path="/leads"     element={<PrivateRoute><Leads /></PrivateRoute>} />
-        <Route path="/leads/:id" element={<PrivateRoute><VerLead /></PrivateRoute>} />
+        <Route path="/leads"     element={<PrivateRoute roles={ADMIN_VENDEDOR}><Leads /></PrivateRoute>} />
+        <Route path="/leads/:id" element={<PrivateRoute roles={ADMIN_VENDEDOR}><VerLead /></PrivateRoute>} />
 
         {/* Perfil */}
         <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
