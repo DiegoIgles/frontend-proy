@@ -9,8 +9,9 @@ import { uploadImagenCotizacionAction } from "./actions/upload-imagen.action";
 import { getCategoriasFlatAction } from "../Categorias/actions/get-categorias-flat.action";
 import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { useToast } from "../../context/ToastContext";
+import { MONEDAS, CODIGOS_MONEDA, PAGINAS_CON_MONEDA, MONEDAS_PAGINA_DEFAULT, monedasDe } from "./shared/monedas";
 import {
-  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch,
+  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch, FaHistory,
 } from "react-icons/fa";
 
 const DEFAULT_ROI_BARRAS = [
@@ -55,7 +56,70 @@ const INITIAL_FORM = {
   ahorroTotal30AniosUsd: "",
   imagenRoi: "",
   roiBarras: DEFAULT_ROI_BARRAS,
+  // Configuración del impreso: moneda por página (default todo en Bs, estamos
+  // en Bolivia) y si el cuadro de la página 5 lleva la columna de precio unitario.
+  monedasPagina: MONEDAS_PAGINA_DEFAULT,
+  mostrarPrecioUnitario: false,
 };
+
+// ── Configuración del impreso: moneda por página + precio unitario ──
+//
+// Cada página que muestra montos lleva SU moneda. El símbolo elegido es el que
+// se imprime en todos los lugares de esa página donde aparece una moneda.
+function ConfigImpreso({ monedasPagina, mostrarPrecioUnitario, onChangeMoneda, onChangeMostrarPrecio }) {
+  const chip = (activo) => ({
+    display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 999,
+    border: activo ? "2px solid #16a34a" : "1px solid #d1d5db", cursor: "pointer", fontSize: 13,
+    background: activo ? "#f0fdf4" : "#fff", color: activo ? "#15803d" : "#374151", fontWeight: activo ? 700 : 500,
+  });
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 12 }}>
+        {PAGINAS_CON_MONEDA.map((p) => (
+          <div key={p.key} style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 8, padding: "10px 12px" }}>
+            <label style={{ ...labelStyle, marginBottom: 8 }}>{p.label}</label>
+            <div style={{ display: "flex", gap: 8 }}>
+              {CODIGOS_MONEDA.map((codigo) => {
+                const activo = monedasPagina[p.key] === codigo;
+                return (
+                  <label key={codigo} style={chip(activo)}>
+                    <input
+                      type="radio"
+                      name={`moneda-${p.key}`}
+                      checked={activo}
+                      onChange={() => onChangeMoneda(p.key, codigo)}
+                      style={{ margin: 0 }}
+                    />
+                    {MONEDAS[codigo].simbolo} · {MONEDAS[codigo].nombre}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <label style={{
+        display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8,
+        border: mostrarPrecioUnitario ? "1px solid #16a34a" : "1px solid #e2e8f0",
+        background: mostrarPrecioUnitario ? "#f0fdf4" : "#fff", cursor: "pointer", fontSize: 13,
+      }}>
+        <input
+          type="checkbox"
+          checked={!!mostrarPrecioUnitario}
+          onChange={(e) => onChangeMostrarPrecio(e.target.checked)}
+        />
+        <span>
+          <strong>Mostrar precio unitario en el impreso</strong>
+          <span style={{ display: "block", fontSize: 11, color: "#6b7280" }}>
+            Agrega las columnas P. Unitario y Total por ítem al cuadro de la página 5. Por defecto no se imprimen: el cuadro muestra solo cantidad, unidad y descripción.
+          </span>
+        </span>
+      </label>
+    </div>
+  );
+}
 
 // ── Subida de imagen individual con preview ───────────────────
 
@@ -459,6 +523,8 @@ function CotizacionManualForm() {
           imagenesProyecto: data.imagenesProyecto ?? [],
           imagenCuadroProductos: data.imagenCuadroProductos ?? "",
           items: data.items ?? [],
+          monedasPagina: monedasDe(data),
+          mostrarPrecioUnitario: Boolean(data.mostrarPrecioUnitario),
           // Al editar, el campo se carga con QUIEN ESTÁ EDITANDO, no con el autor
           // guardado: es el nombre que va a quedar al guardar, y mostrarlo desde
           // el principio evita que la cotización cambie de autor sin que se vea.
@@ -553,12 +619,17 @@ function CotizacionManualForm() {
   const confirmarAgregarDesdeCatalogo = () => {
     if (!catalogoSeleccionado) return;
     const cantidad = Number(catalogoCantidad) || 1;
+    // Se COPIAN los datos del producto al ítem (snapshot): la cotización no
+    // vuelve a consultar el catálogo, así que un cambio de precio o de nombre
+    // posterior no la altera. `productoId` queda solo como trazabilidad.
     const precioUnitario = catalogoSeleccionado.precioActual ?? 0;
     const nextNro = form.items.length + 1;
     const newItems = [
       ...form.items,
       {
-        nro: nextNro, cantidad, unidad: "und",
+        nro: nextNro, cantidad,
+        // Unidad opcional del producto (Glb., Ud., m...); si no tiene, "und".
+        unidad: (catalogoSeleccionado.unidad || "").trim() || "und",
         descripcion: catalogoSeleccionado.nombre,
         precioUnitario, totalBs: (cantidad * precioUnitario).toFixed(2),
         productoId: catalogoSeleccionado.productoId,
@@ -635,6 +706,8 @@ function CotizacionManualForm() {
       roiBarras: form.roiBarras
         .filter((b) => b.valor !== "" && b.valor !== null)
         .map((b) => ({ etiqueta: b.etiqueta || undefined, valor: Number(b.valor) })),
+      monedasPagina: form.monedasPagina,
+      mostrarPrecioUnitario: Boolean(form.mostrarPrecioUnitario),
     };
 
     setSaving(true);
@@ -652,6 +725,12 @@ function CotizacionManualForm() {
     }
   };
 
+  // Símbolo de la moneda elegida para cada página: se usa en los rótulos del
+  // formulario para que el usuario vea lo mismo que va a salir impreso.
+  const sim = (pagina) => (MONEDAS[form.monedasPagina?.[pagina]] ?? MONEDAS.BS).simbolo;
+  const setMoneda = (pagina, codigo) =>
+    setForm((f) => ({ ...f, monedasPagina: { ...f.monedasPagina, [pagina]: codigo } }));
+
   if (loading) {
     return <Layout><p style={{ color: "#6b7280", textAlign: "center", padding: 40 }}>Cargando...</p></Layout>;
   }
@@ -659,14 +738,46 @@ function CotizacionManualForm() {
   return (
     <Layout>
       <div className="page-header">
-        <h1>{esEdicion ? `Editar ${form.nroPropuesta}` : "Nueva Cotización Manual"}</h1>
-        <button className="btn-secondary" onClick={() => navigate("/cotizaciones-manuales")}
-          style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <FaTimes /> Cancelar
-        </button>
+        <h1>
+          {esEdicion ? `Editar ${form.nroPropuesta}` : "Nueva Cotización Manual"}
+          {esEdicion && form.versionActual && (
+            <span style={{ marginLeft: 10, fontSize: 12, fontWeight: 700, color: "#0f2a4a", background: "#e0f2fe", padding: "3px 10px", borderRadius: 12, verticalAlign: "middle" }}>
+              v{form.versionActual} vigente
+            </span>
+          )}
+        </h1>
+        <div style={{ display: "flex", gap: 8 }}>
+          {esEdicion && (
+            <button type="button" className="btn-secondary" onClick={() => navigate(`/cotizaciones-manuales/${id}/imprimir`)}
+              style={{ display: "flex", alignItems: "center", gap: 6 }} title="Ver e imprimir; desde ahí se navegan las versiones anteriores">
+              <FaHistory /> Ver / versiones
+            </button>
+          )}
+          <button className="btn-secondary" onClick={() => navigate("/cotizaciones-manuales")}
+            style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <FaTimes /> Cancelar
+          </button>
+        </div>
       </div>
 
+      {esEdicion && (
+        <p style={{ margin: "-8px 0 16px", fontSize: 12, color: "#6b7280" }}>
+          Al guardar se crea la <strong>versión {(Number(form.versionActual) || 1) + 1}</strong>, que pasa a ser la vigente. Las anteriores quedan guardadas
+          y se pueden ver o restaurar desde el imprimible.
+        </p>
+      )}
+
       <form onSubmit={handleSubmit}>
+
+        {/* ── Configuración del impreso ── */}
+        <SectionCard titulo="Moneda y precios del impreso" descripcion="Elegí la moneda de cada página que muestra montos (por defecto todo en Bs.) y si el cuadro imprime el precio unitario.">
+          <ConfigImpreso
+            monedasPagina={form.monedasPagina}
+            mostrarPrecioUnitario={form.mostrarPrecioUnitario}
+            onChangeMoneda={setMoneda}
+            onChangeMostrarPrecio={(v) => setForm((f) => ({ ...f, mostrarPrecioUnitario: v }))}
+          />
+        </SectionCard>
 
         {/* ── Página 1: Portada ── */}
         <SectionCard titulo="Página 1 — Portada" descripcion="Datos principales de la propuesta comercial.">
@@ -712,7 +823,7 @@ function CotizacionManualForm() {
         </SectionCard>
 
         {/* ── Página 5: Cotización y Totales ── */}
-        <SectionCard titulo="Página 5 — Cotización y Totales" descripcion="Oferta económica, cuadro dinámico de productos y servicios, y totales (Se generan páginas adicionales automáticamente si se cargan más de 8 ítems).">
+        <SectionCard titulo="Página 5 — Cotización y Totales" descripcion={`Oferta económica, cuadro dinámico de productos y servicios, y totales en ${sim("pagina5")} (se generan páginas adicionales automáticamente si el cuadro no entra en una hoja).`}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginBottom: 16 }}>
             <Field label="Lugar">
               <input style={inputStyle} value={form.lugar} onChange={set("lugar")} />
@@ -773,8 +884,8 @@ function CotizacionManualForm() {
                       <th style={{ padding: "8px 10px", width: 90 }}>Cant.</th>
                       <th style={{ padding: "8px 10px", width: 90 }}>Unidad</th>
                       <th style={{ padding: "8px 10px" }}>Descripción del Producto / Servicio</th>
-                      <th style={{ padding: "8px 10px", width: 130 }}>P. Unitario (Bs)</th>
-                      <th style={{ padding: "8px 10px", width: 130 }}>Total (Bs)</th>
+                      <th style={{ padding: "8px 10px", width: 130 }}>P. Unitario ({sim("pagina5")})</th>
+                      <th style={{ padding: "8px 10px", width: 130 }}>Total ({sim("pagina5")})</th>
                       <th style={{ padding: "8px 10px", width: 50, textAlign: "center" }}>Acción</th>
                     </tr>
                   </thead>
@@ -853,66 +964,66 @@ function CotizacionManualForm() {
           </div>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-            <Field label="Sub Total (Bs)">
+            <Field label={`Sub Total (${sim("pagina5")})`}>
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="0.00" value={form.precioSubTotal} onChange={set("precioSubTotal")} />
             </Field>
-            <Field label="IVA (Bs)">
+            <Field label={`IVA (${sim("pagina5")})`}>
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="0.00" value={form.iva} onChange={set("iva")} />
             </Field>
-            <Field label="Total (Bs)">
+            <Field label={`Total (${sim("pagina5")})`}>
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="0.00" value={form.total} onChange={set("total")} />
             </Field>
           </div>
         </SectionCard>
 
-        {/* ── Página 7: Protección de Inversión ── */}
-        <SectionCard titulo="Página 7 — Protección de Inversión" descripcion="Montos del plan de protección de inversión (inversión anual y contratación total a 5 años).">
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-            <Field label="Inversión Anual ($us)">
-              <input style={inputStyle} type="number" step="0.01" min="0" placeholder="90" value={form.inversionAnualUsd} onChange={set("inversionAnualUsd")} />
-            </Field>
-            <Field label="Contratación Total 5 años ($us)">
-              <input style={inputStyle} type="number" step="0.01" min="0" placeholder="270" value={form.valorContratacionTotalUsd} onChange={set("valorContratacionTotalUsd")} />
-            </Field>
-          </div>
-        </SectionCard>
-
         {/* ── Página 6: ROI ── */}
-        <SectionCard titulo="Página 6 — Retorno de Inversión (ROI)" descripcion="Métricas de ahorro y montos en Bolivianos (Bs) para las barras del gráfico de 5 en 5 años (5 a 30 años).">
+        <SectionCard titulo="Página 6 — Retorno de Inversión (ROI)" descripcion={`Métricas de ahorro y montos (${sim("pagina6")}) para las barras del gráfico de 5 en 5 años (5 a 30 años).`}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, marginBottom: 16 }}>
-            <Field label="Ahorro Anual (Bs)">
+            <Field label={`Ahorro Anual (${sim("pagina6")})`}>
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="8640" value={form.ahorroAnualBs} onChange={set("ahorroAnualBs")} />
             </Field>
             <Field label="Retorno de Inversión (años)">
               <input style={inputStyle} type="number" step="0.5" min="0" placeholder="5" value={form.retornoInversionAnios} onChange={set("retornoInversionAnios")} />
             </Field>
-            <Field label="Ahorro Total 30 años (USD)">
+            <Field label={`Ahorro Total 30 años (${sim("pagina6")})`}>
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="56965" value={form.ahorroTotal30AniosUsd} onChange={set("ahorroTotal30AniosUsd")} />
             </Field>
           </div>
 
           <div style={{ marginTop: 14 }}>
             <label style={{ ...labelStyle, marginBottom: 8, display: "block" }}>
-              Valores del Gráfico en Bolivianos (Bs) — Intervalos de 5 a 30 años
+              Valores del Gráfico ({sim("pagina6")}) — Intervalos de 5 a 30 años
             </label>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
               {form.roiBarras.map((b, i) => (
                 <div key={i} style={{ background: "#f8fafc", padding: "10px 12px", borderRadius: 8, border: "1px solid #cbd5e1" }}>
                   <label style={{ fontSize: 12, fontWeight: 700, color: "#0f2a4a", display: "block", marginBottom: 4 }}>
-                    {b.etiqueta || `${(i + 1) * 5} años`} (Bs)
+                    {b.etiqueta || `${(i + 1) * 5} años`} ({sim("pagina6")})
                   </label>
                   <input
                     style={inputStyle}
                     type="number"
                     step="0.01"
                     min="0"
-                    placeholder="Monto en Bs..."
+                    placeholder={`Monto en ${sim("pagina6")}...`}
                     value={b.valor}
                     onChange={(e) => setBarra(i, "valor", e.target.value)}
                   />
                 </div>
               ))}
             </div>
+          </div>
+        </SectionCard>
+
+        {/* ── Página 7: Protección de Inversión ── */}
+        <SectionCard titulo="Página 7 — Protección de Inversión" descripcion={`Montos del plan de protección de inversión (inversión anual y contratación total a 5 años), en ${sim("pagina7")}.`}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+            <Field label={`Inversión Anual (${sim("pagina7")})`}>
+              <input style={inputStyle} type="number" step="0.01" min="0" placeholder="90" value={form.inversionAnualUsd} onChange={set("inversionAnualUsd")} />
+            </Field>
+            <Field label={`Contratación Total 5 años (${sim("pagina7")})`}>
+              <input style={inputStyle} type="number" step="0.01" min="0" placeholder="270" value={form.valorContratacionTotalUsd} onChange={set("valorContratacionTotalUsd")} />
+            </Field>
           </div>
         </SectionCard>
 
@@ -969,10 +1080,10 @@ function CotizacionManualForm() {
                       }}>
                       <div>
                         <strong>{p.nombre}</strong>
-                        <span style={{ color: "#9ca3af", marginLeft: 6, fontSize: 11 }}>{p.codigo}</span>
+                        <span style={{ color: "#9ca3af", marginLeft: 6, fontSize: 11 }}>{p.codigo}{p.unidad ? ` · ${p.unidad}` : ""}</span>
                       </div>
                       <span style={{ fontWeight: 700, color: "#1d4ed8" }}>
-                        {p.precioActual != null ? `$${Number(p.precioActual).toFixed(2)}` : "—"}
+                        {p.precioActual != null ? Number(p.precioActual).toFixed(2) : "—"}
                       </span>
                     </div>
                   ))}

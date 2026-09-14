@@ -15,9 +15,10 @@ import { removeCategoriaProductoAction } from "./actions/remove-categoria-produc
 import { addComponenteAction } from "./actions/add-componente.action";
 import { removeComponenteAction } from "./actions/remove-componente.action";
 import ProductoCategoriasYAtributos from "./components/ProductoCategoriasYAtributos";
+import DocumentosProducto from "./components/DocumentosProducto";
 import {
   FaArrowLeft, FaEdit, FaTrash, FaWarehouse, FaDollarSign,
-  FaBoxOpen, FaTag, FaChartBar, FaCogs, FaPlus, FaTimes as FaX, FaSearch,
+  FaBoxOpen, FaTag, FaChartBar, FaCogs, FaPlus, FaTimes as FaX, FaSearch, FaPaperclip,
 } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 import { useAuth } from "../../context/AuthContext";
@@ -114,7 +115,8 @@ function VerProducto() {
     setEditForm({
       codigo:               producto.codigo,
       nombre:               producto.nombre,
-      sku:                  producto.sku,
+      sku:                  producto.sku ?? "",
+      unidad:               producto.unidad ?? "",
       descripcion:          producto.descripcion ?? "",
       categoriaIds:         (producto.categorias ?? []).map((c) => c.categoriaId),
       categoriaPrincipalId: producto.categoriaPrincipal?.categoriaId ?? "",
@@ -140,7 +142,10 @@ function VerProducto() {
     try {
       setSavingEdit(true);
       const dto = {
-        codigo: editForm.codigo, nombre: editForm.nombre, sku: editForm.sku,
+        codigo: editForm.codigo, nombre: editForm.nombre,
+        // Vacío se manda igual: el backend lo guarda como NULL (SKU opcional).
+        sku: (editForm.sku || "").trim(),
+        unidad: (editForm.unidad || "").trim() || null,
         categoriaIds: editForm.categoriaIds, categoriaPrincipalId: editForm.categoriaPrincipalId,
         atributos: editForm.atributos || {},
       };
@@ -338,7 +343,7 @@ function VerProducto() {
           <div>
             <h1 style={{ margin: 0, fontSize: 20 }}>{producto.nombre}</h1>
             <p style={{ margin: 0, fontSize: 12, color: "#9ca3af", fontFamily: "monospace" }}>
-              {producto.codigo} · {producto.sku}
+              {producto.codigo}{producto.sku ? ` · ${producto.sku}` : ""}{producto.unidad ? ` · ${producto.unidad}` : ""}
             </p>
           </div>
         </div>
@@ -394,6 +399,9 @@ function VerProducto() {
           <button style={TAB_STYLE("componentes")} onClick={() => setTab("componentes")}>
             <FaCogs style={{ marginRight: 5 }} />Componentes
           </button>
+          <button style={TAB_STYLE("documentos")} onClick={() => setTab("documentos")}>
+            <FaPaperclip style={{ marginRight: 5 }} />Documentos{(producto.documentos?.length ?? 0) > 0 ? ` (${producto.documentos.length})` : ""}
+          </button>
         </div>
 
         {/* Tab: Información */}
@@ -402,6 +410,7 @@ function VerProducto() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 18 }}>
               <Campo label="Código"   value={producto.codigo} />
               <Campo label="SKU"      value={producto.sku} />
+              <Campo label="Unidad"   value={producto.unidad} />
               <Campo label="Nombre"   value={producto.nombre} />
               <Campo label="Marca"  value={producto.marcaModelo?.marca?.nombre} />
               <Campo label="Modelo" value={producto.marcaModelo?.modelo?.nombre} />
@@ -469,6 +478,16 @@ function VerProducto() {
               )}
             </div>
           </div>
+        )}
+
+        {/* Tab: Documentos */}
+        {tab === "documentos" && (
+          <DocumentosProducto
+            productoId={id}
+            documentos={producto.documentos ?? []}
+            puedeEditar={puedeEditar}
+            onChange={(documentos) => setProducto((p) => ({ ...p, documentos }))}
+          />
         )}
 
         {/* Tab: Stock */}
@@ -632,8 +651,15 @@ function VerProducto() {
                   <input name="codigo" value={editForm.codigo} onChange={handleEditChange} />
                 </div>
                 <div>
-                  <label>SKU</label>
+                  <label>SKU (opcional)</label>
                   <input name="sku" value={editForm.sku} onChange={handleEditChange} />
+                </div>
+                <div>
+                  <label>Unidad (opcional)</label>
+                  <input name="unidad" value={editForm.unidad} onChange={handleEditChange} placeholder="Glb., Ud., m, kg..." list="unidades-sugeridas-edit" />
+                  <datalist id="unidades-sugeridas-edit">
+                    <option value="Ud." /><option value="Glb." /><option value="m" /><option value="m²" /><option value="kg" /><option value="Jgo." /><option value="Par" />
+                  </datalist>
                 </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Nombre</label>
