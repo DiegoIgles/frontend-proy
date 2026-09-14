@@ -5,6 +5,7 @@ import { getCotizacionesManualesAction } from "./actions/get-cotizaciones.action
 import { deleteCotizacionManualAction } from "./actions/delete-cotizacion.action";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
+import { monedaDe } from "./shared/monedas";
 import {
   FaPlus, FaTimes, FaSearch, FaFileContract, FaPrint, FaEdit, FaTrash,
   FaCalendarAlt, FaUser, FaSolarPanel,
@@ -33,9 +34,17 @@ function CotizacionCard({ c, onPrint, onEdit, onDelete, deleting }) {
         <p style={{ margin: 0, fontWeight: 800, fontSize: 15, color: "#0f2a4a", fontFamily: "monospace" }}>
           {c.nroPropuesta}
         </p>
-        <span style={{ background: "#dcfce7", color: "#166534", padding: "3px 10px",
-          borderRadius: 12, fontSize: 11, fontWeight: 700 }}>
-          Manual
+        <span style={{ display: "flex", gap: 6 }}>
+          {c.versionActual > 1 && (
+            <span title="Versión vigente" style={{ background: "#e0f2fe", color: "#075985", padding: "3px 10px",
+              borderRadius: 12, fontSize: 11, fontWeight: 700 }}>
+              v{c.versionActual}
+            </span>
+          )}
+          <span style={{ background: "#dcfce7", color: "#166534", padding: "3px 10px",
+            borderRadius: 12, fontSize: 11, fontWeight: 700 }}>
+            Manual
+          </span>
         </span>
       </div>
 
@@ -50,7 +59,7 @@ function CotizacionCard({ c, onPrint, onEdit, onDelete, deleting }) {
         marginTop: 12, paddingTop: 10, borderTop: "1px solid #f3f4f6" }}>
         <span style={{ fontSize: 11, color: "#6b7280" }}>Total cotizado</span>
         <span style={{ fontWeight: 800, fontSize: 16, color: "#0f2a4a" }}>
-          {c.total ? `Bs. ${fmt(c.total)}` : "—"}
+          {c.total ? `${monedaDe(c, "pagina5").simbolo} ${fmt(c.total)}` : "—"}
         </span>
       </div>
 

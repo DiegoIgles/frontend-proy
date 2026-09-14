@@ -18,7 +18,7 @@ import { ROL } from "../../auth/roles";
 const today = () => new Date().toISOString().split("T")[0];
 
 const FORM_VACIO = {
-  codigo: "", nombre: "", sku: "", descripcion: "",
+  codigo: "", nombre: "", sku: "", unidad: "", descripcion: "",
   categoriaIds: [], categoriaPrincipalId: "", atributos: {}, marcaModeloId: "",
 };
 
@@ -96,8 +96,8 @@ function Productos() {
   const handleCreate = async (e) => {
     e.preventDefault();
     setFormErr("");
-    if (!form.codigo || !form.nombre || !form.sku) {
-      setFormErr("Código, nombre y SKU son obligatorios.");
+    if (!form.codigo || !form.nombre) {
+      setFormErr("Código y nombre son obligatorios.");
       return;
     }
     if (!form.categoriaIds.length || !form.categoriaPrincipalId) {
@@ -107,9 +107,11 @@ function Productos() {
     try {
       setSaving(true);
       const dto = {
-        codigo: form.codigo, nombre: form.nombre, sku: form.sku,
+        codigo: form.codigo, nombre: form.nombre,
         categoriaIds: form.categoriaIds, categoriaPrincipalId: form.categoriaPrincipalId,
       };
+      if (form.sku.trim())    dto.sku = form.sku.trim();
+      if (form.unidad.trim()) dto.unidad = form.unidad.trim();
       if (form.descripcion)   dto.descripcion = form.descripcion;
       if (form.marcaModeloId) dto.marcaModeloId = form.marcaModeloId;
       if (Object.keys(form.atributos || {}).length) dto.atributos = form.atributos;
@@ -271,8 +273,16 @@ function Productos() {
                   <input name="codigo" value={form.codigo} onChange={handleFormChange} placeholder="PS-400M" />
                 </div>
                 <div>
-                  <label>SKU *</label>
+                  <label>SKU (opcional)</label>
                   <input name="sku" value={form.sku} onChange={handleFormChange} placeholder="SKU-PS400M" />
+                </div>
+                <div>
+                  <label>Unidad (opcional)</label>
+                  <input name="unidad" value={form.unidad} onChange={handleFormChange} placeholder="Glb., Ud., m, kg..." list="unidades-sugeridas" />
+                  <datalist id="unidades-sugeridas">
+                    <option value="Ud." /><option value="Glb." /><option value="m" /><option value="m²" /><option value="kg" /><option value="Jgo." /><option value="Par" />
+                  </datalist>
+                  <small style={{ color: "#6b7280" }}>Se jala al cuadro de la cotización manual al agregar el producto.</small>
                 </div>
                 <div style={{ gridColumn: "1 / -1" }}>
                   <label>Nombre *</label>

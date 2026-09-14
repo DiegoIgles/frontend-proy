@@ -8,6 +8,7 @@ import {
   IconHojaLinea, IconRendimiento, IconComprobante, IconApreton, IconCalendario,
 } from "./shared/IconosProteccion";
 import { PAGE_WIDTH_MM, PAGE_HEIGHT_MM, COLORS, FONT_FAMILY } from "./shared/constants";
+import { monedaDe } from "../shared/monedas";
 
 // ---------------------------------------------------------------------------
 // PÁGINA 7 — "PROTEGEMOS TU INVERSIÓN"
@@ -380,7 +381,8 @@ function Comparada({ c, x0, ancho }) {
 
 export function Pagina7Proteccion({ cot, contenido = CONTENIDO_PROTECCION }) {
   if (!cot) return null;
-  const c = contenido;
+  // La moneda de los montos la elige el usuario por página (default BS).
+  const c = { ...contenido, moneda: monedaDe(cot, "pagina7").corto };
   const anchoProg = (ANCHO - PROGRAMAS.gap * 2) / 3;
 
   return (

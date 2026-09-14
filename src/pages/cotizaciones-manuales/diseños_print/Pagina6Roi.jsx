@@ -6,6 +6,7 @@ import {
   ICONOS_BENEFICIO, IconWhatsapp, IconWeb, IconUbicacion,
 } from "./shared/IconosRoi";
 import { PAGE_WIDTH_MM, PAGE_HEIGHT_MM, COLORS, FONT_FAMILY } from "./shared/constants";
+import { monedaDe } from "../shared/monedas";
 
 // ---------------------------------------------------------------------------
 // PÁGINA 6 — "RETORNO DE INVERSIÓN (ROI)"
@@ -235,9 +236,23 @@ function Grafico({ c, cot }) {
   );
 }
 
+// Todo lo que en el contenido nombra una moneda se rearma con la moneda que
+// eligió el usuario para ESTA página (default BS). El contenido base queda
+// escrito en BS para que se lea como el arte.
+function conMoneda(contenido, moneda) {
+  const corto = moneda.corto;
+  return {
+    ...contenido,
+    kpis: contenido.kpis.map((k) => (k.prefijo ? { ...k, prefijo: `${corto} ` } : k)),
+    cabeceraValores: `AHORRO ACUMULADO (${corto})`,
+    tituloEje: moneda.plural,
+    moneda: `${corto} `,
+  };
+}
+
 export function Pagina6Roi({ cot, contenido = CONTENIDO_ROI }) {
   if (!cot) return null;
-  const c = contenido;
+  const c = conMoneda(contenido, monedaDe(cot, "pagina6"));
   const anchoKpi = (ANCHO - KPI.gap * 2) / 3;
   const anchoBen = ANCHO / c.beneficios.length;
   const anios = fmt(cot?.retornoInversionAnios, 0);

@@ -5,6 +5,7 @@ import { IconMedallaIngenieria } from "./shared/IconosDiseno";
 import { CintaEsquina } from "./shared/CintaEsquina";
 import { ICONOS_OFERTA, IconCondiciones, IconMontaje, IconNotas } from "./shared/IconosCotizacion";
 import { PAGE_WIDTH_MM, PAGE_HEIGHT_MM, COLORS, FONT_FAMILY } from "./shared/constants";
+import { monedaDe } from "../shared/monedas";
 
 // ---------------------------------------------------------------------------
 // PÁGINA 5 — "COTIZACIÓN"
@@ -66,6 +67,11 @@ const TABLA = {
   cols: [36, 113, 220, 325, 1497],
   descX: 352,
   descX1: 1020,
+  // Con `mostrarPrecioUnitario` la descripción cede su tramo derecho a dos
+  // columnas numéricas (P. UNITARIO y TOTAL) que terminan donde terminaba la
+  // descripción: así tampoco pasan por debajo de la tarjeta de totales.
+  descX1ConPrecios: 790,
+  precios: [800, 910, 1020],
   y0: 244,
   // Alto de renglón = padding + nº de líneas × paso. Ajustado sobre los ocho
   // renglones del arte: los de 2 líneas miden 45-50 px, los de 4 miden 79-81 y
@@ -112,6 +118,7 @@ export const CONTENIDO_COTIZACION = {
     { icono: "persona", rotulo: "REALIZADO POR" },
   ],
   cabecera: ["N°", "CANT.", "UD.", "DESCRIPCIÓN DEL PRODUCTO / SERVICIO"],
+  cabeceraPrecios: ["P. UNITARIO", "TOTAL"],
   totales: [
     { rotulo: "SUBTOTAL:", campo: "precioSubTotal" },
     { rotulo: "IMPUESTOS ANTE LA LEY:", campo: "iva" },
@@ -120,7 +127,6 @@ export const CONTENIDO_COTIZACION = {
   condiciones: ["CONDICIONES", "COMERCIALES"],
   rotuloMontaje: "TIEMPO DE MONTAJE:",
   rotuloNotas: "NOTAS:",
-  moneda: "BS",
 };
 
 // La franja del pie de ESTA página no dice lo mismo que la de la portada: son
@@ -183,8 +189,15 @@ const RE_ROTULO = /^([^:]{1,18}):\s+(.*)$/;
 // segunda línea se comería el separador de la fila siguiente.
 const CARACTERES_POR_LINEA = 70;
 
-const lineasQueOcupa = (linea) =>
-  Math.max(1, Math.ceil(linea.partes.reduce((n, p) => n + p.t.length, 0) / CARACTERES_POR_LINEA));
+// Con las columnas de precio la descripción se angosta; los caracteres por
+// renglón bajan en la misma proporción que el ancho.
+const caracteresPorLinea = (conPrecios) =>
+  conPrecios
+    ? Math.floor((CARACTERES_POR_LINEA * (TABLA.descX1ConPrecios - TABLA.descX)) / (TABLA.descX1 - TABLA.descX))
+    : CARACTERES_POR_LINEA;
+
+const lineasQueOcupa = (linea, porLinea = CARACTERES_POR_LINEA) =>
+  Math.max(1, Math.ceil(linea.partes.reduce((n, p) => n + p.t.length, 0) / porLinea));
 
 function partirDescripcion(texto) {
   return String(texto ?? "")
@@ -388,9 +401,13 @@ function TarjetaOferta({ c, cot }) {
   );
 }
 
-function Tabla({ c, filas, y1 }) {
+function Tabla({ c, filas, y1, conPrecios = false, moneda }) {
   const [c0, c1, c2, c3, c4] = TABLA.cols;
   const centro = (a, b) => (a + b) / 2;
+  const descX1 = conPrecios ? TABLA.descX1ConPrecios : TABLA.descX1;
+  const [p0, p1, p2] = TABLA.precios;
+  // Cabeceras de las columnas numéricas, con su moneda: "P. UNITARIO (BS)".
+  const cabecerasPrecio = c.cabeceraPrecios.map((t) => `${t} (${moneda?.corto ?? "BS"})`);
 
   return (
     <>
@@ -444,6 +461,29 @@ function Tabla({ c, filas, y1 }) {
       >
         {c.cabecera[3]}
       </p>
+      {conPrecios &&
+        [centro(p0, p1), centro(p1, p2)].map((cx, i) => (
+          <p
+            key={`ph${i}`}
+            style={{
+              position: "absolute",
+              left: 0,
+              width: "100%",
+              top: capTop(TABLA.cabecera.y0 + 10, CUERPO.cabecera),
+              margin: 0,
+              textAlign: "center",
+              transform: `translateX(${(X(cx) - PAGE_WIDTH_MM / 2).toFixed(2)}mm)`,
+              fontSize: `${CUERPO.cabecera * 0.85}mm`,
+              fontWeight: 700,
+              lineHeight: 1,
+              letterSpacing: "0.05mm",
+              color: COLORS.blanco,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {cabecerasPrecio[i]}
+          </p>
+        ))}
 
       {/* Caja de la tabla */}
       <div
@@ -496,7 +536,7 @@ function Tabla({ c, filas, y1 }) {
                 position: "absolute",
                 left: mmX(TABLA.descX),
                 top: mmY(top + TABLA.padding / 2),
-                width: mmX(TABLA.descX1 - TABLA.descX),
+                width: mmX(descX1 - TABLA.descX),
               }}
             >
               {f.lineas.map((ln, k) => (
@@ -520,6 +560,29 @@ function Tabla({ c, filas, y1 }) {
                 </p>
               ))}
             </div>
+
+            {conPrecios &&
+              [[p0, p1, f.precioUnitario], [p1, p2, f.total]].map(([a, b, v], j) => (
+                <p
+                  key={`pv${j}`}
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    width: "100%",
+                    top: `${(Y(centroFila) - CUERPO.celda * 0.5).toFixed(2)}mm`,
+                    margin: 0,
+                    textAlign: "center",
+                    transform: `translateX(${(X(centro(a, b)) - PAGE_WIDTH_MM / 2).toFixed(2)}mm)`,
+                    fontSize: `${CUERPO.celda}mm`,
+                    fontWeight: j === 1 ? 700 : 500,
+                    lineHeight: 1,
+                    color: j === 1 ? COLORS.navy : COLORS.tinta,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {fmt(v)}
+                </p>
+              ))}
           </React.Fragment>
         );
       })}
@@ -527,7 +590,7 @@ function Tabla({ c, filas, y1 }) {
   );
 }
 
-function Totales({ c, cot }) {
+function Totales({ c, cot, moneda }) {
   const alto = (TOTALES.y1 - TOTALES.y0) / c.totales.length;
   return (
     <div style={{ position: "absolute", left: mmX(TOTALES.x0), top: mmY(TOTALES.y0), width: mmX(TOTALES.x1 - TOTALES.x0), height: mmY(TOTALES.y1 - TOTALES.y0), borderRadius: mmX(4), overflow: "hidden" }}>
@@ -568,7 +631,7 @@ function Totales({ c, cot }) {
               whiteSpace: "nowrap",
             }}
           >
-            {fmt(cot?.[t.campo])} {c.moneda}
+            {fmt(cot?.[t.campo])} {moneda.corto}
           </p>
         </React.Fragment>
       ))}
@@ -636,6 +699,11 @@ function TarjetasPie({ c, cot }) {
 export function Pagina5Cotizacion({ cot, contenido = CONTENIDO_COTIZACION }) {
   if (!cot) return null;
   const c = contenido;
+  // Moneda de ESTA página (la elige el usuario al crear/editar; default BS) y
+  // si el cuadro lleva las columnas de precio (opcional; default no).
+  const moneda = monedaDe(cot, "pagina5");
+  const conPrecios = Boolean(cot.mostrarPrecioUnitario);
+  const porLinea = caracteresPorLinea(conPrecios);
 
   const filas = (cot.items ?? []).map((it, i) => {
     const lineas = partirDescripcion(it.descripcion);
@@ -643,8 +711,10 @@ export function Pagina5Cotizacion({ cot, contenido = CONTENIDO_COTIZACION }) {
       nro: it.nro ?? i + 1,
       cantidad: it.cantidad ?? "—",
       unidad: it.unidad || "Ud.",
+      precioUnitario: it.precioUnitario,
+      total: it.totalBs,
       lineas,
-      alto: TABLA.padding + Math.max(1, lineas.reduce((n, l) => n + lineasQueOcupa(l), 0)) * TABLA.paso,
+      alto: TABLA.padding + Math.max(1, lineas.reduce((n, l) => n + lineasQueOcupa(l, porLinea), 0)) * TABLA.paso,
     };
   });
 
@@ -671,9 +741,9 @@ export function Pagina5Cotizacion({ cot, contenido = CONTENIDO_COTIZACION }) {
           >
             <Encabezado c={c} />
             <TarjetaOferta c={c} cot={cot} />
-            <Tabla c={c} filas={pagina} y1={ultima ? TABLA_Y1_ULTIMA : TABLA_Y1_CONTINUA} />
+            <Tabla c={c} filas={pagina} y1={ultima ? TABLA_Y1_ULTIMA : TABLA_Y1_CONTINUA} conPrecios={conPrecios} moneda={moneda} />
 
-            {ultima && <Totales c={c} cot={cot} />}
+            {ultima && <Totales c={c} cot={cot} moneda={moneda} />}
             {ultima && <TarjetasPie c={c} cot={cot} />}
 
             {paginas.length > 1 && (
