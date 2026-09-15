@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layout/Layout";
 import { getCotizacionesManualesAction } from "./actions/get-cotizaciones.action";
 import { deleteCotizacionManualAction } from "./actions/delete-cotizacion.action";
+import { getTecnicaParaManualAction } from "../cotizaciones-tecnicas/actions/cotizaciones-tecnicas.actions";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
 import { monedaDe } from "./shared/monedas";
 import {
   FaPlus, FaTimes, FaSearch, FaFileContract, FaPrint, FaEdit, FaTrash,
-  FaCalendarAlt, FaUser, FaSolarPanel,
+  FaCalendarAlt, FaUser, FaSolarPanel, FaCalculator,
 } from "react-icons/fa";
 
 function fmt(n) {
@@ -22,7 +23,7 @@ function fmtDate(d) {
 
 // ── Tarjeta de cotización manual ──────────────────────────────
 
-function CotizacionCard({ c, onPrint, onEdit, onDelete, deleting }) {
+function CotizacionCard({ c, onPrint, onEdit, onTecnica, onDelete, deleting }) {
   return (
     <div
       className="card"
@@ -70,6 +71,9 @@ function CotizacionCard({ c, onPrint, onEdit, onDelete, deleting }) {
         </button>
         <button onClick={onEdit} title="Editar" style={btnAction("#6b7280")}>
           <FaEdit /> Editar
+        </button>
+        <button onClick={onTecnica} title="Hoja técnica de costos (ingeniería)" style={btnAction("#5b21b6")}>
+          <FaCalculator /> Hoja técnica
         </button>
         <button onClick={onDelete} disabled={deleting} title="Eliminar" style={btnAction("#dc2626")}>
           <FaTrash />
@@ -129,6 +133,17 @@ function CotizacionesManuales() {
     const t = setTimeout(fetchData, 300); // debounce búsqueda
     return () => clearTimeout(t);
   }, [fetchData]);
+
+  // La hoja técnica nace con la comercial; para las anteriores al módulo se
+  // crea en este mismo paso.
+  const abrirTecnica = async (c) => {
+    try {
+      const t = await getTecnicaParaManualAction(c.cotizacionManualId);
+      navigate(`/cotizaciones-tecnicas/${t.cotizacionTecnicaId}/editar`);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "No se pudo abrir la hoja técnica.");
+    }
+  };
 
   const handleDelete = async (c) => {
     const ok = await confirm({
@@ -199,6 +214,7 @@ function CotizacionesManuales() {
                 deleting={deleting === c.cotizacionManualId}
                 onPrint={() => navigate(`/cotizaciones-manuales/${c.cotizacionManualId}/imprimir`)}
                 onEdit={() => navigate(`/cotizaciones-manuales/${c.cotizacionManualId}/editar`)}
+                onTecnica={() => abrirTecnica(c)}
                 onDelete={() => handleDelete(c)}
               />
             ))}

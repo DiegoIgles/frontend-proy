@@ -6,7 +6,8 @@ import {
 } from "./actions/get-versiones-cotizacion.action";
 import { useToast } from "../../context/ToastContext";
 import { useConfirm } from "../../context/ConfirmContext";
-import { FaPrint, FaArrowLeft, FaHistory, FaChevronLeft, FaChevronRight, FaUndo, FaEdit } from "react-icons/fa";
+import { getTecnicaParaManualAction } from "../cotizaciones-tecnicas/actions/cotizaciones-tecnicas.actions";
+import { FaPrint, FaArrowLeft, FaHistory, FaChevronLeft, FaChevronRight, FaUndo, FaEdit, FaCalculator } from "react-icons/fa";
 import { Pagina1Portada } from "./diseños_print/Pagina1Portada";
 import { Pagina2QuienesSomos } from "./diseños_print/Pagina2QuienesSomos";
 import { Pagina3Experiencia } from "./diseños_print/Pagina3Experiencia";
@@ -125,6 +126,18 @@ function CotizacionManualPrint() {
             <FaEdit style={{ marginRight: 6 }} /> Editar
           </button>
         )}
+        <button
+          className="btn-volver"
+          title="Hoja técnica de costos (ingeniería)"
+          onClick={async () => {
+            try {
+              const t = await getTecnicaParaManualAction(id);
+              navigate(`/cotizaciones-tecnicas/${t.cotizacionTecnicaId}/editar`);
+            } catch { toast.error("No se pudo abrir la hoja técnica."); }
+          }}
+        >
+          <FaCalculator style={{ marginRight: 6, color: "#5b21b6" }} /> Hoja técnica
+        </button>
         <Link to="/cotizaciones-manuales" className="btn-volver">
           <FaArrowLeft style={{ marginRight: 6 }} /> Volver
         </Link>

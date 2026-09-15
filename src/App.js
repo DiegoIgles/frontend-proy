@@ -44,6 +44,10 @@ import CotizacionProyecto from "./pages/proyectos/CotizacionProyecto";
 import CotizacionesManuales from "./pages/cotizaciones-manuales/CotizacionesManuales";
 import CotizacionManualForm from "./pages/cotizaciones-manuales/CotizacionManualForm";
 import CotizacionManualPrint from "./pages/cotizaciones-manuales/CotizacionManualPrint";
+// Cotizaciones Técnicas
+import CotizacionesTecnicas from "./pages/cotizaciones-tecnicas/CotizacionesTecnicas";
+import CotizacionTecnicaForm from "./pages/cotizaciones-tecnicas/CotizacionTecnicaForm";
+import CotizacionTecnicaVer from "./pages/cotizaciones-tecnicas/CotizacionTecnicaVer";
 
 // Ajustes
 import Ajustes from "./pages/ajustes/Ajustes";
@@ -139,6 +143,11 @@ function App() {
         <Route path="/cotizaciones-manuales/crear"         element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualForm /></PrivateRoute>} />
         <Route path="/cotizaciones-manuales/:id/editar"    element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualForm /></PrivateRoute>} />
         <Route path="/cotizaciones-manuales/:id/imprimir"  element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionManualPrint /></PrivateRoute>} />
+
+        {/* Cotizaciones Técnicas */}
+        <Route path="/cotizaciones-tecnicas"               element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionesTecnicas /></PrivateRoute>} />
+        <Route path="/cotizaciones-tecnicas/:id/editar"    element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionTecnicaForm /></PrivateRoute>} />
+        <Route path="/cotizaciones-tecnicas/:id/ver"       element={<PrivateRoute roles={ADMIN_VENDEDOR}><CotizacionTecnicaVer /></PrivateRoute>} />
 
         {/* Ajustes */}
         <Route path="/ajustes"        element={<PrivateRoute roles={ADMIN_BODEGA}><Ajustes /></PrivateRoute>} />

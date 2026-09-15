@@ -8,10 +8,11 @@ import { getCotizacionManualAction } from "./actions/get-cotizacion.action";
 import { uploadImagenCotizacionAction } from "./actions/upload-imagen.action";
 import { getCategoriasFlatAction } from "../Categorias/actions/get-categorias-flat.action";
 import { getProductosAction } from "../inventario/actions/get-productos.action";
+import { getTecnicaParaManualAction } from "../cotizaciones-tecnicas/actions/cotizaciones-tecnicas.actions";
 import { useToast } from "../../context/ToastContext";
 import { MONEDAS, CODIGOS_MONEDA, PAGINAS_CON_MONEDA, MONEDAS_PAGINA_DEFAULT, monedasDe } from "./shared/monedas";
 import {
-  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch, FaHistory,
+  FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch, FaHistory, FaCalculator,
 } from "react-icons/fa";
 
 const DEFAULT_ROI_BARRAS = [
@@ -89,7 +90,7 @@ function ConfigImpreso({ monedasPagina, mostrarPrecioUnitario, onChangeMoneda, o
                       name={`moneda-${p.key}`}
                       checked={activo}
                       onChange={() => onChangeMoneda(p.key, codigo)}
-                      style={{ margin: 0 }}
+                      style={{ margin: 0, width: 14, height: 14, flexShrink: 0 }}
                     />
                     {MONEDAS[codigo].simbolo} · {MONEDAS[codigo].nombre}
                   </label>
@@ -753,6 +754,18 @@ function CotizacionManualForm() {
               <FaHistory /> Ver / versiones
             </button>
           )}
+          {esEdicion && (
+            <button type="button" className="btn-secondary"
+              onClick={async () => {
+                try {
+                  const t = await getTecnicaParaManualAction(id);
+                  navigate(`/cotizaciones-tecnicas/${t.cotizacionTecnicaId}/editar`);
+                } catch { toast.error("No se pudo abrir la hoja técnica."); }
+              }}
+              style={{ display: "flex", alignItems: "center", gap: 6, color: "#5b21b6" }} title="Hoja técnica de costos (ingeniería)">
+              <FaCalculator /> Hoja técnica
+            </button>
+          )}
           <button className="btn-secondary" onClick={() => navigate("/cotizaciones-manuales")}
             style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <FaTimes /> Cancelar
@@ -763,7 +776,7 @@ function CotizacionManualForm() {
       {esEdicion && (
         <p style={{ margin: "-8px 0 16px", fontSize: 12, color: "#6b7280" }}>
           Al guardar se crea la <strong>versión {(Number(form.versionActual) || 1) + 1}</strong>, que pasa a ser la vigente. Las anteriores quedan guardadas
-          y se pueden ver o restaurar desde el imprimible.
+          y se pueden ver o restaurar desde el imprimible. Los costos de ingeniería van en la <strong>hoja técnica</strong> vinculada.
         </p>
       )}
 
@@ -915,10 +928,12 @@ function CotizacionManualForm() {
                           />
                         </td>
                         <td style={{ padding: "6px 8px" }}>
-                          <input
-                            type="text"
-                            placeholder="Descripción del ítem..."
-                            style={inputStyle}
+                          {/* Textarea: cada renglón se imprime como línea propia en la
+                              Página 5 (los que empiezan con "•" salen como viñeta). */}
+                          <textarea
+                            placeholder={"Descripción del ítem... (una línea por renglón)"}
+                            style={{ ...inputStyle, resize: "vertical", minHeight: 34, lineHeight: 1.4, fontFamily: "inherit" }}
+                            rows={Math.min(6, Math.max(1, String(it.descripcion ?? "").split(String.fromCharCode(10)).length))}
                             value={it.descripcion}
                             onChange={(e) => setItemField(idx, "descripcion", e.target.value)}
                           />
