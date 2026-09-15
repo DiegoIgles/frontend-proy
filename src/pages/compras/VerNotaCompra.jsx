@@ -65,8 +65,11 @@ function VerNotaCompra() {
           <span style={{ fontSize: 13, color: "#9ca3af" }}>#{nota.notaCompraId}</span>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <Link to={`/compras/notas/${nota.notaCompraId}/orden`} className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <FaPrint /> Orden de Compra
+          </Link>
           <Link to={`/compras/notas/${nota.notaCompraId}/recibo`} className="btn-secondary" style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <FaPrint /> Imprimir Recibo
+            <FaPrint /> Recibo interno
           </Link>
           {nota.puedeRegistrarPago && (
             <Link to={`/compras/notas/${nota.notaCompraId}/pago`} className="btn-primary" style={{ display: "flex", alignItems: "center", gap: 6 }}>

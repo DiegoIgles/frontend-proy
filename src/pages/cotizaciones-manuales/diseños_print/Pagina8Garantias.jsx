@@ -3,7 +3,9 @@ import { Logo } from "./shared/Logo";
 import { FranjaAtributos, ATRIBUTOS } from "./shared/FranjaAtributos";
 import { IconMedallaIngenieria } from "./shared/IconosDiseno";
 import { CintaEsquina } from "./shared/CintaEsquina";
-import { IconEscudo, IconPanelSolar, IconInversor, IconHerramientas } from "./shared/IconosProteccion";
+import { IconEscudo } from "./shared/IconosProteccion";
+import { IconoGarantia } from "./shared/IconosGarantia";
+import { GARANTIAS_DEFAULT } from "../shared/garantias";
 import { PAGE_WIDTH_MM, PAGE_HEIGHT_MM, COLORS, FONT_FAMILY } from "./shared/constants";
 
 // ---------------------------------------------------------------------------
@@ -14,10 +16,9 @@ import { PAGE_WIDTH_MM, PAGE_HEIGHT_MM, COLORS, FONT_FAMILY } from "./shared/con
 // los lados. Base de medición: el arte apaisado aprobado (1536×1024), con las
 // mismas dos escalas de las páginas 2 a 7.
 //
-// La hoja es ENTERAMENTE ESTÁTICA: los plazos (10 / 5 / 2 años) no existen como
-// campo en la entidad, así que viven en CONTENIDO_GARANTIAS. Están puestos como
-// dato y no incrustados en el texto justamente para que el día que haya que
-// hacerlos variables por cotización alcance con cambiar de dónde se leen.
+// Las tarjetas de garantía son DINÁMICAS: salen de `cot.garantias` (icono,
+// rótulo, años, descripción, activa), de 1 a 10 por cotización, con las cinco
+// del arte como default (shared/garantias.js). El resto de la hoja es estático.
 
 const KX = PAGE_WIDTH_MM / 1536;
 const KY = PAGE_HEIGHT_MM / 1024;
@@ -44,18 +45,12 @@ const CABEZA = {
   ejeX: 762,
 };
 
-// Tres tarjetas de garantía. En el arte miden 471/467/465 px: prácticamente
-// iguales, se reparten en tercios exactos.
-const TARJETA = {
-  y0: 368, y1: 728, gap: 22,
-  disco: { cx: 117, cy: 137, d: 194 },   // relativo al borde de la tarjeta
-  badge: { cx: 194, cy: 75, d: 52 },
-  // 236 y no 250: el disco termina en 214 y la columna de texto tiene que
-  // llegar hasta el borde de la tarjeta para que la descripción entre.
-  textoDx: 236,
-  tituloCap: 58, valorCap: 106, reglaDy: 190, reglaW: 51,
-  descCap: 220, descPaso: 26,
-};
+// Banda de tarjetas de garantía. En el arte hay CINCO en una fila (miden
+// ~292 px cada una); la hoja admite de 1 a 10: hasta cinco van en una fila y de
+// seis en adelante en dos filas, con el mismo diseño compacto del arte (disco
+// arriba a la izquierda, rótulo y plazo a su derecha, descripción debajo).
+const BANDA = { y0: 360, y1: 730, gap: 18, gapFilas: 16 };
+const TARJETAS_POR_FILA_MAX = 5;
 
 const COMPROMISO = { y0: 750, y1: 885, escudoCx: 136, escudoD: 94, textoDx: 222, divisorX: 600, parrafoDx: 595, tituloCap: 790, reglaY: 828, reglaW: 68, parrafoCap: 792, parrafoPaso: 28 };
 const PIE_Y = 906;
@@ -80,20 +75,6 @@ export const CONTENIDO_GARANTIAS = {
     "diseñadas para brindarte tranquilidad y confianza a largo plazo.",
   ],
   unidad: "AÑOS",
-  garantias: [
-    {
-      icono: IconPanelSolar, rotulo: "PANELES SOLARES", anios: 10,
-      desc: "Garantía premium que respalda el rendimiento y la durabilidad de los paneles solares.",
-    },
-    {
-      icono: IconInversor, rotulo: "INVERSOR", anios: 5,
-      desc: "Garantía estándar que asegura el funcionamiento confiable del inversor.",
-    },
-    {
-      icono: IconHerramientas, rotulo: "INSTALACIÓN", anios: 2,
-      desc: "Garantía que cubre los materiales y la instalación del sistema.",
-    },
-  ],
   compromiso: {
     titulo: "COMPROMISO ENERLOGIC",
     texto: [
@@ -110,52 +91,72 @@ const ATRIBUTOS_PAGINA8 = ATRIBUTOS.map((a, i) =>
 
 // --- Piezas -----------------------------------------------------------------
 
-function Garantia({ g, c, x0, ancho }) {
-  const Icono = g.icono;
-  const alto = TARJETA.y1 - TARJETA.y0;
+function Garantia({ g, c, x0, y0, ancho, alto }) {
+  // Dos modos según la forma de la tarjeta:
+  //  - "vertical" (una fila, tarjetas altas): disco arriba a la izquierda, rótulo
+  //    y plazo a su derecha, descripción debajo a todo el ancho — el arte.
+  //  - "horizontal" (dos filas, tarjetas anchas y bajas): disco a la izquierda,
+  //    rótulo, plazo y descripción en una columna a su derecha.
+  const horizontal = alto < 260;
+  const k = Math.min(1, ancho / 292);
+  const pad = 16 * (horizontal ? 1 : k);
+  const disco = horizontal ? Math.min(alto - pad * 2, 118) : 126 * k;
+  const badge = disco * 0.32;
+  const textoX = pad + disco + 14;
+  const fTitulo = CUERPO.tarjTitulo * (horizontal ? 0.8 : 0.84 * k);
+  const fValor = CUERPO.tarjValor * (horizontal ? 0.72 : 0.86 * k);
+  const fUnidad = CUERPO.tarjUnidad * (horizontal ? 0.8 : 0.9 * k);
+  const fDesc = horizontal ? 2.45 : 3.1 * Math.max(0.86, k);
+  const topTitulo = Y(pad) + 3;
+  const topValor = topTitulo + fTitulo * 2.3;
+  const topRegla = topValor + fValor * 1.25;
+  const descLeft = horizontal ? textoX : pad;
+  const descTop = horizontal ? topRegla + 3 : Y(pad + disco) + 6;
+  const descAncho = horizontal ? ancho - textoX - pad : ancho - pad * 2;
 
   return (
-    <div style={{ position: "absolute", left: mmX(x0), top: mmY(TARJETA.y0), width: mmX(ancho), height: mmY(alto), background: COLORS.blanco, border: `0.25mm solid ${COLORS.regla}`, borderRadius: mmX(RADIO) }}>
-      {/* Disco navy con el equipo calado, y el escudo verde montado arriba a la
-          derecha: el escudo sale del disco a propósito, no está contenido. */}
-      <div style={{ position: "absolute", left: mmX(TARJETA.disco.cx - TARJETA.disco.d / 2), top: `${(Y(TARJETA.disco.cy) - X(TARJETA.disco.d) / 2).toFixed(2)}mm`, width: mmX(TARJETA.disco.d), height: mmX(TARJETA.disco.d), borderRadius: "50%", background: COLORS.navy }}>
-        <Icono color={COLORS.blanco} style={{ position: "absolute", left: "24%", top: "24%", width: "52%", height: "52%" }} />
+    <div style={{ position: "absolute", left: mmX(x0), top: mmY(y0), width: mmX(ancho), height: mmY(alto), background: COLORS.blanco, border: `0.25mm solid ${COLORS.regla}`, borderRadius: mmX(RADIO), overflow: "hidden" }}>
+      {/* Disco navy con el icono calado y el escudo verde montado arriba a la derecha. */}
+      <div style={{ position: "absolute", left: mmX(pad), top: mmY(pad), width: mmX(disco), height: mmX(disco), borderRadius: "50%", background: COLORS.navy }}>
+        <IconoGarantia clave={g.icono} color={COLORS.blanco} style={{ position: "absolute", left: "24%", top: "24%", width: "52%", height: "52%" }} />
       </div>
-      <IconEscudo
-        color={COLORS.verde}
-        style={{ position: "absolute", left: mmX(TARJETA.badge.cx - TARJETA.badge.d / 2), top: `${(Y(TARJETA.badge.cy) - X(TARJETA.badge.d) / 2).toFixed(2)}mm`, width: mmX(TARJETA.badge.d), height: mmX(TARJETA.badge.d) }}
-      />
+      <div style={{ position: "absolute", left: mmX(pad + disco - badge * 0.78), top: `${(Y(pad) - X(badge) * 0.12).toFixed(2)}mm`, width: mmX(badge), height: mmX(badge), borderRadius: "50%", background: COLORS.verde }}>
+        <IconEscudo color={COLORS.blanco} style={{ position: "absolute", left: "20%", top: "20%", width: "60%", height: "60%" }} />
+      </div>
 
-      <p style={{ position: "absolute", left: mmX(TARJETA.textoDx), top: capTop(TARJETA.tituloCap, CUERPO.tarjTitulo), margin: 0, fontSize: `${CUERPO.tarjTitulo}mm`, fontWeight: 700, lineHeight: 1, letterSpacing: "0.06mm", color: COLORS.navy, whiteSpace: "nowrap" }}>
+      <p style={{ position: "absolute", left: mmX(textoX), top: `${topTitulo.toFixed(2)}mm`, margin: 0, width: mmX(ancho - textoX - pad), fontSize: `${fTitulo}mm`, fontWeight: 700, lineHeight: 1.1, letterSpacing: "0.05mm", color: COLORS.navy }}>
         {g.rotulo}
       </p>
 
-      {/* La cifra y la unidad comparten línea de base; por eso van en un mismo
-          renglón con `alignItems: baseline` y no como dos bloques apilados.
-          Las dos van del MISMO verde: muestreado en el arte, "10" y "AÑOS"
-          dan el mismo lima (#4E8617), no una en verde y la otra en navy. */}
-      <p style={{ position: "absolute", left: mmX(TARJETA.textoDx), top: capTop(TARJETA.valorCap, CUERPO.tarjValor), margin: 0, display: "flex", alignItems: "baseline", gap: mmX(12), lineHeight: 1, whiteSpace: "nowrap" }}>
-        <span style={{ fontSize: `${CUERPO.tarjValor}mm`, fontWeight: 800, color: COLORS.verde, letterSpacing: "-0.1mm" }}>{g.anios}</span>
-        <span style={{ fontSize: `${CUERPO.tarjUnidad}mm`, fontWeight: 700, color: COLORS.verde }}>{c.unidad}</span>
+      <p style={{ position: "absolute", left: mmX(textoX), top: `${topValor.toFixed(2)}mm`, margin: 0, display: "flex", alignItems: "baseline", gap: mmX(8), lineHeight: 1, whiteSpace: "nowrap" }}>
+        <span style={{ fontSize: `${fValor}mm`, fontWeight: 800, color: COLORS.verde, letterSpacing: "-0.1mm" }}>{g.anios}</span>
+        <span style={{ fontSize: `${fUnidad}mm`, fontWeight: 700, color: COLORS.verde }}>{c.unidad}</span>
       </p>
+      <div style={{ position: "absolute", left: mmX(textoX), top: `${topRegla.toFixed(2)}mm`, width: mmX(46), height: "0.6mm", background: COLORS.verde }} />
 
-      <div style={{ position: "absolute", left: mmX(TARJETA.textoDx), top: mmY(TARJETA.reglaDy), width: mmX(TARJETA.reglaW), height: "0.6mm", background: COLORS.verde }} />
-
-      {/* Párrafo fluido, no líneas partidas a mano. El arte las corta en tres
-          porque su condensada entra justo; con Montserrat esos mismos cortes
-          dejaban huérfanas ("Garantía premium que / respalda"). Dejando elegir
-          el quiebre al navegador salen tres o cuatro líneas parejas, y en la
-          tarjeta sobra alto para las cuatro. */}
-      <p style={{ position: "absolute", left: mmX(TARJETA.textoDx), top: capTop(TARJETA.descCap, CUERPO.tarjDesc), margin: 0, width: mmX(ancho - TARJETA.textoDx - 16), fontSize: `${CUERPO.tarjDesc}mm`, fontWeight: 500, lineHeight: (Y(TARJETA.descPaso) / CUERPO.tarjDesc).toFixed(3), color: COLORS.tinta }}>
-        {g.desc}
+      <p style={{ position: "absolute", left: mmX(descLeft), top: `${descTop.toFixed(2)}mm`, margin: 0, width: mmX(descAncho), fontSize: `${fDesc}mm`, fontWeight: 500, lineHeight: 1.45, color: COLORS.tinta }}>
+        {g.descripcion ?? g.desc}
       </p>
     </div>
   );
 }
 
-export function Pagina8Garantias({ contenido = CONTENIDO_GARANTIAS }) {
+// Reparte N tarjetas: una fila hasta 5, dos filas de 6 en adelante.
+function distribuir(n) {
+  if (n <= TARJETAS_POR_FILA_MAX) return [n];
+  const primera = Math.ceil(n / 2);
+  return [primera, n - primera];
+}
+
+export function Pagina8Garantias({ cot, contenido = CONTENIDO_GARANTIAS }) {
   const c = contenido;
-  const anchoTarj = (ANCHO - TARJETA.gap * 2) / 3;
+  // Garantías de ESTA cotización (solo las activas); sin dato, las 5 del arte.
+  const lista = (Array.isArray(cot?.garantias) && cot.garantias.length ? cot.garantias : GARANTIAS_DEFAULT)
+    .filter((g) => g.activa !== false)
+    .slice(0, 10);
+  const filas = distribuir(lista.length);
+  const altoBanda = BANDA.y1 - BANDA.y0;
+  const altoFila = filas.length === 1 ? altoBanda : (altoBanda - BANDA.gapFilas) / 2;
 
   return (
     <section
@@ -184,10 +185,15 @@ export function Pagina8Garantias({ contenido = CONTENIDO_GARANTIAS }) {
         </p>
       ))}
 
-      {/* ── Tres garantías ─────────────────────────────────────────────── */}
-      {c.garantias.map((g, i) => (
-        <Garantia key={g.rotulo} g={g} c={c} x0={MARGEN.x0 + i * (anchoTarj + TARJETA.gap)} ancho={anchoTarj} />
-      ))}
+      {/* ── Garantías (dinámicas: 1 a 10) ───────────────────────────────── */}
+      {filas.map((cant, f) => {
+        const desde = filas.slice(0, f).reduce((t, n) => t + n, 0);
+        const ancho = (ANCHO - BANDA.gap * (cant - 1)) / cant;
+        const y0 = BANDA.y0 + f * (altoFila + BANDA.gapFilas);
+        return lista.slice(desde, desde + cant).map((g, i) => (
+          <Garantia key={`${f}-${i}`} g={g} c={c} x0={MARGEN.x0 + i * (ancho + BANDA.gap)} y0={y0} ancho={ancho} alto={altoFila} />
+        ));
+      })}
 
       {/* ── Compromiso ─────────────────────────────────────────────────── */}
       <div style={{ position: "absolute", left: mmX(MARGEN.x0), top: mmY(COMPROMISO.y0), width: mmX(ANCHO), height: mmY(COMPROMISO.y1 - COMPROMISO.y0), background: COLORS.hueso, borderRadius: mmX(RADIO) }} />

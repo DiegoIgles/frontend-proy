@@ -7,6 +7,7 @@ import { getProductoStockAction } from "../inventario/actions/get-producto-stock
 import { createNotaCompraAction } from "./actions/create-nota-compra.action";
 import { FaArrowLeft, FaPlus, FaTrash, FaTimes, FaSave } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
+import { EMPRESA, ORDEN_COMPRA_DEFAULTS } from "../../shared/empresa";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -116,6 +117,13 @@ function CreateNotaCompra() {
     proveedorId: "",
     esCredito: false,
     credito: { fechaVencimiento: "", montoPagadoInicial: 0 },
+    // Datos que se imprimen en la orden de compra (arte "PURCHASE ORDER").
+    referencia: "",
+    terminosEnvio: ORDEN_COMPRA_DEFAULTS.terminosEnvio,
+    entrega: ORDEN_COMPRA_DEFAULTS.entrega,
+    terminosPago: ORDEN_COMPRA_DEFAULTS.terminosPago,
+    firmanteNombre: EMPRESA.firmante.nombre,
+    firmanteCargo: EMPRESA.firmante.cargo,
   });
 
   const [detalles, setDetalles] = useState([
@@ -172,6 +180,12 @@ function CreateNotaCompra() {
       glosa: form.glosa || undefined,
       proveedorId: form.proveedorId,
       esCredito: form.esCredito,
+      referencia: form.referencia.trim() || undefined,
+      terminosEnvio: form.terminosEnvio.trim() || undefined,
+      entrega: form.entrega.trim() || undefined,
+      terminosPago: form.terminosPago.trim() || undefined,
+      firmanteNombre: form.firmanteNombre.trim() || undefined,
+      firmanteCargo: form.firmanteCargo.trim() || undefined,
       detalles: detalles.map((d) => ({
         productoAlmacenId: d.productoAlmacenId,
         cantidad: Number(d.cantidad),
@@ -283,6 +297,40 @@ function CreateNotaCompra() {
         </div>
 
         {/* Sección crédito */}
+        {/* Orden de compra impresa */}
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h3 style={{ marginBottom: 4 }}>Orden de Compra (impresión)</h3>
+          <p style={{ margin: "0 0 14px", fontSize: 12, color: "#6b7280" }}>
+            El N° de orden se asigna solo (correlativo del año). Estos textos salen tal cual en el documento; podés dejar los valores por defecto.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+            <div className="form-group">
+              <label>Referencia</label>
+              <input type="text" placeholder="OC-314-2026 / cotización del proveedor" value={form.referencia} onChange={(e) => handleFormChange("referencia", e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Shipping Terms</label>
+              <input type="text" value={form.terminosEnvio} onChange={(e) => handleFormChange("terminosEnvio", e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Delivery</label>
+              <input type="text" value={form.entrega} onChange={(e) => handleFormChange("entrega", e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Payment Terms</label>
+              <input type="text" value={form.terminosPago} onChange={(e) => handleFormChange("terminosPago", e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Firma — nombre</label>
+              <input type="text" value={form.firmanteNombre} onChange={(e) => handleFormChange("firmanteNombre", e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Firma — cargo</label>
+              <input type="text" value={form.firmanteCargo} onChange={(e) => handleFormChange("firmanteCargo", e.target.value)} />
+            </div>
+          </div>
+        </div>
+
         {form.esCredito && (
           <div className="card" style={{ marginBottom: 16, borderLeft: "4px solid #EE9C02" }}>
             <h3 style={{ marginBottom: 14, color: "#EE9C02" }}>Condiciones de Crédito</h3>

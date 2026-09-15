@@ -24,6 +24,7 @@ import VerNotaCompra from "./pages/compras/VerNotaCompra";
 import CreateNotaCompra from "./pages/compras/CreateNotaCompra";
 import PagoNotaCompra from "./pages/compras/PagoNotaCompra";
 import ReciboCompra from "./pages/compras/ReciboCompra";
+import OrdenCompra from "./pages/compras/OrdenCompra";
 import Proveedores from "./pages/compras/Proveedores";
 import VerProveedor from "./pages/compras/VerProveedor";
 
@@ -122,6 +123,7 @@ function App() {
         <Route path="/compras/notas/:id"      element={<PrivateRoute roles={ADMIN_BODEGA}><VerNotaCompra /></PrivateRoute>} />
         <Route path="/compras/notas/:id/pago"   element={<PrivateRoute roles={ADMIN_BODEGA}><PagoNotaCompra /></PrivateRoute>} />
         <Route path="/compras/notas/:id/recibo"      element={<PrivateRoute roles={ADMIN_BODEGA}><ReciboCompra /></PrivateRoute>} />
+        <Route path="/compras/notas/:id/orden"       element={<PrivateRoute roles={ADMIN_BODEGA}><OrdenCompra /></PrivateRoute>} />
         <Route path="/compras/proveedores"            element={<PrivateRoute roles={ADMIN_BODEGA}><Proveedores /></PrivateRoute>} />
         <Route path="/compras/proveedores/:id"        element={<PrivateRoute roles={ADMIN_BODEGA}><VerProveedor /></PrivateRoute>} />
 
