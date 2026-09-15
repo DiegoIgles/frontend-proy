@@ -133,7 +133,8 @@ export const CONTENIDO_DISENO = {
     { icono: "potencia", campo: "potenciaInstalada", label: "POTENCIA INSTALADA", unidad: "kWp", dec: 2 },
     { icono: "paneles", campo: "cantidadPaneles", label: "CANTIDAD DE PANELES", unidad: "unidades", dec: 0 },
     { icono: "superficie", campo: "superficieRequerida", label: "SUPERFICIE REQUERIDA", unidad: "m²", dec: 0 },
-    { icono: "produccion", campo: "produccionAnualEstimada", label: "PRODUCCIÓN ANUAL ESTIMADA", unidad: "MWh/año", dec: 1 },
+    // El dato se carga en kWh (así lo guarda la API); el arte lo muestra en MWh.
+    { icono: "produccion", campo: "produccionAnualEstimada", label: "PRODUCCIÓN ANUAL ESTIMADA", unidad: "MWh/año", dec: 1, divisor: 1000 },
   ],
 };
 
@@ -444,7 +445,7 @@ function FranjaKpis({ cot }) {
                   whiteSpace: "nowrap",
                 }}
               >
-                {fmt(cot?.[k.campo], k.dec)}
+                {fmt(k.divisor && cot?.[k.campo] != null ? Number(cot[k.campo]) / k.divisor : cot?.[k.campo], k.dec)}
               </p>
               <p
                 style={{

@@ -20,6 +20,7 @@ import {
   FaMoneyBillWave,
   FaProjectDiagram,
   FaFileContract,
+  FaCalculator,
   FaUserCog,
   FaHistory,
   FaBell,
@@ -52,6 +53,7 @@ const MENU = [
     items: [
       { to: "/proyectos", label: "Gestión de Proyectos", icon: <FaProjectDiagram /> },
       { to: "/cotizaciones-manuales", label: "Cotizaciones Manuales", icon: <FaFileContract />, roles: ADMIN_VENDEDOR },
+      { to: "/cotizaciones-tecnicas", label: "Hojas Técnicas", icon: <FaCalculator />, roles: ADMIN_VENDEDOR },
     ],
   },
   {
