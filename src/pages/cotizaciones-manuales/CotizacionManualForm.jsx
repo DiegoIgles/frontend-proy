@@ -11,6 +11,8 @@ import { getProductosAction } from "../inventario/actions/get-productos.action";
 import { getTecnicaParaManualAction } from "../cotizaciones-tecnicas/actions/cotizaciones-tecnicas.actions";
 import { useToast } from "../../context/ToastContext";
 import { MONEDAS, CODIGOS_MONEDA, PAGINAS_CON_MONEDA, MONEDAS_PAGINA_DEFAULT, monedasDe } from "./shared/monedas";
+import { GARANTIAS_DEFAULT } from "./shared/garantias";
+import GarantiasEditor from "./components/GarantiasEditor";
 import {
   FaSave, FaTimes, FaUpload, FaTrash, FaPlus, FaImage, FaSpinner, FaBoxOpen, FaSearch, FaHistory, FaCalculator,
 } from "react-icons/fa";
@@ -61,6 +63,8 @@ const INITIAL_FORM = {
   // en Bolivia) y si el cuadro de la página 5 lleva la columna de precio unitario.
   monedasPagina: MONEDAS_PAGINA_DEFAULT,
   mostrarPrecioUnitario: false,
+  // Página 8: tarjetas de garantía (las 5 del arte por defecto).
+  garantias: GARANTIAS_DEFAULT.map((g) => ({ ...g })),
 };
 
 // ── Configuración del impreso: moneda por página + precio unitario ──
@@ -526,6 +530,7 @@ function CotizacionManualForm() {
           items: data.items ?? [],
           monedasPagina: monedasDe(data),
           mostrarPrecioUnitario: Boolean(data.mostrarPrecioUnitario),
+          garantias: Array.isArray(data.garantias) && data.garantias.length ? data.garantias : GARANTIAS_DEFAULT.map((g) => ({ ...g })),
           // Al editar, el campo se carga con QUIEN ESTÁ EDITANDO, no con el autor
           // guardado: es el nombre que va a quedar al guardar, y mostrarlo desde
           // el principio evita que la cotización cambie de autor sin que se vea.
@@ -709,6 +714,13 @@ function CotizacionManualForm() {
         .map((b) => ({ etiqueta: b.etiqueta || undefined, valor: Number(b.valor) })),
       monedasPagina: form.monedasPagina,
       mostrarPrecioUnitario: Boolean(form.mostrarPrecioUnitario),
+      garantias: (form.garantias || []).map((g) => ({
+        icono: g.icono,
+        rotulo: (g.rotulo || "").trim().toUpperCase() || "GARANTÍA",
+        anios: Number(g.anios) || 0,
+        descripcion: (g.descripcion || "").trim(),
+        activa: g.activa !== false,
+      })),
     };
 
     setSaving(true);
@@ -1040,6 +1052,11 @@ function CotizacionManualForm() {
               <input style={inputStyle} type="number" step="0.01" min="0" placeholder="270" value={form.valorContratacionTotalUsd} onChange={set("valorContratacionTotalUsd")} />
             </Field>
           </div>
+        </SectionCard>
+
+        {/* ── Página 8: Garantías ── */}
+        <SectionCard titulo="Página 8 — Garantías" descripcion="Tarjetas de garantía del impreso. Por defecto salen las 5 del arte; podés desactivar, reescribir años y textos, cambiar el icono, reordenar o agregar (hasta 10).">
+          <GarantiasEditor value={form.garantias} onChange={(g) => setForm((f) => ({ ...f, garantias: g }))} />
         </SectionCard>
 
         {/* ── Acciones ── */}

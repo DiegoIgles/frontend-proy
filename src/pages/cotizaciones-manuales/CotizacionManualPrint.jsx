@@ -203,7 +203,7 @@ function CotizacionManualPrint() {
         <Pagina7Proteccion cot={cot} />
 
         {/* ═══════════ PÁGINA 8: GARANTÍAS (CLONADA) ═══════════ */}
-        <Pagina8Garantias />
+        <Pagina8Garantias cot={cot} />
 
         {/* ═══════════ PÁGINA 9: ALCANCE DEL PROYECTO (CLONADA) ═══════════ */}
         <Pagina9Alcance />
